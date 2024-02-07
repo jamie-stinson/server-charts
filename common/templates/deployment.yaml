@@ -9,6 +9,7 @@ spec:
       containers:
         - name: {{ .Release.Name }}
           image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          {{- if .Values.resources.enabled }}
           resources:
             requests:
               cpu: {{ .Values.resources.requests.cpu }}
@@ -17,6 +18,11 @@ spec:
               cpu: {{ .Values.resources.limits.cpu }}
               memory: {{ .Values.resources.limits.memory }}
               gpu: {{ .Values.resources.limits.gpu }}
+          {{- end }}
+          {{- if .Values.containerArgs }}
+          args: 
+            {{- toYaml .Values.containerArgs | nindent 12 }}
+          {{- end }}
           {{- if .Values.service.enabled }}
           ports:
             {{- range .Values.service.ports }}

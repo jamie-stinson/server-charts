@@ -3,7 +3,10 @@ image:
   repository: ""
   tag: ""
 
+containerArgs: []
+
 resources:
+  enabled: false
   requests:
     cpu: 128m
     memory: 128Mi
@@ -18,6 +21,17 @@ service:
   - name: http
     protocol: TCP
     port: 80
+
+serviceAccount:
+  enabled: false
+
+rbac:
+  enabled: false
+  type: role #role or clusterrole
+  rules: []
+    # - apiGroups: []
+    #   resources: []
+    #   verbs: []
 
 ingress:
   traefik:

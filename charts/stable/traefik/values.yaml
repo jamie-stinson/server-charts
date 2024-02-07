@@ -1,0 +1,43 @@
+image:
+  registry: "docker.io"
+  repository: "traefik"
+  tag: "v2.10"
+
+containerArgs:
+  - --api.insecure
+  - --providers.kubernetesingress
+
+serviceAccount:
+  enabled: true
+
+rbac:
+  enabled: true
+  type: clusterrole
+  rules:
+    - apiGroups:
+        - ""
+      resources:
+        - services
+        - endpoints
+        - secrets
+      verbs:
+        - get
+        - list
+        - watch
+    - apiGroups:
+        - extensions
+        - networking.k8s.io
+      resources:
+        - ingresses
+        - ingressclasses
+      verbs:
+        - get
+        - list
+        - watch
+    - apiGroups:
+        - extensions
+        - networking.k8s.io
+      resources:
+        - ingresses/status
+      verbs:
+        - update

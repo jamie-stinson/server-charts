@@ -1,0 +1,17 @@
+{{- if .Values.rbac.enabled }}
+{{- if eq .Values.rbac.type "role" }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ .Release.Name }}
+rules:
+{{ toYaml .Values.rbac.rules | indent 2 }}
+{{- else if eq .Values.rbac.type "clusterrole" }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ .Release.Name }}
+rules:
+{{ toYaml .Values.rbac.rules | indent 2 }}
+{{- end }}
+{{- end }}
