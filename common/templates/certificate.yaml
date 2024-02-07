@@ -8,5 +8,5 @@ spec:
   issuerRef: 
     kind: ClusterIssuer
     name: letsencrypt-production
-  commonName: {{ .Values.certificateIssuer.certificates }}
+  commonName: {{ .Values.certificateIssuer.wildcard }}
 {{- end }}

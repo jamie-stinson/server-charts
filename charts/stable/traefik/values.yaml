@@ -43,6 +43,7 @@ certificateIssuer:
   cloudflareEmail: "contact@projectwhitebox.com"
   dnzZones:
     - "projectwhitebox.com"
+  wildcard: "*.projectwhitebox.com"
 
 ingress:
   traefik:
