@@ -22,7 +22,7 @@ spec:
         path: /
         backend:
           service:
-            name: "{{ $.Release.Name }}-{{ .name }}"
+            name: "{{ $.Release.Name }}-clusterip"
             port:
               number: {{ .backendPort }}
 {{- end }}
