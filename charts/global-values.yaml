@@ -1,61 +1,60 @@
-common:
-  image:
-    registry: ""
-    repository: ""
-    tag: ""
+image:
+  registry: ""
+  repository: ""
+  tag: ""
 
-  resources:
-    requests:
-      cpu: 128m
-      memory: 128Mi
-    limits:
-      cpu: 128m
-      memory: 128Mi
-      gpu: 1
+resources:
+  requests:
+    cpu: 128m
+    memory: 128Mi
+  limits:
+    cpu: 128m
+    memory: 128Mi
+    gpu: 1
 
-  service:
+service:
+  enabled: true
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+
+ingress:
+  traefik:
     enabled: true
-    ports:
+    hosts:
+    - name: https
+      entrypoint: "websecure"
+      host: "example.com"
+      middlewares:
+      - "basic"
+      certManager:
+        enabled: true
+        issuer: "test/example" # namespace/issuerName or just issuerName for cluster issuer
     - name: http
-      protocol: TCP
-      port: 80
+      entrypoint: "web"
+      host: "example.com"
+      middlewares:
+      - "basic"
+      - "http"
+      certManager:
+        enabled: false
+        issuer: "" # namespace/issuerName or just issuerName for cluster issuer
 
-  ingress:
-    traefik:
-      enabled: true
-      hosts:
-      - name: https
-        entrypoint: "websecure"
-        host: "example.com"
-        middlewares:
-        - "basic"
-        certManager:
-          enabled: true
-          issuer: "test/example" # namespace/issuerName or just issuerName for cluster issuer
-      - name: http
-        entrypoint: "web"
-        host: "example.com"
-        middlewares:
-        - "basic"
-        - "http"
-        certManager:
-          enabled: false
-          issuer: "" # namespace/issuerName or just issuerName for cluster issuer
-
-  # storage:
-  #   enabled: false
-  #   - name: "config"
-  #     type: "pvc"
-  #     size: "256Gi"
-  #     mountPath: "/config"
-  #     readOnly: false
-  #   - name: "test"
-  #     type: "host"
-  #     hostPath: "/etc/config"
-  #     mountPath: "/test"
-  #     readOnly: true
-  #   - name: "test"
-  #     type: "emptyDir"
-  #     size: "1G"
-  #     mountPath: "/config"
-  #     readOnly: false
+# storage:
+#   enabled: false
+#   - name: "config"
+#     type: "pvc"
+#     size: "256Gi"
+#     mountPath: "/config"
+#     readOnly: false
+#   - name: "test"
+#     type: "host"
+#     hostPath: "/etc/config"
+#     mountPath: "/test"
+#     readOnly: true
+#   - name: "test"
+#     type: "emptyDir"
+#     size: "1G"
+#     mountPath: "/config"
+#     readOnly: false

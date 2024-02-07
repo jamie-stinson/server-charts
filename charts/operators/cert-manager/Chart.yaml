@@ -1,0 +1,23 @@
+apiVersion: v2
+appVersion: v1.13.3
+version: 1.0.0
+dependencies:
+  - name: cert-manager
+    version: v1.13.3
+    repository: https://charts.jetstack.io
+    condition: ""
+    alias: certmanager
+    tags: []
+    import-values: []
+deprecated: false
+description: Cert-Manager is a kubernetes-aware certificate manager
+keywords:
+  - cert-manager
+  - certificates
+  - security
+kubeVersion: ">=1.24.0-0"
+name: cert-manager
+sources:
+  - https://github.com/cert-manager
+  - https://cert-manager.io/
+type: application

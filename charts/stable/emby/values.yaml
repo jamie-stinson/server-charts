@@ -1,5 +1,0 @@
-common:
-  image:
-    registry: "test"
-    repository: ""
-    tag: ""
