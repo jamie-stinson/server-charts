@@ -4,8 +4,22 @@ image:
   tag: "v2.10"
 
 containerArgs:
+  - --accesslog
+  - --log
+  - --log.format=json
+  - --log.level=ERROR
   - --api.insecure
   - --providers.kubernetesingress
+  - --accesslog.format=json
+  - --certificatesresolvers.letsencrypt
+  - --certificatesresolvers.letsencrypt.acme.caserver=https://acme-v02.api.letsencrypt.org/directory
+  - --certificatesresolvers.letsencrypt.acme.certificatesduration=2160
+  - --certificatesresolvers.letsencrypt.acme.dnschallenge
+  - --certificatesresolvers.letsencrypt.acme.dnschallenge.provider
+  - --entrypoints.web
+  - --entrypoints.web.http.redirections.entryPoint.to=websecure
+  - --entrypoints.web.http.redirections.entryPoint.scheme=https
+  - --entrypoints.websecure
 
 service:
   enabled: true
@@ -23,30 +37,17 @@ service:
       port: 443
       nodePort: 30443
 
+certificateIssuer:
+  enabled: true
+  contactEmail: "contact@projectwhitebox.com"
+  cloudflareEmail: "contact@projectwhitebox.com"
+  dnzZones:
+    - "projectwhitebox.com"
+
 ingress:
   traefik:
-    enabled: true
-    hosts:
-    - name: https
-      entrypoint: "websecure"
-      host: "example.com"
-      backendPort: 443
-      middlewares:
-      - "basic"
-      - "test"
-      certManager:
-        enabled: true
-        issuer: "test/example" # namespace/issuerName or just issuerName for cluster issuer
-    - name: http
-      entrypoint: "web"
-      host: "example.com"
-      backendPort: 80
-      middlewares:
-      - "basic"
-      - "http"
-      certManager:
-        enabled: false
-        issuer: "" # namespace/issuerName or just issuerName for cluster issuer
+    enabled: true 
+    hosts: []
 
 serviceAccount:
   enabled: true

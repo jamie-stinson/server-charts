@@ -25,8 +25,16 @@ spec:
           {{- end }}
           {{- if .Values.service.enabled }}
           ports:
-            {{- range .Values.service.ports }}
+            {{- if .Values.service.nodeport }}
+            {{- range .Values.service.nodeport }}
             - name: {{ .name }}
               containerPort: {{ .port }}
+            {{- end }}
+            {{- end }}
+            {{- if .Values.service.clusterip }}
+            {{- range .Values.service.clusterip }}
+            - name: {{ .name }}
+              containerPort: {{ .port }}
+            {{- end }}
             {{- end }}
           {{- end }}

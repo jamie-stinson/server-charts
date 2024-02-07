@@ -31,6 +31,13 @@ rbac:
     #   resources: []
     #   verbs: []
 
+certificateIssuer:
+  enabled: false
+  contactEmail: "contact@example.com"
+  cloudflareEmail: "hello@example.com"
+  dnzZones:
+    - "example.com"
+
 ingress:
   traefik:
     enabled: false

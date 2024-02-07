@@ -9,14 +9,12 @@ metadata:
 {{- if .middlewares }}
     traefik.ingress.kubernetes.io/router.middlewares: "{{ join "," .middlewares }}"
 {{- end }}
-{{- if .certManager.enabled }}
-    traefik.ingress.kubernetes.io/router.tls: "true"
-    traefik.ingress.kubernetes.io/router.tls.certresolver: "{{ .certManager.issuer }}"
-    traefik.ingress.kubernetes.io/router.tls.domains.0.main: "{{ .host }}"
-{{- end }}
 spec:
+ tls:
+   - hosts:
+       - {{ .host }}
+     secretName: certificate-secret
   rules:
-  {{- range .hosts }}
   - host: {{ .host }}
     http:
       paths:
@@ -27,6 +25,5 @@ spec:
             name: "{{ $.Release.Name }}-{{ .name }}"
             port:
               number: {{ .backendPort }}
-  {{- end }}
 {{- end }}
 {{- end }}
