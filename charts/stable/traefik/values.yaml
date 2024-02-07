@@ -20,8 +20,33 @@ service:
       nodePort: 30080
     - name: https
       protocol: TCP
-      port: 4443
+      port: 443
       nodePort: 30443
+
+ingress:
+  traefik:
+    enabled: true
+    hosts:
+    - name: https
+      entrypoint: "websecure"
+      host: "example.com"
+      backendPort: 443
+      middlewares:
+      - "basic"
+      - "test"
+      certManager:
+        enabled: true
+        issuer: "test/example" # namespace/issuerName or just issuerName for cluster issuer
+    - name: http
+      entrypoint: "web"
+      host: "example.com"
+      backendPort: 80
+      middlewares:
+      - "basic"
+      - "http"
+      certManager:
+        enabled: false
+        issuer: "" # namespace/issuerName or just issuerName for cluster issuer
 
 serviceAccount:
   enabled: true
