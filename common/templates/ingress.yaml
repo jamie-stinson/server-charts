@@ -10,10 +10,10 @@ metadata:
     traefik.ingress.kubernetes.io/router.middlewares: "{{ join "," .middlewares }}"
 {{- end }}
 spec:
- tls:
-   - hosts:
-       - {{ .host }}
-     secretName: certificate-secret
+  tls:
+  - hosts:
+    - {{ .host }}
+    secretName: certificate-secret
   rules:
   - host: {{ .host }}
     http:
