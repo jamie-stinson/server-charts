@@ -1,15 +1,30 @@
-{{- if .Values.service.enabled }}
+{{- if and .Values.service.enabled .Values.service.clusterip }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Release.Name }}
+  name: {{ .Release.Name }}-clusterip
 spec:
   type: ClusterIP
   ports:
-    {{- range .Values.service.ports }}
-    - name: {{ .name }}
-      protocol: {{ .protocol }}
-      port: {{ .port }}
-      targetPort: {{ .port }}
-    {{- end }}
+  {{- range .Values.service.clusterip }}
+  - name: {{ .name }}
+    protocol: {{ .protocol }}
+    port: {{ .port }}
+  {{- end }}
+{{- end }}
+
+{{- if and .Values.service.enabled .Values.service.nodeport }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-nodeport
+spec:
+  type: NodePort
+  ports:
+  {{- range .Values.service.nodeport }}
+  - name: {{ .name }}
+    protocol: {{ .protocol }}
+    port: {{ .port }}
+    nodePort: {{ .nodePort }}
+  {{- end }}
 {{- end }}

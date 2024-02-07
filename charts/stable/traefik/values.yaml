@@ -7,6 +7,22 @@ containerArgs:
   - --api.insecure
   - --providers.kubernetesingress
 
+service:
+  enabled: true
+  clusterip:
+    - name: dashboard
+      protocol: TCP
+      port: 8080
+  nodeport:
+    - name: http
+      protocol: TCP
+      port: 80
+      nodePort: 30080
+    - name: https
+      protocol: TCP
+      port: 4443
+      nodePort: 30443
+
 serviceAccount:
   enabled: true
 
