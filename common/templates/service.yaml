@@ -15,7 +15,7 @@ spec:
     nodePort: {{ .nodePort }}
   {{- end }}
 {{- end }}
-
+---
 {{- if and .Values.service.enabled .Values.service.clusterip }}
 apiVersion: v1
 kind: Service
