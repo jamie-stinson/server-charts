@@ -1,0 +1,28 @@
+name: emby
+description: "Emby is designed to help you manage your personal media library, such as home videos and photos"
+annotations:
+  title: Emby
+type: application
+apiVersion: v2
+appVersion: "4.8.0.78"
+version: "1.0.1"
+kubeVersion: '>=1.16.0-0'
+annotations:
+  title: Emby
+maintainers:
+  - name: jamie
+    email: "contact@jamiestinson.co.uk"
+    url: https://github.com/jamiestinson1
+dependencies:
+  - name: common
+    version: 0.1.0
+    repository: "file://../../../common"
+home: https://emby.media/
+icon: https://media.sys.truenas.net/apps/emby/icons/icon.png
+keywords:
+  - emby
+  - media
+sources:
+  - https://emby.media/
+  - https://hub.docker.com/r/emby/embyserver
+  - https://github.com/jamie-stinson/scale-charts/tree/main/charts/emby
