@@ -5,6 +5,9 @@ kind: Ingress
 metadata:
   name: {{ $.Release.Name }}-{{ .name }}
   annotations:
+    cert-manager.io/issuer: "letsencrypt-production"
+    cert-manager.io/issuer-kind: "ClusterIssuer"
+    cert-manager.io/issuer-group: "cert-manager.io"
     traefik.ingress.kubernetes.io/router.entrypoints: "{{ .entrypoint }}"
 {{- if .middlewares }}
     traefik.ingress.kubernetes.io/router.middlewares: "{{ join "," .middlewares }}"
