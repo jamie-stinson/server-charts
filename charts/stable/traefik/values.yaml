@@ -49,8 +49,16 @@ certificateIssuer:
 
 ingress:
   traefik:
-    enabled: true 
-    hosts: []
+    enabled: true
+    hosts:
+    - name: https
+      entrypoint: "websecure"
+      host: "traefik.projectwhitebox.com"
+      backendPort: 8080
+      middlewares: []
+      certManager:
+        enabled: false
+        issuer: "test/example" # namespace/issuerName or just issuerName for cluster issuer
 
 serviceAccount:
   enabled: true
