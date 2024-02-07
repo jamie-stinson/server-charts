@@ -17,9 +17,11 @@ containerArgs:
   - --certificatesresolvers.letsencrypt.acme.dnschallenge
   - --certificatesresolvers.letsencrypt.acme.dnschallenge.provider
   - --entrypoints.web
+  - --entryPoints.web.address=:80
   - --entrypoints.web.http.redirections.entryPoint.to=websecure
   - --entrypoints.web.http.redirections.entryPoint.scheme=https
   - --entrypoints.websecure
+  - --entryPoints.websecure.address=:443
 
 service:
   enabled: true
