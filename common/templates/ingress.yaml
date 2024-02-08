@@ -14,9 +14,9 @@ metadata:
 {{- end }}
 spec:
   tls:
-  - hosts:
-    - {{ .host }}
-    secretName: certificate-secret
+  - secretName: wildcard-certificate-secret
+    hosts:
+      - {{ .host }}
   rules:
   - host: {{ .host }}
     http:
