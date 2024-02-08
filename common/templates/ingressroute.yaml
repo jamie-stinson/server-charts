@@ -12,7 +12,7 @@ spec:
     kind: Rule
     services:
     - name: {{ $.Release.Name }}-clusterip
-      kind: {{ .backendPort }}
+      kind: TraefikService
   tls:
     secretName: wildcard-certificate-secret
 {{- end }}
