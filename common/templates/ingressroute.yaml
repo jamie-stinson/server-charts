@@ -8,11 +8,11 @@ spec:
   entryPoints:
     - {{ .entrypoint }}
   routes:
-    - match: Host(`{{ .host }}`)
-      kind: Rule
-      services:
-        - name: "{{ $.Release.Name }}-clusterip"
-          port: {{ .backendPort }}
+  - match: PathPrefix(`/dashboard`) || PathPrefix(`/api`)
+    kind: Rule
+    services:
+    - name: {{ $.Release.Name }}-clusterip
+      kind: {{ .backendPort }}
   tls:
     secretName: wildcard-certificate-secret
 {{- end }}
