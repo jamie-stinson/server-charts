@@ -39,6 +39,9 @@ service:
       port: 443
       nodePort: 30443
 
+serviceAccount:
+  enabled: true
+
 certificateIssuer:
   enabled: true
   contactEmail: "contact@projectwhitebox.com"
