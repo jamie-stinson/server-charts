@@ -2,13 +2,13 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: letsencrypt-production
+  name: wildcard-lachlan-io
 spec:
-  secretName: wildcard-certificate-secret
+  secretName: wildcard-lachlan-io-tls
   issuerRef: 
     kind: ClusterIssuer
-    name: letsencrypt-production
-  commonName: "{{ .Values.certificateIssuer.wildcard }}"
+    name: letsencrypt-prod
+  # commonName: "{{ .Values.certificateIssuer.wildcard }}"
   dnsNames:
     - "{{ .Values.certificateIssuer.wildcard }}"
 {{- end }}

@@ -8,12 +8,12 @@ spec:
   entryPoints:
     - {{ .entrypoint }}
   routes:
-  - match: PathPrefix(`/dashboard`) || PathPrefix(`/api`)
+  - match: Host(`traefik.projectwhitebox.com`)
     kind: Rule
     services:
     - name: {{ $.Release.Name }}-clusterip
-      kind: TraefikService
+      port: 8080
   tls:
-    secretName: wildcard-certificate-secret
+    secretName: wildcard-lachlan-io-tls
 {{- end }}
 {{- end }}
