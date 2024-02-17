@@ -23,7 +23,7 @@ serviceAccount:
 traefik:
   accessLogFormat: "common"
   logFormat: "common"
-  logLevel: "TRACE"
+  logLevel: "DEBUG"
   entrypoints:
     - name: web
       port: 80
