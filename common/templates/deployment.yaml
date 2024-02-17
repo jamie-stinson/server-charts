@@ -34,6 +34,8 @@ spec:
               secretKeyRef:
                 name: {{ .Values.traefik.certificateIssuer.solvers.dns.provider }}-secret
                 key: {{ .Values.traefik.certificateIssuer.solvers.dns.provider }}-token
+          - name: LEGO_DISABLE_CNAME_SUPPORT
+            value: true
           {{- end }}
           {{- end }}
           {{- if or .Values.containerArgs (eq .Release.Name "traefik") }}
@@ -62,9 +64,8 @@ spec:
             - --certificatesresolvers.letsencrypt.acme.email={{ .Values.traefik.certificateIssuer.solvers.dns.email }}
             - --certificatesresolvers.letsencrypt.acme.storage=acme.json
             - --certificatesresolvers.letsencrypt.acme.dnschallenge.resolvers=8.8.8.8:53,8.8.4.4:53
-            - --certificatesresolvers.myresolver.acme.dnschallenge.delaybeforecheck=1200
+            - --certificatesresolvers.letsencrypt.acme.dnschallenge.delaybeforecheck=1200
             {{- if .Values.traefik.certificateIssuer.solvers.dns.enabled }}
-            - --certificatesresolvers.letsencrypt.acme.dnschallenge
             - --certificatesresolvers.letsencrypt.acme.dnschallenge.provider={{ .Values.traefik.certificateIssuer.solvers.dns.provider }}
             {{- end }}
             {{- end }}
