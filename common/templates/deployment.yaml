@@ -52,7 +52,6 @@ spec:
             - --certificatesresolvers.myresolver.acme.dnschallenge=true
             - --certificatesresolvers.myresolver.acme.dnschallenge.provider=njalla
             - --certificatesresolvers.myresolver.acme.dnschallenge.resolvers=1.1.1.1:53,8.8.8.8:53
-            - --certificatesresolvers.myresolver.acme.dnschallenge.entrypoint=websecure
 
 
 
