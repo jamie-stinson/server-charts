@@ -35,7 +35,7 @@ spec:
                 name: {{ .Values.traefik.certificateIssuer.solvers.dns.provider }}-secret
                 key: {{ .Values.traefik.certificateIssuer.solvers.dns.provider }}-token
           - name: LEGO_DISABLE_CNAME_SUPPORT
-            value: true
+            value: "true"
           {{- end }}
           {{- end }}
           {{- if or .Values.containerArgs (eq .Release.Name "traefik") }}
