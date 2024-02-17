@@ -15,7 +15,11 @@ spec:
       port: {{ .backendPort }}
 {{- if .tls }}
   tls:
-    certResolver: letsencrypt
+    certResolver: myresolver
+    domains:
+    - main: projectwhitebox.com
+      sans:
+      - '*.projectwhitebox.com'
 {{- end }}
 {{- end }}
 {{- end }}
