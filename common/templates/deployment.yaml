@@ -42,9 +42,12 @@ spec:
             - --providers.kubernetesingress
             - --entrypoints.web.http.redirections.entryPoint.to=websecure
             - --entrypoints.web.http.redirections.entryPoint.scheme=https
-          #   {{- range .Values.entrypoints }}
-          #   - "--entryPoints.{{ .name }}.address=:{{ .port }}"
-          #   {{- end }}                .Values.certificateIssuer.solvers.dns.provider
+            {{- range .Values.entrypoints }}
+            - "--entryPoints.{{ .name }}.address=:{{ .port }}"
+            {{- end }}                
+          
+          
+          # .Values.certificateIssuer.solvers.dns.provider
           #   {{- end }}
           #   {{- if .Values.certificateIssuer.enabled }}
           #   - "--certificatesresolvers.letsencrypt"
