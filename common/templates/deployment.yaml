@@ -26,11 +26,11 @@ spec:
               memory: {{ .Values.resources.limits.memory }}
               gpu: {{ .Values.resources.limits.gpu }}
           {{- end }}
-          # {{- if or .Values.containerArgs (eq .Release.Name "traefik") }}
-          # args: 
-          #   {{- if .Values.containerArgs }}
-          #   {{- toYaml .Values.containerArgs | nindent 12 }}
-          #   {{- end }}
+          {{- if or .Values.containerArgs (eq .Release.Name "traefik") }}
+          args: 
+            {{- if .Values.containerArgs }}
+            {{- toYaml .Values.containerArgs | nindent 12 }}
+            {{- end }}
           #   {{- if eq .Release.Name "traefik" }}
           #   - --accesslog.format=json
           #   - --log.format=json
@@ -52,7 +52,7 @@ spec:
           #   - "--certificatesresolvers.letsencrypt.acme.dnschallenge.provider={{ .Values.certificateIssuer.solvers.dns.provider }}"
           #   {{- end }}
           #     {{- end }}
-          # {{- end }}
+          {{- end }}
           {{- if .Values.service.enabled }}
           ports:
             {{- if .Values.service.nodeport }}
