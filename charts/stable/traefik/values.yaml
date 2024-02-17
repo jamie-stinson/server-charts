@@ -39,7 +39,7 @@ traefik:
         provider: njalla
         email: "contact@projectwhitebox.com"
         dnsZones:
-          - "*.projectwhitebox.com"
+          - "traefik.projectwhitebox.com"
 
 ingress:
   traefik:
