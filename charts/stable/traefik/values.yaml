@@ -68,23 +68,6 @@ rbac:
   type: clusterrole
   rules:
     - apiGroups:
-      - traefik.io
-      - traefik.containo.us
-      resources:
-      - ingressroutes
-      - serverstransports
-      - middlewaretcps
-      - ingressrouteudps
-      - ingressroutetcps
-      - traefikservices
-      - tlsstores
-      - tlsoptions
-      - middlewares
-      verbs:
-      - get
-      - list
-      - watch
-    - apiGroups:
         - ""
       resources:
         - services
@@ -94,20 +77,37 @@ rbac:
         - get
         - list
         - watch
-    # - apiGroups:
-    #     - extensions
-    #     - networking.k8s.io
-    #   resources:
-    #     - ingresses
-    #     - ingressclasses
-    #   verbs:
-    #     - get
-    #     - list
-    #     - watch
-    # - apiGroups:
-    #     - extensions
-    #     - networking.k8s.io
-    #   resources:
-    #     - ingresses/status
-    #   verbs:
-    #     - update
+    - apiGroups:
+        - extensions
+        - networking.k8s.io
+      resources:
+        - ingresses
+        - ingressclasses
+      verbs:
+        - get
+        - list
+        - watch
+    - apiGroups:
+        - extensions
+        - networking.k8s.io
+      resources:
+        - ingresses/status
+      verbs:
+        - update
+    - apiGroups:
+        - traefik.io
+        - traefik.containo.us
+      resources:
+        - middlewares
+        - middlewaretcps
+        - ingressroutes
+        - traefikservices
+        - ingressroutetcps
+        - ingressrouteudps
+        - tlsoptions
+        - tlsstores
+        - serverstransports
+      verbs:
+        - get
+        - list
+        - watch
