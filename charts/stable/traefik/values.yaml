@@ -56,7 +56,7 @@ ingress:
       host: "traefik.projectwhitebox.com"
       backendPort: 80
       middlewares: []
-      tls: true
+      tls: false
 
 serviceAccount:
   enabled: true
