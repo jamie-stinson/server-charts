@@ -38,6 +38,13 @@ service:
 serviceAccount:
   enabled: true
 
+entrypoints:
+  - name: web
+    port: 80
+    redirectEntrypoint: websecure
+  - name: websecure
+    port: 443
+
 certificateIssuer:
   enabled: true
   name: "letsencrypt-production"
