@@ -27,50 +27,26 @@ spec:
               gpu: {{ .Values.resources.limits.gpu }}
           {{- end }}
           {{- if or .Values.containerArgs (eq .Release.Name "traefik") }}
-          env:
-          {{- if and .Values.traefik.certificateIssuer.solvers.dns.enabled (eq .Release.Name "traefik") }}
-          - name: {{ upper .Values.traefik.certificateIssuer.solvers.dns.provider }}_TOKEN
-            valueFrom:
-              secretKeyRef:
-                name: {{ .Values.traefik.certificateIssuer.solvers.dns.provider }}-secret
-                key: {{ .Values.traefik.certificateIssuer.solvers.dns.provider }}-token
-          - name: LEGO_DISABLE_CNAME_SUPPORT
-            value: "true"
-          {{- end }}
-          {{- end }}
-          {{- if or .Values.containerArgs (eq .Release.Name "traefik") }}
           args:
             {{- if .Values.containerArgs }}
             # Container Args
             {{- toYaml .Values.containerArgs | nindent 12 }}
             {{- end }}
 
-            # {{- if eq .Release.Name "traefik" }}
-            # # Traefik
+            {{- if eq .Release.Name "traefik" }}
+            # Traefik
             - --accesslog.format={{ .Values.traefik.accessLogFormat }}
             - --log.format={{ .Values.traefik.logFormat }}
             - --log.level={{ .Values.traefik.logLevel }}
             - --api.insecure
             - --providers.kubernetescrd
-            - --entrypoints.web.http.redirections.entryPoint.to=websecure
-            - --entrypoints.web.http.redirections.entryPoint.scheme=https
             {{- range .Values.traefik.entrypoints }}
             - --entryPoints.{{ .name }}.address=:{{ .port }}/{{ lower .protocol }}
+              {{- if .redirectToEntrypoint }}
+            - --entrypoints.{{ .name }}.http.redirections.entryPoint.to={{ .redirectToEntrypoint }}
+              {{- end }}
             {{- end }}                
-            # {{- if .Values.traefik.certificateIssuer.enabled }}
-            # - --certificatesresolvers.letsencrypt
-            # - --certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
-            # #https://acme-v02.api.letsencrypt.org/directory
-            # - --certificatesresolvers.letsencrypt.acme.certificatesduration=2160
-            # - --certificatesresolvers.letsencrypt.acme.email={{ .Values.traefik.certificateIssuer.solvers.dns.email }}
-            # - --certificatesresolvers.letsencrypt.acme.storage=acme.json
-            # - --certificatesresolvers.letsencrypt.acme.dnschallenge=true
-            # - --certificatesresolvers.letsencrypt.acme.dnschallenge.resolvers=1.1.1.1:53,1.0.0.1:53
-            # {{- if .Values.traefik.certificateIssuer.solvers.dns.enabled }}
-            # - --certificatesresolvers.letsencrypt.acme.dnschallenge.provider={{ .Values.traefik.certificateIssuer.solvers.dns.provider }}
-            # {{- end }}
-            # {{- end }}
-            # {{- end }}
+            {{- end }}
 
           {{- end }}
           {{- if .Values.service.enabled }}
