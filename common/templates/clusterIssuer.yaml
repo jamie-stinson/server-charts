@@ -22,5 +22,7 @@ spec:
               key: {{ .Values.traefik.certificateIssuer.solvers.dns.provider }}-token
         selector:
           dnsZones:
-            - "{{ .Values.traefik.certificateIssuer.solvers.dns.dnsZone }}"
+            {{- range .Values.traefik.certificateIssuer.solvers.dns.dnsZones }}
+            - "{{ . }}"
+            {{- end }}
 {{- end }}
