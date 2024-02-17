@@ -69,9 +69,16 @@ rbac:
   rules:
     - apiGroups:
       - traefik.io
+      - traefik.containo.us
       resources:
-      - tlsstores
+      - ingressroutes
+      - serverstransports
+      - middlewaretcps
+      - ingressrouteudps
+      - ingressroutetcps
       - traefikservices
+      - tlsstores
+      - tlsoptions
       - middlewares
       verbs:
       - get
@@ -87,20 +94,20 @@ rbac:
         - get
         - list
         - watch
-    - apiGroups:
-        - extensions
-        - networking.k8s.io
-      resources:
-        - ingresses
-        - ingressclasses
-      verbs:
-        - get
-        - list
-        - watch
-    - apiGroups:
-        - extensions
-        - networking.k8s.io
-      resources:
-        - ingresses/status
-      verbs:
-        - update
+    # - apiGroups:
+    #     - extensions
+    #     - networking.k8s.io
+    #   resources:
+    #     - ingresses
+    #     - ingressclasses
+    #   verbs:
+    #     - get
+    #     - list
+    #     - watch
+    # - apiGroups:
+    #     - extensions
+    #     - networking.k8s.io
+    #   resources:
+    #     - ingresses/status
+    #   verbs:
+    #     - update
