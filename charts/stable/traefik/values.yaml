@@ -3,22 +3,6 @@ image:
   repository: "traefik"
   tag: "v2.10.7"
 
-containerArgs:
-  - --accesslog.format=json
-  - --log.format=json
-  - --log.level=ERROR
-  - --api.insecure
-  - --providers.kubernetesingress
-  - --certificatesresolvers.letsencrypt
-  - --certificatesresolvers.letsencrypt.acme.caserver=https://acme-v02.api.letsencrypt.org/directory
-  - --certificatesresolvers.letsencrypt.acme.certificatesduration=2160
-  - --certificatesresolvers.letsencrypt.acme.dnschallenge
-  - --certificatesresolvers.letsencrypt.acme.dnschallenge.provider
-  - --entryPoints.web.address=:80
-  - --entrypoints.web.http.redirections.entryPoint.to=websecure
-  - --entrypoints.web.http.redirections.entryPoint.scheme=https
-  - --entryPoints.websecure.address=:443
-
 service:
   enabled: true
   clusterip:
@@ -41,7 +25,6 @@ serviceAccount:
 entrypoints:
   - name: web
     port: 80
-    redirectEntrypoint: websecure
   - name: websecure
     port: 443
 
@@ -51,8 +34,8 @@ certificateIssuer:
   email: "contact@projectwhitebox.com"
   solvers:
     dns:
-      cloudflare:
-        enabled: true
+      enabled: true
+      provider: njalla
         email: "contact@projectwhitebox.com"
         dnsZones:
           - "*.projectwhitebox.com"

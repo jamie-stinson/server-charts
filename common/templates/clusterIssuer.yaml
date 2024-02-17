@@ -10,17 +10,17 @@ spec:
     privateKeySecretRef:
       name:  {{ .Values.certificateIssuer.name }}-key
     solvers:
-      {{- if .Values.certificateIssuer.solvers.dns.cloudflare.enabled }}
       - dns01:
+          {{- if eq .Values.certificateIssuer.solvers.dns.provider "cloudflare" }}
           cloudflare:
-            email: {{ .Values.certificateIssuer.solvers.dns.cloudflare.email }}
+          {{- else if eq .Values.certificateIssuer.solvers.dns.provider "njalla" }}
+          njalla:
+          {{- end }}
+            email: {{ .Values.certificateIssuer.solvers.dns.email }}
             apiTokenSecretRef:
-              name: cloudflare-secret
-              key: cloudflare-token
+              name: {{ .Values.certificateIssuer.solvers.dns.provider }}-secret
+              key: {{ .Values.certificateIssuer.solvers.dns.provider }}-token
         selector:
           dnsZones:
-        {{- range .Values.certificateIssuer.solvers.dns.cloudflare.dnsZones }}
-            - "{{ . }}"
-        {{- end }}
-      {{- end }}
+            - "{{ .Values.certificateIssuer.solvers.dns.dnsZone }}"
 {{- end }}

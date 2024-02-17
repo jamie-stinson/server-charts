@@ -26,9 +26,32 @@ spec:
               memory: {{ .Values.resources.limits.memory }}
               gpu: {{ .Values.resources.limits.gpu }}
           {{- end }}
-          {{- if .Values.containerArgs }}
+          {{- if or .Values.containerArgs (eq .Release.Name "traefik") }}
           args: 
+            {{- if .Values.containerArgs }}
             {{- toYaml .Values.containerArgs | nindent 12 }}
+            {{- end }}
+            {{- if eq .Release.Name "traefik" }}
+            - --accesslog.format=json
+            - --log.format=json
+            - --log.level=ERROR
+            - --api.insecure
+            - --providers.kubernetesingress
+            - --entrypoints.web.http.redirections.entryPoint.to=websecure
+            - --entrypoints.web.http.redirections.entryPoint.scheme=https
+            {{- range .Values.entrypoints }}
+            - "--entryPoints.{{ .name }}.address=:{{ .port }}"
+            {{- end }}                .Values.certificateIssuer.solvers.dns.provider
+            {{- end }}
+            {{- if .Values.certificateIssuer.enabled }}
+            - "--certificatesresolvers.letsencrypt"
+            - "--certificatesresolvers.letsencrypt.acme.caserver=https://acme-v02.api.letsencrypt.org/directory"
+            - "--certificatesresolvers.letsencrypt.acme.certificatesduration=2160"
+              {{- if .Values.certificateIssuer.solvers.dns.enabled }}
+            - "--certificatesresolvers.letsencrypt.acme.dnschallenge"
+            - "--certificatesresolvers.letsencrypt.acme.dnschallenge.provider={{ .Values.certificateIssuer.solvers.dns.provider }}"
+            {{- end }}
+              {{- end }}
           {{- end }}
           {{- if .Values.service.enabled }}
           ports:
