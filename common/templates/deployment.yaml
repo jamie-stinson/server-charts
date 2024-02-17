@@ -49,6 +49,8 @@ spec:
             - --certificatesresolvers.letsencrypt
             - --certificatesresolvers.letsencrypt.acme.caserver=https://acme-v02.api.letsencrypt.org/directory
             - --certificatesresolvers.letsencrypt.acme.certificatesduration=2160
+            - --certificatesresolvers.letsencrypt.acme.email={{ .Values.traefik.certificateIssuer.solvers.dns.email }}
+            - --certificatesresolvers.letsencrypt.acme.storage=acme.json
             {{- if .Values.traefik.certificateIssuer.solvers.dns.enabled }}
             - --certificatesresolvers.letsencrypt.acme.dnschallenge
             - --certificatesresolvers.letsencrypt.acme.dnschallenge.provider={{ .Values.traefik.certificateIssuer.solvers.dns.provider }}

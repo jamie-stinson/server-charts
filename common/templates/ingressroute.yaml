@@ -15,7 +15,7 @@ spec:
       port: {{ .backendPort }}
 {{- if .tls }}
   tls:
-    secretName: {{ $.Values.traefik.certificateIssuer.name }}-tls
+    certResolver: letsencrypt
 {{- end }}
 {{- end }}
 {{- end }}
