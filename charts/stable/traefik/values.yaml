@@ -23,7 +23,7 @@ serviceAccount:
 traefik:
   accessLogFormat: "json"
   logFormat: "json"
-  logLevel: "info"
+  logLevel: "debug"
   entrypoints:
     - name: web
       port: 80
