@@ -27,6 +27,16 @@ spec:
               gpu: {{ .Values.resources.limits.gpu }}
           {{- end }}
           {{- if or .Values.containerArgs (eq .Release.Name "traefik") }}
+          env:
+          {{- if and .Values.traefik.certificateIssuer.solvers.dns.enabled (eq .Release.Name "traefik") }}
+          - name: {{ upper .Values.traefik.certificateIssuer.solvers.dns.provider }}_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.traefik.certificateIssuer.solvers.dns.provider }}-secret
+                key: {{ .Values.traefik.certificateIssuer.solvers.dns.provider }}-token
+          {{- end }}
+          {{- end }}
+          {{- if or .Values.containerArgs (eq .Release.Name "traefik") }}
           args:
             {{- if .Values.containerArgs }}
             # Container Args
