@@ -1,22 +1,26 @@
-{{- if .Values.certificateIssuer.enabled }}
+{{- if and (.Values.certificateIssuer.enabled) (eq .Release.Name "traefik") }}
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
-  name: letsencrypt-prod
+  name: {{ .Values.certificateIssuer.name }}
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
-    email: {{ .Values.certificateIssuer.contactEmail }}
+    email: {{ .Values.certificateIssuer.email }}
     privateKeySecretRef:
-      name:  letsencrypt-prod-key
+      name:  {{ .Values.certificateIssuer.name }}-key
     solvers:
+      {{- if .Values.certificateIssuer.solvers.dns.cloudflare.enabled }}
       - dns01:
           cloudflare:
-            email: {{ .Values.certificateIssuer.cloudflareEmail }}
+            email: {{ .Values.certificateIssuer.solvers.dns.cloudflare.email }}
             apiTokenSecretRef:
               name: cloudflare-secret
               key: cloudflare-token
         selector:
           dnsZones:
-            - "{{ index .Values.certificateIssuer.dnzZones 0 }}"
+        {{- range .Values.certificateIssuer.solvers.dns.cloudflare.dnsZones }}
+            - "{{ . }}"
+        {{- end }}
+      {{- end }}
 {{- end }}
