@@ -53,12 +53,6 @@ ingress:
       backendPort: 8080
       middlewares: []
       tls: true
-    - name: http
-      entrypoint: "web"
-      host: "traefik.projectwhitebox.com"
-      backendPort: 80
-      middlewares: []
-      tls: false
 
 serviceAccount:
   enabled: true
