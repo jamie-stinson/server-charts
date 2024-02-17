@@ -16,10 +16,6 @@ spec:
 {{- if .tls }}
   tls:
     certResolver: myresolver
-    domains:
-    - main: projectwhitebox.com
-      sans:
-      - '*.projectwhitebox.com'
 {{- end }}
 {{- end }}
 {{- end }}

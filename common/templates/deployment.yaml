@@ -61,20 +61,16 @@ spec:
 
             # {{- if eq .Release.Name "traefik" }}
             # # Traefik
-            # - --accesslog.format={{ .Values.traefik.accessLogFormat }}
-            # - --log.format={{ .Values.traefik.logFormat }}
-            # - --log.level={{ .Values.traefik.logLevel }}
-            # - --api.insecure
-            # - --providers.kubernetesingress
-            # - --entrypoints.web.http.redirections.entryPoint.to=websecure
-            # - --entrypoints.web.http.redirections.entryPoint.scheme=https
-            # - --entrypoints.websecure.http.tls=true
-            # - --entrypoints.websecure.http.tls.certresolver=letsencrypt
-            # - --entrypoints.websecure.http.tls.domains[0].main=projectwhitebox.com
-            # - --entrypoints.websecure.http.tls.domains[0].sans=*.projectwhitebox.com
-            # {{- range .Values.traefik.entrypoints }}
-            # - --entryPoints.{{ .name }}.address=:{{ .port }}/{{ lower .protocol }}
-            # {{- end }}                
+            - --accesslog.format={{ .Values.traefik.accessLogFormat }}
+            - --log.format={{ .Values.traefik.logFormat }}
+            - --log.level={{ .Values.traefik.logLevel }}
+            - --api.insecure
+            - --providers.kubernetescrd
+            - --entrypoints.web.http.redirections.entryPoint.to=websecure
+            - --entrypoints.web.http.redirections.entryPoint.scheme=https
+            {{- range .Values.traefik.entrypoints }}
+            - --entryPoints.{{ .name }}.address=:{{ .port }}/{{ lower .protocol }}
+            {{- end }}                
             # {{- if .Values.traefik.certificateIssuer.enabled }}
             # - --certificatesresolvers.letsencrypt
             # - --certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
