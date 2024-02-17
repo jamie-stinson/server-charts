@@ -21,9 +21,9 @@ serviceAccount:
   enabled: true
 
 traefik:
-  accessLogFormat: "json"
-  logFormat: "json"
-  logLevel: "debug"
+  accessLogFormat: "common"
+  logFormat: "common"
+  logLevel: "PANIC"
   entrypoints:
     - name: web
       port: 80

@@ -66,7 +66,7 @@ spec:
             - --certificatesresolvers.letsencrypt.acme.storage=acme.json
             - --certificatesresolvers.letsencrypt.acme.dnschallenge=true
             - --certificatesresolvers.letsencrypt.acme.dnschallenge.resolvers=8.8.8.8:53,8.8.4.4:53
-            - --certificatesresolvers.letsencrypt.acme.dnschallenge.delaybeforecheck=1200
+            # - --certificatesresolvers.letsencrypt.acme.dnschallenge.delaybeforecheck=1200
             - --entrypoints.websecure.http.tls.certResolver=letsencrypt
             {{- if .Values.traefik.certificateIssuer.solvers.dns.enabled }}
             - --certificatesresolvers.letsencrypt.acme.dnschallenge.provider={{ .Values.traefik.certificateIssuer.solvers.dns.provider }}
