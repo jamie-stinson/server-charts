@@ -38,10 +38,10 @@ traefik:
     solvers:
       dns:
         enabled: true
-        provider: njalla
+        provider: cloudflare
         email: "contact@projectwhitebox.com"
         dnsZones:
-          - "traefik.projectwhitebox.com"
+          - "*.projectwhitebox.com"
 
 ingress:
   traefik:

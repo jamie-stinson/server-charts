@@ -1,28 +1,24 @@
-# {{- if and (.Values.traefik.certificateIssuer.enabled) (eq .Release.Name "traefik") }}
-# apiVersion: cert-manager.io/v1
-# kind: ClusterIssuer
-# metadata:
-#   name: {{ .Values.traefik.certificateIssuer.name }}
-# spec:
-#   acme:
-#     server: https://acme-v02.api.letsencrypt.org/directory
-#     email: {{ .Values.traefik.certificateIssuer.email }}
-#     privateKeySecretRef:
-#       name:  {{ .Values.traefik.certificateIssuer.name }}-key
-#     solvers:
-#       - dns01:
-#           {{- if eq .Values.traefik.certificateIssuer.solvers.dns.provider "cloudflare" }}
-#           cloudflare:
-#           {{- else if eq .Values.traefik.certificateIssuer.solvers.dns.provider "njalla" }}
-#           njalla:
-#           {{- end }}
-#             email: {{ .Values.traefik.certificateIssuer.solvers.dns.email }}
-#             apiTokenSecretRef:
-#               name: {{ .Values.traefik.certificateIssuer.solvers.dns.provider }}-secret
-#               key: {{ .Values.traefik.certificateIssuer.solvers.dns.provider }}-token
-#         selector:
-#           dnsZones:
-#             {{- range .Values.traefik.certificateIssuer.solvers.dns.dnsZones }}
-#             - "{{ . }}"
-#             {{- end }}
-# {{- end }}
+{{- if and (.Values.traefik.certificateIssuer.enabled) (eq .Release.Name "traefik") }}
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: {{ .Values.traefik.certificateIssuer.name }}
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: {{ .Values.traefik.certificateIssuer.email }}
+    privateKeySecretRef:
+      name:  {{ .Values.traefik.certificateIssuer.name }}-key
+    solvers:
+      - dns01:
+          cloudflare:
+            email: {{ .Values.traefik.certificateIssuer.solvers.dns.email }}
+            apiTokenSecretRef:
+              name: {{ .Values.traefik.certificateIssuer.solvers.dns.provider }}-secret
+              key: {{ .Values.traefik.certificateIssuer.solvers.dns.provider }}-token
+        selector:
+          dnsZones:
+            {{- range .Values.traefik.certificateIssuer.solvers.dns.dnsZones }}
+            - "{{ . }}"
+            {{- end }}
+{{- end }}
