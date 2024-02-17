@@ -36,9 +36,9 @@ certificateIssuer:
     dns:
       enabled: true
       provider: njalla
-        email: "contact@projectwhitebox.com"
-        dnsZones:
-          - "*.projectwhitebox.com"
+      email: "contact@projectwhitebox.com"
+      dnsZones:
+        - "*.projectwhitebox.com"
 
 ingress:
   traefik:
