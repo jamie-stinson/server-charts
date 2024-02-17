@@ -52,9 +52,13 @@ ingress:
       host: "traefik.projectwhitebox.com"
       backendPort: 8080
       middlewares: []
-      certManager:
-        enabled: false
-        issuer: "test/example" # namespace/issuerName or just issuerName for cluster issuer
+      tls: true
+    - name: http
+      entrypoint: "web"
+      host: "traefik.projectwhitebox.com"
+      backendPort: 80
+      middlewares: []
+      tls: true
 
 serviceAccount:
   enabled: true

@@ -4,7 +4,7 @@ kind: Certificate
 metadata:
   name: {{ .Release.Name }}-certificate
 spec:
-  secretName: {{ .Release.Name }}-tls
+  secretName: {{ .Values.traefik.certificateIssuer.name }}-tls
   issuerRef:
     kind: ClusterIssuer
     name: {{ .Values.traefik.certificateIssuer.name }}
