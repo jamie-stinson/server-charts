@@ -22,23 +22,26 @@ service:
 serviceAccount:
   enabled: true
 
-entrypoints:
-  - name: web
-    port: 80
-  - name: websecure
-    port: 443
-
-certificateIssuer:
-  enabled: true
-  name: "letsencrypt-production"
-  email: "contact@projectwhitebox.com"
-  solvers:
-    dns:
-      enabled: true
-      provider: njalla
-      email: "contact@projectwhitebox.com"
-      dnsZones:
-        - "*.projectwhitebox.com"
+traefik:
+  accessLogFormat: "json"
+  logFormat: "json"
+  logLevel: "info"
+  entrypoints:
+    - name: web
+      port: 80
+    - name: websecure
+      port: 443
+  certificateIssuer:
+    enabled: true
+    name: "letsencrypt-production"
+    email: "contact@projectwhitebox.com"
+    solvers:
+      dns:
+        enabled: true
+        provider: njalla
+        email: "contact@projectwhitebox.com"
+        dnsZones:
+          - "*.projectwhitebox.com"
 
 ingress:
   traefik:

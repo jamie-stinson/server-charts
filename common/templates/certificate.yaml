@@ -1,4 +1,4 @@
-{{- if and (.Values.certificateIssuer.enabled) (eq .Release.Name "traefik") }}
+{{- if and (.Values.traefik.certificateIssuer.enabled) (eq .Release.Name "traefik") }}
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
@@ -7,9 +7,9 @@ spec:
   secretName: {{ .Release.Name }}-tls
   issuerRef:
     kind: ClusterIssuer
-    name: {{ .Values.certificateIssuer.name }}
+    name: {{ .Values.traefik.certificateIssuer.name }}
   dnsNames:
-    {{- range .Values.certificateIssuer.solvers.dns.dnsZones }}
+    {{- range .Values.traefik.certificateIssuer.solvers.dns.dnsZones }}
     - "{{ . }}"
     {{- end }}
 {{- end }}

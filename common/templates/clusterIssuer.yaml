@@ -1,4 +1,4 @@
-{{- if and (.Values.certificateIssuer.enabled) (eq .Release.Name "traefik") }}
+{{- if and (.Values.traefik.certificateIssuer.enabled) (eq .Release.Name "traefik") }}
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
@@ -6,21 +6,21 @@ metadata:
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
-    email: {{ .Values.certificateIssuer.email }}
+    email: {{ .Values.traefik.certificateIssuer.email }}
     privateKeySecretRef:
-      name:  {{ .Values.certificateIssuer.name }}-key
+      name:  {{ .Values.traefik.certificateIssuer.name }}-key
     solvers:
       - dns01:
-          {{- if eq .Values.certificateIssuer.solvers.dns.provider "cloudflare" }}
+          {{- if eq .Values.traefik.certificateIssuer.solvers.dns.provider "cloudflare" }}
           cloudflare:
-          {{- else if eq .Values.certificateIssuer.solvers.dns.provider "njalla" }}
+          {{- else if eq .Values.traefik.certificateIssuer.solvers.dns.provider "njalla" }}
           njalla:
           {{- end }}
-            email: {{ .Values.certificateIssuer.solvers.dns.email }}
+            email: {{ .Values.traefik.certificateIssuer.solvers.dns.email }}
             apiTokenSecretRef:
-              name: {{ .Values.certificateIssuer.solvers.dns.provider }}-secret
-              key: {{ .Values.certificateIssuer.solvers.dns.provider }}-token
+              name: {{ .Values.traefik.certificateIssuer.solvers.dns.provider }}-secret
+              key: {{ .Values.traefik.certificateIssuer.solvers.dns.provider }}-token
         selector:
           dnsZones:
-            - "{{ .Values.certificateIssuer.solvers.dns.dnsZone }}"
+            - "{{ .Values.traefik.certificateIssuer.solvers.dns.dnsZone }}"
 {{- end }}
