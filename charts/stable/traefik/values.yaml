@@ -68,6 +68,16 @@ rbac:
   type: clusterrole
   rules:
     - apiGroups:
+      - traefik.io
+      resources:
+      - tlsstores
+      - traefikservices
+      - middlewares
+      verbs:
+      - get
+      - list
+      - watch
+    - apiGroups:
         - ""
       resources:
         - services
