@@ -18,7 +18,7 @@ resources:
 service:
   enabled: false
   clusterip: []
-  nodeport: []
+  loadbalancer: []
 
 serviceAccount:
   enabled: false

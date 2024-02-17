@@ -9,15 +9,13 @@ service:
     - name: dashboard
       protocol: TCP
       port: 8080
-  nodeport:
+  loadbalancer:
     - name: http
       protocol: TCP
       port: 80
-      nodePort: 30080
     - name: https
       protocol: TCP
       port: 443
-      nodePort: 30443
 
 serviceAccount:
   enabled: true

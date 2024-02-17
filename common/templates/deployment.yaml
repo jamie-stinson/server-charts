@@ -28,13 +28,13 @@ spec:
           {{- end }}
           {{- if or .Values.containerArgs (eq .Release.Name "traefik") }}
           args:
-            # Container Args
             {{- if .Values.containerArgs }}
+            # Container Args
             {{- toYaml .Values.containerArgs | nindent 12 }}
             {{- end }}
 
-            # Traefik
             {{- if eq .Release.Name "traefik" }}
+            # Traefik
             - --accesslog.format={{ .Values.traefik.accessLogFormat }}
             - --log.format={{ .Values.traefik.logFormat }}
             - --log.level={{ .Values.traefik.logLevel }}
@@ -59,8 +59,8 @@ spec:
           {{- end }}
           {{- if .Values.service.enabled }}
           ports:
-            {{- if .Values.service.nodeport }}
-            {{- range .Values.service.nodeport }}
+            {{- if .Values.service.loadbalancer }}
+            {{- range .Values.service.loadbalancer }}
             - name: {{ .name }}
               containerPort: {{ .port }}
             {{- end }}

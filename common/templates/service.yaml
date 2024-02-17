@@ -1,14 +1,14 @@
-{{- if and .Values.service.enabled .Values.service.nodeport }}
+{{- if and .Values.service.enabled .Values.service.loadbalancer }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Release.Name }}-nodeport
+  name: {{ .Release.Name }}-loadbalancer
 spec:
   type: LoadBalancer
   selector:
     app: {{ .Release.Name }}
   ports:
-  {{- range .Values.service.nodeport }}
+  {{- range .Values.service.loadbalancer }}
   - name: {{ .name }}
     protocol: {{ .protocol }}
     port: {{ .port }}
