@@ -1,4 +1,4 @@
-{{- if and (.Values.traefik.certificateIssuer.enabled) (eq .Release.Name "traefik") }}
+{{- if eq .Release.Name "traefik" }}
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
