@@ -25,6 +25,9 @@ traefik:
   logFormat: "common"
   logLevel: "info"
   entrypoints:
+    - name: dashboard
+      port: 8080
+      protocol: TCP
     - name: web
       port: 80
       protocol: TCP
@@ -54,9 +57,6 @@ ingress:
       backendPort: 8080
       middlewares: []
       tls: true
-
-serviceAccount:
-  enabled: true
 
 rbac:
   enabled: true

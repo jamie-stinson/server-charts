@@ -21,7 +21,7 @@ service:
   loadbalancer: []
 
 serviceAccount:
-  enabled: false
+  enabled: true
 
 rbac:
   enabled: false
