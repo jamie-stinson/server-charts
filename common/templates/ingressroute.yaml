@@ -13,6 +13,11 @@ spec:
     services:
     - name: {{ $.Release.Name }}-clusterip
       port: {{ .backendPort }}
+    middlewares:
+      - name: security-headers
+      {{- if .Values.ingress.traefik.cors.enabled }}
+      - name: {{ $.Release.Name }}-cors
+      {{- end}}
 {{- if .tls }}
   tls:
     secretName: {{ $.Values.traefik.certificateIssuer.name }}-tls

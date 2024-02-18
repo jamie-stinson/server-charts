@@ -87,7 +87,20 @@ ingress:
       entrypoint: "websecure"
       host: "traefik.projectwhitebox.com"
       backendPort: 8080
-      middlewares: []
+      securityHeaders: true
+      cors:
+        enabled: true
+        accessControlAllowMethods:
+          - "GET"
+          - "OPTIONS"
+          - "PUT"
+        accessControlAllowHeaders:
+          - "*"
+        accessControlAllowOriginList:
+          - "https://foo.bar.org"
+          - "https://example.org"
+        accessControlMaxAge: 100
+        addVaryHeader: true
       tls: true
 
 rbac:
