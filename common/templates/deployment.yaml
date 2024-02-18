@@ -132,3 +132,26 @@ spec:
             successThreshold: {{ .Values.probes.startup.successThreshold }}
             failureThreshold: {{ .Values.probes.startup.failureThreshold }}
           {{- end }}
+      {{- if .Values.storage.enabled }}
+          volumeMounts:
+            {{- range .Values.storage.volumes }}
+            - name: {{ .name }}
+              mountPath: {{ .mountPath }}
+              readOnly: {{ .readOnly }}
+            {{- end }}
+      volumes:
+        {{- range .Values.storage.volumes }}
+        - name: {{ .name }}
+          {{- if eq .type "pvc" }}
+          persistentVolumeClaim:
+            claimName: {{ .name }}-pvc
+          {{- else if eq .type "host" }}
+          hostPath:
+            path: {{ .hostPath }}
+          {{- else if eq .type "emptyDir" }}
+          emptyDir:
+            {{- if .size }}
+            sizeLimit: {{ .size }}
+            {{- end }}
+          {{- end }}
+        {{- end }}

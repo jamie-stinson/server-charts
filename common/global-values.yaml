@@ -55,18 +55,8 @@ serviceAccount:
 
 rbac:
   enabled: false
-  type: role #role or clusterrole
+  type: role
   rules: []
-    # - apiGroups: []
-    #   resources: []
-    #   verbs: []
-
-certificateIssuer:
-  enabled: false
-  contactEmail: "contact@example.com"
-  cloudflareEmail: "hello@example.com"
-  dnzZones:
-    - "example.com"
 
 ingress:
   traefik:
@@ -90,20 +80,6 @@ ingress:
         enabled: false
         issuer: "" # namespace/issuerName or just issuerName for cluster issuer
 
-# storage:
-#   enabled: false
-#   - name: "config"
-#     type: "pvc"
-#     size: "256Gi"
-#     mountPath: "/config"
-#     readOnly: false
-#   - name: "test"
-#     type: "host"
-#     hostPath: "/etc/config"
-#     mountPath: "/test"
-#     readOnly: true
-#   - name: "test"
-#     type: "emptyDir"
-#     size: "1G"
-#     mountPath: "/config"
-#     readOnly: false
+storage:
+  enabled: false
+  volumes: []

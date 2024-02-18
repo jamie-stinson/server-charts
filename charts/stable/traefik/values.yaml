@@ -49,9 +49,6 @@ service:
       protocol: TCP
       port: 443
 
-serviceAccount:
-  enabled: true
-
 traefik:
   accessLogFormat: "common"
   logFormat: "common"
@@ -78,30 +75,6 @@ traefik:
         email: "contact@projectwhitebox.com"
         dnsZones:
           - "*.projectwhitebox.com"
-
-ingress:
-  traefik:
-    enabled: true
-    hosts:
-    - name: https
-      entrypoint: "websecure"
-      host: "traefik.projectwhitebox.com"
-      backendPort: 8080
-      securityHeaders: true
-      cors:
-        enabled: true
-        accessControlAllowMethods:
-          - "GET"
-          - "OPTIONS"
-          - "PUT"
-        accessControlAllowHeaders:
-          - "*"
-        accessControlAllowOriginList:
-          - "https://foo.bar.org"
-          - "https://example.org"
-        accessControlMaxAge: 100
-        addVaryHeader: true
-      tls: true
 
 rbac:
   enabled: true
@@ -151,3 +124,46 @@ rbac:
         - get
         - list
         - watch
+
+ingress:
+  traefik:
+    enabled: true
+    hosts:
+    - name: https
+      entrypoint: "websecure"
+      host: "traefik.projectwhitebox.com"
+      backendPort: 8080
+      securityHeaders: true
+      cors:
+        enabled: true
+        accessControlAllowMethods:
+          - "GET"
+          - "OPTIONS"
+          - "PUT"
+        accessControlAllowHeaders:
+          - "*"
+        accessControlAllowOriginList:
+          - "https://foo.bar.org"
+          - "https://example.org"
+        accessControlMaxAge: 100
+        addVaryHeader: true
+      tls: true
+
+storage:
+  enabled: true
+  volumes:
+    - name: "config"
+      type: "pvc"
+      size: "256Gi"
+      mountPath: "/config"
+      readOnly: false
+    - name: "test"
+      type: "host"
+      hostPath: "/etc/config"
+      mountPath: "/test"
+      readOnly: true
+    - name: "test"
+      type: "emptyDir"
+      size: "1G"
+      mountPath: "/config"
+      readOnly: false
