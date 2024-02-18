@@ -1,24 +1,76 @@
+image:
+  registry: "docker.io"
+  repository: "emby/embyserver"
+  tag: "4.8.1.0"
+
+probes:
+  readiness:
+    enabled: true
+    type: "http"
+    httpPath: "/emby/system/info/public"
+    httpPort: 8096
+    initialDelaySeconds: 2
+    periodSeconds: 10
+    timeoutSeconds: 2
+    successThreshold: 1
+    failureThreshold: 1
+  liveness:
+    enabled: true
+    type: "http"
+    httpPath: "/emby/system/info/public"
+    httpPort: 8096
+    initialDelaySeconds: 2
+    periodSeconds: 10
+    timeoutSeconds: 2
+    successThreshold: 1
+    failureThreshold: 3
+  startup:
+    enabled: true
+    type: "http"
+    httpPath: "/emby/system/info/public"
+    httpPort: 8096
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    timeoutSeconds: 2
+    successThreshold: 1
+    failureThreshold: 3
+
+service:
+  enabled: true
+  clusterip:
+    - name: emby
+      protocol: TCP
+      port: 8096
+
 ingress:
   traefik:
     enabled: true
     hosts:
     - name: https
       entrypoint: "websecure"
-      host: "example.com"
-      backendPort: 443
-      middlewares:
-      - "basic"
-      - "test"
-      certManager:
-        enabled: true
-        issuer: "test/example" # namespace/issuerName or just issuerName for cluster issuer
-    - name: http
-      entrypoint: "web"
-      host: "example.com"
-      backendPort: 80
-      middlewares:
-      - "basic"
-      - "http"
-      certManager:
+      host: "emby.projectwhitebox.com"
+      backendPort: 8096
+      securityHeaders: true
+      cors:
         enabled: false
-        issuer: "" # namespace/issuerName or just issuerName for cluster issuer
+        accessControlAllowMethods:
+          - "GET"
+          - "OPTIONS"
+          - "PUT"
+        accessControlAllowHeaders:
+          - "*"
+        accessControlAllowOriginList:
+          - "https://foo.bar.org"
+          - "https://example.org"
+        accessControlMaxAge: 100
+        addVaryHeader: true
+      tls: true
+
+storage:
+  enabled: true
+  volumes:
+    - name: "config"
+      type: "host"
+      hostPath: "/mnt/test-pool/config/emby"
+      mountPath: "/config"
+      readOnly: false

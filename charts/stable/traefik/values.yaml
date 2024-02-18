@@ -148,17 +148,3 @@ ingress:
         accessControlMaxAge: 100
         addVaryHeader: true
       tls: true
-
-storage:
-  enabled: true
-  volumes:
-    - name: "test"
-      type: "host"
-      hostPath: "/etc/config"
-      mountPath: "/test"
-      readOnly: true
-    - name: "test"
-      type: "emptyDir"
-      size: "1G"
-      mountPath: "/config"
-      readOnly: false
