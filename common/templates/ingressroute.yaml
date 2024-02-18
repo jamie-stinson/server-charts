@@ -1,6 +1,6 @@
 {{- if .Values.ingress.traefik.enabled }}
 {{- range .Values.ingress.traefik.hosts }}
-apiVersion: traefik.io/v1alpha1
+apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: {{ $.Release.Name }}
