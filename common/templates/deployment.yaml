@@ -40,6 +40,8 @@ spec:
             - --accesslog.format={{ .Values.traefik.accessLogFormat }}
             - --log.format={{ .Values.traefik.logFormat }}
             - --log.level={{ .Values.traefik.logLevel }}
+            - --api.dashboard
+            - --ping
             - --providers.kubernetescrd
             {{- range .Values.traefik.entrypoints }}
             - --entryPoints.{{ .name }}.address=:{{ .port }}/{{ lower .protocol }}
