@@ -152,11 +152,6 @@ ingress:
 storage:
   enabled: true
   volumes:
-    - name: "config"
-      type: "pvc"
-      size: "256Gi"
-      mountPath: "/config"
-      readOnly: false
     - name: "test"
       type: "host"
       hostPath: "/etc/config"

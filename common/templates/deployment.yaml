@@ -16,7 +16,7 @@ spec:
       containers:
         - name: {{ .Release.Name }}
           image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-{{- if .Values.resources.enabled }}
+          {{- if .Values.resources.enabled }}
           resources:
             requests:
               cpu: {{ .Values.resources.requests.cpu }}
@@ -25,14 +25,15 @@ spec:
               cpu: {{ .Values.resources.limits.cpu }}
               memory: {{ .Values.resources.limits.memory }}
               gpu: {{ .Values.resources.limits.gpu }}
-{{- end }}
-{{- if or .Values.containerArgs (eq .Release.Name "traefik") }}
+          {{- end }}
+          {{- if or .Values.containerArgs (eq .Release.Name "traefik") }}
           args:
-{{- if .Values.containerArgs }}
-{{ toYaml .Values.containerArgs | nindent 12 }}
-{{- end }}
+            {{- if .Values.containerArgs }}
+            # Container Args
+            {{- toYaml .Values.containerArgs | nindent 12 }}
+            {{- end }}
 
-{{- if eq .Release.Name "traefik" }}
+            {{- if eq .Release.Name "traefik" }}
             # Traefik
             - --global.checknewversion=false
             - --global.sendanonymoususage=false
@@ -42,31 +43,32 @@ spec:
             - --api.dashboard
             - --ping
             - --providers.kubernetescrd
-{{- range .Values.traefik.entrypoints }}
+            {{- range .Values.traefik.entrypoints }}
             - --entryPoints.{{ .name }}.address=:{{ .port }}/{{ lower .protocol }}
-{{- if .redirectToEntrypoint }}
+              {{- if .redirectToEntrypoint }}
             - --entrypoints.{{ .name }}.http.redirections.entryPoint.to={{ .redirectToEntrypoint }}
-{{- end }}
-{{- end }}
-{{- end }}
-{{- end }}
-{{- end }}
-{{- if .Values.service.enabled }}
+              {{- end }}
+            {{- end }}                
+            {{- end }}
+
+          {{- end }}
+          {{- if .Values.service.enabled }}
           ports:
-{{- if .Values.service.loadbalancer }}
-{{- range .Values.service.loadbalancer }}
+            {{- if .Values.service.loadbalancer }}
+            {{- range .Values.service.loadbalancer }}
             - name: {{ .name }}
               containerPort: {{ .port }}
-{{- end }}
-{{- end }}
-{{- if .Values.service.clusterip }}
-{{- range .Values.service.clusterip }}
+            {{- end }}
+            {{- end }}
+            {{- if .Values.service.clusterip }}
+            {{- range .Values.service.clusterip }}
             - name: {{ .name }}
               containerPort: {{ .port }}
-{{- end }}
-{{- end }}
-{{- end }}
-{{- if .Values.probes.readiness.enabled }}
+            {{- end }}
+            {{- end }}
+          {{- end }}
+          {{- if .Values.probes.readiness.enabled }}
+          # Readiness Probe
           readinessProbe:
             {{- if eq .Values.probes.readiness.type "tcp" }}
             tcpSocket:
@@ -85,9 +87,10 @@ spec:
             timeoutSeconds: {{ .Values.probes.readiness.timeoutSeconds }}
             successThreshold: {{ .Values.probes.readiness.successThreshold }}
             failureThreshold: {{ .Values.probes.readiness.failureThreshold }}
-{{- end }}
+          {{- end }}
 
-{{- if .Values.probes.liveness.enabled }}
+          {{- if .Values.probes.liveness.enabled }}
+          # Liveness Probe
           livenessProbe:
             {{- if eq .Values.probes.liveness.type "tcp" }}
             tcpSocket:
@@ -106,9 +109,10 @@ spec:
             timeoutSeconds: {{ .Values.probes.liveness.timeoutSeconds }}
             successThreshold: {{ .Values.probes.liveness.successThreshold }}
             failureThreshold: {{ .Values.probes.liveness.failureThreshold }}
-{{- end }}
+          {{- end }}
 
-{{- if .Values.probes.startup.enabled }}
+          {{- if .Values.probes.startup.enabled }}
+          # Startup Probe
           startupProbe:
             {{- if eq .Values.probes.startup.type "tcp" }}
             tcpSocket:
@@ -127,29 +131,24 @@ spec:
             timeoutSeconds: {{ .Values.probes.startup.timeoutSeconds }}
             successThreshold: {{ .Values.probes.startup.successThreshold }}
             failureThreshold: {{ .Values.probes.startup.failureThreshold }}
-{{- end }}
-{{- if .Values.storage.enabled }}
-      volumeMounts:
-{{- range .Values.storage.volumes }}
+          {{- end }}
+
+          {{- if .Values.storage.enabled }}
+          volumeMounts:
+            {{- range .Values.storage.volumes }}
             - name: {{ .name }}
               mountPath: {{ .mountPath }}
               readOnly: {{ .readOnly }}
-{{- end }}
+            {{- end }}
       volumes:
-{{- range .Values.storage.volumes }}
+      {{- range .Values.storage.volumes }}
         - name: {{ .name }}
-{{- if eq .type "pvc" }}
-          persistentVolumeClaim:
-            claimName: {{ .name }}-pvc
-{{- else if eq .type "host" }}
+          {{- if eq .type "host" }}
           hostPath:
             path: {{ .hostPath }}
-{{- else if eq .type "emptyDir" }}
+          {{- else if eq .type "emptyDir" }}
           emptyDir:
-{{- if .size }}
             sizeLimit: {{ .size }}
-{{- end }}
-{{- end }}
-{{- end }}
-{{- end }}
-{{- end }}
+          {{- end }}
+      {{- end}}
+          {{- end}}
