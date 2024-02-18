@@ -1,4 +1,4 @@
-{{- if .Values.ingress.traefik.cors.enabled }}
+{{- if .Values.ingress.traefik.hosts.cors.enabled }}
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
@@ -6,19 +6,19 @@ metadata:
 spec:
   headers:
     accessControlAllowMethods:
-      {{- range .Values.ingress.traefik.cors.accessControlAllowMethods }}
+      {{- range .Values.ingress.traefik.hosts.cors.accessControlAllowMethods }}
       - "{{ . }}"
       {{- end }}
     accessControlAllowHeaders:
-      {{- range .Values.ingress.traefik.cors.accessControlAllowHeaders }}
+      {{- range .Values.ingress.traefik.hosts.cors.accessControlAllowHeaders }}
       - "{{ . }}"
       {{- end }}
     accessControlAllowOriginList:
-      {{- range .Values.ingress.traefik.cors.accessControlAllowOriginList }}
+      {{- range .Values.ingress.traefik.hosts.cors.accessControlAllowOriginList }}
       - "{{ . }}"
       {{- end }}
-    accessControlMaxAge: {{ .Values.ingress.traefik.cors.accessControlMaxAge }}
-    addVaryHeader: {{ .Values.ingress.traefik.cors.addVaryHeader }}
+    accessControlMaxAge: {{ .Values.ingress.traefik.hosts.cors.accessControlMaxAge }}
+    addVaryHeader: {{ .Values.ingress.traefik.hosts.cors.addVaryHeader }}
 {{- end }}
 ---
 apiVersion: traefik.io/v1alpha1
