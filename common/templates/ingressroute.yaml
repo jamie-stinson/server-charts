@@ -20,7 +20,7 @@ spec:
       {{- end}}
 {{- if .tls }}
   tls:
-    secretName: {{ $.Values.traefik.certificateIssuer.name }}-tls
+    secretName: letsencrypt-production-tls
 {{- end }}
 {{- end }}
 {{- end }}
