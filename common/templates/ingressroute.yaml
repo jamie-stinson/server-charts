@@ -15,7 +15,7 @@ spec:
       port: {{ .backendPort }}
     middlewares:
       - name: security-headers
-      {{- if .Values.ingress.traefik.cors.enabled }}
+      {{- if .cors.enabled }}
       - name: {{ $.Release.Name }}-cors
       {{- end}}
 {{- if .tls }}
