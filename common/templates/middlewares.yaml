@@ -1,24 +1,28 @@
-{{- if .Values.ingress.traefik.hosts.cors.enabled }}
+{{- if .Values.ingress.traefik.enabled }}
+{{- range .Values.ingress.traefik.hosts }}
+{{- if .cors.enabled }}
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
-  name: {{ .Release.Name }}-cors
+  name: {{ $.Release.Name }}-{{ .name }}-cors
 spec:
   headers:
     accessControlAllowMethods:
-      {{- range .Values.ingress.traefik.hosts.cors.accessControlAllowMethods }}
+      {{- range .cors.accessControlAllowMethods }}
       - "{{ . }}"
       {{- end }}
     accessControlAllowHeaders:
-      {{- range .Values.ingress.traefik.hosts.cors.accessControlAllowHeaders }}
+      {{- range .cors.accessControlAllowHeaders }}
       - "{{ . }}"
       {{- end }}
     accessControlAllowOriginList:
-      {{- range .Values.ingress.traefik.hosts.cors.accessControlAllowOriginList }}
+      {{- range .cors.accessControlAllowOriginList }}
       - "{{ . }}"
       {{- end }}
-    accessControlMaxAge: {{ .Values.ingress.traefik.hosts.cors.accessControlMaxAge }}
-    addVaryHeader: {{ .Values.ingress.traefik.hosts.cors.addVaryHeader }}
+    accessControlMaxAge: {{ .cors.accessControlMaxAge }}
+    addVaryHeader: {{ .cors.addVaryHeader }}
+{{- end }}
+{{- end }}
 {{- end }}
 ---
 apiVersion: traefik.io/v1alpha1
