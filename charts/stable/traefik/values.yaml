@@ -25,7 +25,7 @@ traefik:
   logFormat: "common"
   logLevel: "info"
   entrypoints:
-    - name: dashboard
+    - name: traefik
       port: 8080
       protocol: TCP
     - name: web
