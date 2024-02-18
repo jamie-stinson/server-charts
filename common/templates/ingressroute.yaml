@@ -16,7 +16,7 @@ spec:
     middlewares:
       - name: security-headers
       {{- if .cors.enabled }}
-      - name: {{ $.Release.Name }}-cors
+      - name: {{ $.Release.Name }}-{{ .name }}-cors
       {{- end}}
 {{- if .tls }}
   tls:
