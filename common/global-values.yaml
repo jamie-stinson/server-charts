@@ -5,6 +5,36 @@ image:
 
 containerArgs: []
 
+probes:
+  readiness:
+    enabled: false
+    type: "http"
+    httpPath: "/healthz"
+    httpPort: 8080
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    timeoutSeconds: 5
+    successThreshold: 1
+    failureThreshold: 3
+  liveness:
+    enabled: false
+    type: "tcp"
+    tcpPort: 8080
+    initialDelaySeconds: 10
+    periodSeconds: 15
+    timeoutSeconds: 5
+    successThreshold: 1
+    failureThreshold: 3
+  startup:
+    enabled: false
+    type: "exec"
+    execCommand: "some-command"
+    initialDelaySeconds: 15
+    periodSeconds: 20
+    timeoutSeconds: 10
+    successThreshold: 1
+    failureThreshold: 3
+
 resources:
   enabled: false
   requests:

@@ -67,3 +67,68 @@ spec:
             {{- end }}
             {{- end }}
           {{- end }}
+          {{- if .Values.probes.readiness.enabled }}
+          # Readiness Probe
+          readinessProbe:
+            {{- if eq .Values.probes.readiness.type "tcp" }}
+            tcpSocket:
+              port: {{ .Values.probes.readiness.tcpPort }}
+            {{- else if eq .Values.probes.readiness.type "http" }}
+            httpGet:
+              path: {{ .Values.probes.readiness.httpPath }}
+              port: {{ .Values.probes.readiness.httpPort }}
+            {{- else if eq .Values.probes.readiness.type "exec" }}
+            exec:
+              command:
+                - {{ .Values.probes.readiness.execCommand }}
+            {{- end }}
+            initialDelaySeconds: {{ .Values.probes.readiness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.readiness.periodSeconds }}
+            timeoutSeconds: {{ .Values.probes.readiness.timeoutSeconds }}
+            successThreshold: {{ .Values.probes.readiness.successThreshold }}
+            failureThreshold: {{ .Values.probes.readiness.failureThreshold }}
+          {{- end }}
+
+          {{- if .Values.probes.liveness.enabled }}
+          # Liveness Probe
+          livenessProbe:
+            {{- if eq .Values.probes.liveness.type "tcp" }}
+            tcpSocket:
+              port: {{ .Values.probes.liveness.tcpPort }}
+            {{- else if eq .Values.probes.liveness.type "http" }}
+            httpGet:
+              path: {{ .Values.probes.liveness.httpPath }}
+              port: {{ .Values.probes.liveness.httpPort }}
+            {{- else if eq .Values.probes.liveness.type "exec" }}
+            exec:
+              command:
+                - {{ .Values.probes.liveness.execCommand }}
+            {{- end }}
+            initialDelaySeconds: {{ .Values.probes.liveness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.liveness.periodSeconds }}
+            timeoutSeconds: {{ .Values.probes.liveness.timeoutSeconds }}
+            successThreshold: {{ .Values.probes.liveness.successThreshold }}
+            failureThreshold: {{ .Values.probes.liveness.failureThreshold }}
+          {{- end }}
+
+          {{- if .Values.probes.startup.enabled }}
+          # Startup Probe
+          startupProbe:
+            {{- if eq .Values.probes.startup.type "tcp" }}
+            tcpSocket:
+              port: {{ .Values.probes.startup.tcpPort }}
+            {{- else if eq .Values.probes.startup.type "http" }}
+            httpGet:
+              path: {{ .Values.probes.startup.httpPath }}
+              port: {{ .Values.probes.startup.httpPort }}
+            {{- else if eq .Values.probes.startup.type "exec" }}
+            exec:
+              command:
+                - {{ .Values.probes.startup.execCommand }}
+            {{- end }}
+            initialDelaySeconds: {{ .Values.probes.startup.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.startup.periodSeconds }}
+            timeoutSeconds: {{ .Values.probes.startup.timeoutSeconds }}
+            successThreshold: {{ .Values.probes.startup.successThreshold }}
+            failureThreshold: {{ .Values.probes.startup.failureThreshold }}
+          {{- end }}

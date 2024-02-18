@@ -3,6 +3,38 @@ image:
   repository: "traefik"
   tag: "v2.10.7"
 
+probes:
+  readiness:
+    enabled: true
+    type: "http"
+    httpPath: "/ping"
+    httpPort: 8080
+    initialDelaySeconds: 2
+    periodSeconds: 10
+    timeoutSeconds: 2
+    successThreshold: 1
+    failureThreshold: 1
+  liveness:
+    enabled: true
+    type: "http"
+    httpPath: "/ping"
+    httpPort: 8080
+    initialDelaySeconds: 2
+    periodSeconds: 10
+    timeoutSeconds: 2
+    successThreshold: 1
+    failureThreshold: 3
+  startup:
+    enabled: true
+    type: "http"
+    httpPath: "/ping"
+    httpPort: 8080
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    timeoutSeconds: 2
+    successThreshold: 1
+    failureThreshold: 3
+
 service:
   enabled: true
   clusterip:
