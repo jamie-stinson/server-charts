@@ -32,9 +32,9 @@ spec:
           image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           env:
             - name: UID
-              value: 556
+              value: "556"
             - name: GID
-              value: 556
+              value: "556"
             {{- if .Values.containerEnvs }}
             {{- range .Values.containerEnvs }}
             - name: {{ .name }}
