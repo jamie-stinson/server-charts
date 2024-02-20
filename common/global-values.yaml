@@ -4,6 +4,7 @@ image:
   tag: ""
 
 containerArgs: []
+containerEnvs: []
 
 probes:
   readiness:

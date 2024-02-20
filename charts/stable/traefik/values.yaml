@@ -135,16 +135,10 @@ ingress:
       backendPort: 8080
       securityHeaders: true
       cors:
-        enabled: true
-        accessControlAllowMethods:
-          - "GET"
-          - "OPTIONS"
-          - "PUT"
-        accessControlAllowHeaders:
-          - "*"
-        accessControlAllowOriginList:
-          - "https://foo.bar.org"
-          - "https://example.org"
-        accessControlMaxAge: 100
-        addVaryHeader: true
+        enabled: false
+        accessControlAllowMethods: []
+        accessControlAllowHeaders: []
+        accessControlAllowOriginList: []
+        accessControlMaxAge: null
+        addVaryHeader: null
       tls: true

@@ -53,17 +53,11 @@ ingress:
       securityHeaders: true
       cors:
         enabled: false
-        accessControlAllowMethods:
-          - "GET"
-          - "OPTIONS"
-          - "PUT"
-        accessControlAllowHeaders:
-          - "*"
-        accessControlAllowOriginList:
-          - "https://foo.bar.org"
-          - "https://example.org"
-        accessControlMaxAge: 100
-        addVaryHeader: true
+        accessControlAllowMethods: []
+        accessControlAllowHeaders: []
+        accessControlAllowOriginList: []
+        accessControlMaxAge: null
+        addVaryHeader: null
       tls: true
 
 storage:

@@ -13,9 +13,34 @@ spec:
         app: {{ .Release.Name }}
     spec:
       serviceAccountName: {{ .Release.Name }}
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 556
+        runAsGroup: 556
+        fsGroup: 556
+        fsGroupChangePolicy: "Always"
+        readOnlyRootFilesystem: true
+        privileged: false
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - all
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: {{ .Release.Name }}
           image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          env:
+            - name: UID
+              value: 556
+            - name: GID
+              value: 556
+            {{- if .Values.containerEnvs }}
+            {{- range .Values.containerEnvs }}
+            - name: {{ .name }}
+              value: {{ .value }}
+            {{- end }}
+            {{- end }}
           {{- if .Values.resources.enabled }}
           resources:
             requests:
