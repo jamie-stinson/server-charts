@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: {{ .Release.Name }}
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: {{ .Release.Name }}
@@ -19,12 +19,6 @@ spec:
         runAsGroup: 556
         fsGroup: 556
         fsGroupChangePolicy: "Always"
-        readOnlyRootFilesystem: true
-        privileged: false
-        allowPrivilegeEscalation: false
-        capabilities:
-          drop:
-            - all
         seccompProfile:
           type: RuntimeDefault
       containers:
@@ -42,6 +36,13 @@ spec:
             {{- end }}
             {{- end }}
           {{- if .Values.resources.enabled }}
+          securityContext:
+            privileged: false
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - all  
           resources:
             requests:
               cpu: {{ .Values.resources.requests.cpu }}
