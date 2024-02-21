@@ -37,14 +37,14 @@ probes:
 
 service:
   enabled: true
-  clusterip:
+  loadbalancer:
     - name: emby
       protocol: TCP
       port: 8096
 
 ingress:
   traefik:
-    enabled: true
+    enabled: false
     hosts:
     - name: https
       entrypoint: "websecure"
