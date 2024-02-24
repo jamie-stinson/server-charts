@@ -1,0 +1,21 @@
+apiVersion: v2
+appVersion: 1.20.3
+version: 1.0.0
+dependencies:
+  - name: istio-cni
+    version: 1.20.3
+    repository: https://istio-release.storage.googleapis.com/charts
+    condition: ""
+    alias: istio-cni
+    tags: []
+    import-values: []
+deprecated: false
+description: Helm chart for istio-cni components
+keywords:
+  - istio-cni
+  - istio
+kubeVersion: ">=1.24.0-0"
+name: istio-cni
+sources:
+  - https://github.com/istio/istio
+type: application

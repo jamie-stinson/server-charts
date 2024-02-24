@@ -1,0 +1,14 @@
+certmanager:
+  installCRDs: true
+
+# certificateIssuer:
+#   enabled: true
+#   name: "letsencrypt-production"
+#   email: "contact@projectwhitebox.com"
+#   solvers:
+#     dns:
+#       enabled: true
+#       provider: cloudflare # cloudflare | njalla
+#       email: "contact@projectwhitebox.com"
+#       dnsZones:
+#         - "*.projectwhitebox.com"
