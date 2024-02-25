@@ -1,38 +1,43 @@
 {{- if .Values.ingress.traefik.enabled }}
 {{- range .Values.ingress.traefik.hosts }}
-  - apiVersion: traefik.containo.us/v1alpha1
-    kind: Middleware
-    metadata:
-      name: {{ printf "%s-%s-middleware" $.Release.Name .name }}
-    spec:
-      headers:
-        {{- if .middlewares.cors.enabled }}
-        accessControlAllowMethods:
-          {{- range .middlewares.cors.accessControlAllowMethods }}
-          - "{{ . }}"
-          {{- end }}
-        accessControlAllowHeaders:
-          {{- range .middlewares.cors.accessControlAllowHeaders }}
-          - "{{ . }}"
-          {{- end }}
-        accessControlAllowOriginList:
-          {{- range .middlewares.cors.accessControlAllowOriginList }}
-          - "{{ . }}"
-          {{- end }}
-        accessControlMaxAge: {{ .middlewares.cors.accessControlMaxAge }}
-        addVaryHeader: {{ .middlewares.cors.addVaryHeader }}
-        {{- end }}
-        {{- if .middlewares.customRequestHeaders }}
-        customRequestHeaders:
-          {{- range $key, $value := .middlewares.customRequestHeaders }}
-          {{ $key }}: "{{ $value }}"
-          {{- end }}
-        {{- end }}
-        {{- if .middlewares.customResponseHeaders }}
-        customResponseHeaders:
-          {{- range $key, $value := .middlewares.customResponseHeaders }}
-          {{ $key }}: "{{ $value }}"
-          {{- end }}
-        {{- end }}
+{{- if .cors.enabled }}
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: {{ $.Release.Name }}-{{ .name }}-cors
+spec:
+  headers:
+    accessControlAllowMethods:
+      {{- range .cors.accessControlAllowMethods }}
+      - "{{ . }}"
+      {{- end }}
+    accessControlAllowHeaders:
+      {{- range .cors.accessControlAllowHeaders }}
+      - "{{ . }}"
+      {{- end }}
+    accessControlAllowOriginList:
+      {{- range .cors.accessControlAllowOriginList }}
+      - "{{ . }}"
+      {{- end }}
+    accessControlMaxAge: {{ .cors.accessControlMaxAge }}
+    addVaryHeader: {{ .cors.addVaryHeader }}
 {{- end }}
+{{- end }}
+{{- end }}
+---
+{{- if eq .Release.Name "traefik" }}
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: security-headers
+spec:
+  headers:
+    customResponseHeaders:
+      X-Content-Type-Options: "nosniff"
+      X-XSS-Protection: "1; mode=block"
+      X-Frame-Options: "SAMEORIGIN"
+      Content-Security-Policy: "upgrade-insecure-requests"
+      Server: "Proxy"
+      X-Powered-By: "Proxy"
+      Permissions-Policy: "interest-cohort=()"
 {{- end }}

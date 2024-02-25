@@ -134,20 +134,11 @@ ingress:
       host: "traefik.projectwhitebox.com"
       backendPort: 8080
       tls: true
-      middlewares:
-        cors:
-          enabled: false
-          accessControlAllowMethods: []
-          accessControlAllowHeaders: []
-          accessControlAllowOriginList: []
-          accessControlMaxAge: null
-          addVaryHeader: null
-        customRequestHeaders: []
-        customResponseHeaders:
-          X-Content-Type-Options: "nosniff"
-          X-XSS-Protection: "1; mode=block"
-          X-Frame-Options: "SAMEORIGIN"
-          Content-Security-Policy: "upgrade-insecure-requests"
-          Server: "Proxy"
-          X-Powered-By: "Proxy"
-          Permissions-Policy: "interest-cohort=()"
+      securityHeaders: true
+      cors:
+        enabled: false
+        accessControlAllowMethods: []
+        accessControlAllowHeaders: []
+        accessControlAllowOriginList: []
+        accessControlMaxAge: null
+        addVaryHeader: null
