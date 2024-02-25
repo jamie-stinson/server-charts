@@ -1,24 +1,24 @@
-# {{- if and .Release.Name "cert-manager" .Values.certificateIssuer.enabled }}
-# apiVersion: cert-manager.io/v1
-# kind: ClusterIssuer
-# metadata:
-#   name: {{ .Values.certificateIssuer.name }}
-# spec:
-#   acme:
-#     server: https://acme-v02.api.letsencrypt.org/directory
-#     email: {{ .Values.certificateIssuer.email }}
-#     privateKeySecretRef:
-#       name:  {{ .Values.certificateIssuer.name }}-key
-#     solvers:
-#       - dns01:
-#           cloudflare:
-#             email: {{ .Values.certificateIssuer.solvers.dns.email }}
-#             apiTokenSecretRef:
-#               name: {{ .Values.certificateIssuer.solvers.dns.provider }}-secret
-#               key: {{ .Values.certificateIssuer.solvers.dns.provider }}-token
-#         selector:
-#           dnsZones:
-#             {{- range .Values.certificateIssuer.solvers.dns.dnsZones }}
-#             - "{{ . }}"
-#             {{- end }}
-# {{- end }}
+{{- if eq .Release.Name "traefik" }}
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: {{ .Values.traefik.certificateIssuer.name }}
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: {{ .Values.traefik.certificateIssuer.email }}
+    privateKeySecretRef:
+      name:  {{ .Values.traefik.certificateIssuer.name }}-key
+    solvers:
+      - dns01:
+          cloudflare:
+            email: {{ .Values.traefik.certificateIssuer.solvers.dns.email }}
+            apiTokenSecretRef:
+              name: {{ .Values.traefik.certificateIssuer.solvers.dns.provider }}-secret
+              key: {{ .Values.traefik.certificateIssuer.solvers.dns.provider }}-token
+        selector:
+          dnsZones:
+            {{- range .Values.traefik.certificateIssuer.solvers.dns.dnsZones }}
+            - "{{ . }}"
+            {{- end }}
+{{- end }}

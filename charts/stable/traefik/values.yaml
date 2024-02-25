@@ -1,0 +1,144 @@
+image:
+  registry: "docker.io"
+  repository: "traefik"
+  tag: "v2.10.7"
+
+probes:
+  readiness:
+    enabled: true
+    type: "http"
+    httpPath: "/ping"
+    httpPort: 8080
+    initialDelaySeconds: 2
+    periodSeconds: 10
+    timeoutSeconds: 2
+    successThreshold: 1
+    failureThreshold: 1
+  liveness:
+    enabled: true
+    type: "http"
+    httpPath: "/ping"
+    httpPort: 8080
+    initialDelaySeconds: 2
+    periodSeconds: 10
+    timeoutSeconds: 2
+    successThreshold: 1
+    failureThreshold: 3
+  startup:
+    enabled: true
+    type: "http"
+    httpPath: "/ping"
+    httpPort: 8080
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    timeoutSeconds: 2
+    successThreshold: 1
+    failureThreshold: 3
+
+service:
+  enabled: true
+  clusterip:
+    - name: dashboard
+      protocol: TCP
+      port: 8080
+  loadbalancer:
+    - name: http
+      protocol: TCP
+      port: 80
+    - name: https
+      protocol: TCP
+      port: 443
+
+traefik:
+  accessLogFormat: "common"
+  logFormat: "common"
+  logLevel: "info"
+  entrypoints:
+    - name: traefik
+      port: 8080
+      protocol: TCP
+    - name: web
+      port: 80
+      protocol: TCP
+      redirectToEntrypoint: "websecure"
+    - name: websecure
+      port: 443
+      protocol: TCP
+  certificateIssuer:
+    enabled: true
+    name: "letsencrypt-production"
+    email: "contact@projectwhitebox.com"
+    solvers:
+      dns:
+        enabled: true
+        provider: cloudflare # cloudflare | njalla
+        email: "contact@projectwhitebox.com"
+        dnsZones:
+          - "*.projectwhitebox.com"
+
+rbac:
+  enabled: true
+  type: clusterrole
+  rules:
+    - apiGroups:
+        - ""
+      resources:
+        - services
+        - endpoints
+        - secrets
+      verbs:
+        - get
+        - list
+        - watch
+    - apiGroups:
+        - extensions
+        - networking.k8s.io
+      resources:
+        - ingresses
+        - ingressclasses
+      verbs:
+        - get
+        - list
+        - watch
+    - apiGroups:
+        - extensions
+        - networking.k8s.io
+      resources:
+        - ingresses/status
+      verbs:
+        - update
+    - apiGroups:
+        - traefik.io
+        - traefik.containo.us
+      resources:
+        - middlewares
+        - middlewaretcps
+        - ingressroutes
+        - traefikservices
+        - ingressroutetcps
+        - ingressrouteudps
+        - tlsoptions
+        - tlsstores
+        - serverstransports
+      verbs:
+        - get
+        - list
+        - watch
+
+ingress:
+  traefik:
+    enabled: true
+    hosts:
+    - name: https
+      entrypoint: "websecure"
+      host: "traefik.projectwhitebox.com"
+      backendPort: 8080
+      securityHeaders: true
+      cors:
+        enabled: false
+        accessControlAllowMethods: []
+        accessControlAllowHeaders: []
+        accessControlAllowOriginList: []
+        accessControlMaxAge: null
+        addVaryHeader: null
+      tls: true
