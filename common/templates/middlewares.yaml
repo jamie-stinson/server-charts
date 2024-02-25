@@ -1,39 +1,38 @@
 {{- if .Values.ingress.traefik.enabled }}
-  {{- range .Values.ingress.traefik.hosts }}
-    {{- $middlewareName := printf "%s-%s-middleware" $.Release.Name .name }}
-    apiVersion: traefik.containo.us/v1alpha1
+{{- range .Values.ingress.traefik.hosts }}
+  - apiVersion: traefik.containo.us/v1alpha1
     kind: Middleware
     metadata:
-      name: {{ $middlewareName }}
+      name: {{ printf "%s-%s-middleware" $.Release.Name .name }}
     spec:
       headers:
-        {{- if and .cors (eq .cors.enabled true) }}
+        {{- if .middlewares.cors.enabled }}
         accessControlAllowMethods:
-          {{- range .cors.accessControlAllowMethods }}
+          {{- range .middlewares.cors.accessControlAllowMethods }}
           - "{{ . }}"
           {{- end }}
         accessControlAllowHeaders:
-          {{- range .cors.accessControlAllowHeaders }}
+          {{- range .middlewares.cors.accessControlAllowHeaders }}
           - "{{ . }}"
           {{- end }}
         accessControlAllowOriginList:
-          {{- range .cors.accessControlAllowOriginList }}
+          {{- range .middlewares.cors.accessControlAllowOriginList }}
           - "{{ . }}"
           {{- end }}
-        accessControlMaxAge: {{ .cors.accessControlMaxAge }}
-        addVaryHeader: {{ .cors.addVaryHeader }}
+        accessControlMaxAge: {{ .middlewares.cors.accessControlMaxAge }}
+        addVaryHeader: {{ .middlewares.cors.addVaryHeader }}
         {{- end }}
-        {{- if .customRequestHeaders }}
+        {{- if .middlewares.customRequestHeaders }}
         customRequestHeaders:
-          {{- range $key, $value := .customRequestHeaders }}
+          {{- range $key, $value := .middlewares.customRequestHeaders }}
           {{ $key }}: "{{ $value }}"
           {{- end }}
         {{- end }}
-        {{- if .customResponseHeaders }}
+        {{- if .middlewares.customResponseHeaders }}
         customResponseHeaders:
-          {{- range $key, $value := .customResponseHeaders }}
+          {{- range $key, $value := .middlewares.customResponseHeaders }}
           {{ $key }}: "{{ $value }}"
           {{- end }}
         {{- end }}
-  {{- end }}
+{{- end }}
 {{- end }}
