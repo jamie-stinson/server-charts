@@ -1,14 +1,13 @@
 {{- if .Values.ingress.traefik.enabled }}
   {{- range .Values.ingress.traefik.hosts }}
     {{- $middlewareName := printf "%s-%s-middleware" $.Release.Name .name }}
-
     apiVersion: traefik.containo.us/v1alpha1
     kind: Middleware
     metadata:
       name: {{ $middlewareName }}
     spec:
       headers:
-        {{- if .cors.enabled }}
+        {{- if and .cors (eq .cors.enabled true) }}
         accessControlAllowMethods:
           {{- range .cors.accessControlAllowMethods }}
           - "{{ . }}"
