@@ -1,9 +1,4 @@
 pilot:
   resources:
     requests:
-      cpu: 128m
       memory: 512Mi
-    limits:
-      cpu: 128m
-      memory: 512Mi
-      
