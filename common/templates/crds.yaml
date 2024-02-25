@@ -1,0 +1,7 @@
+{{- $releaseName := .Release.Name }}
+{{- if eq $releaseName "traefik" }}
+{{- range $path, $_ := .Files.Glob "../crds/traefik/*" }}
+---
+{{ $.Files.Get $path }}
+{{- end }}
+{{- end }}
