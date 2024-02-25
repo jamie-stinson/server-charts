@@ -19,8 +19,8 @@ spec:
         runAsGroup: 556
         fsGroup: 556
         fsGroupChangePolicy: "Always"
-        seccompProfile:
-          type: RuntimeDefault
+        # seccompProfile:
+        #   type: RuntimeDefault
       containers:
         - name: {{ .Release.Name }}
           image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -36,13 +36,13 @@ spec:
             {{- end }}
             {{- end }}
           {{- if .Values.resources.enabled }}
-          securityContext:
-            privileged: false
-            readOnlyRootFilesystem: true
-            allowPrivilegeEscalation: false
-            capabilities:
-              drop:
-                - all  
+          # securityContext:
+          #   privileged: false
+          #   readOnlyRootFilesystem: true
+          #   allowPrivilegeEscalation: false
+          #   capabilities:
+          #     drop:
+          #       - all  
           resources:
             requests:
               cpu: {{ .Values.resources.requests.cpu }}
