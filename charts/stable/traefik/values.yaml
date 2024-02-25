@@ -133,7 +133,6 @@ ingress:
       entrypoint: "websecure"
       host: "traefik.projectwhitebox.com"
       backendPort: 8080
-      tls: true
       securityHeaders: true
       cors:
         enabled: false
@@ -142,3 +141,4 @@ ingress:
         accessControlAllowOriginList: []
         accessControlMaxAge: null
         addVaryHeader: null
+      tls: true
