@@ -13,11 +13,10 @@ spec:
     services:
     - name: {{ $.Release.Name }}-clusterip
       port: {{ .backendPort }}
+    {{- if .middlewares }}
     middlewares:
-      - name: security-headers
-      {{- if .cors.enabled }}
-      - name: {{ $.Release.Name }}-{{ .name }}-cors
-      {{- end}}
+      - name: {{ $.Release.Name }}-{{ .name }}-middleware
+    {{- end }}
 {{- if .tls }}
   tls:
     secretName: letsencrypt-production-tls

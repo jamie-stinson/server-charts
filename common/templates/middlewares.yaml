@@ -1,60 +1,40 @@
 {{- if .Values.ingress.traefik.enabled }}
-{{- range .Values.ingress.traefik.hosts }}
-{{- if .cors.enabled }}
-apiVersion: traefik.containo.us/v1alpha1
-kind: Middleware
-metadata:
-  name: {{ $.Release.Name }}-{{ .name }}-cors
-spec:
-  headers:
-    accessControlAllowMethods:
-      {{- range .cors.accessControlAllowMethods }}
-      - "{{ . }}"
-      {{- end }}
-    accessControlAllowHeaders:
-      {{- range .cors.accessControlAllowHeaders }}
-      - "{{ . }}"
-      {{- end }}
-    accessControlAllowOriginList:
-      {{- range .cors.accessControlAllowOriginList }}
-      - "{{ . }}"
-      {{- end }}
-    accessControlMaxAge: {{ .cors.accessControlMaxAge }}
-    addVaryHeader: {{ .cors.addVaryHeader }}
-{{- end }}
-{{- end }}
-{{- end }}
----
-{{- if .Values.ingress.traefik.enabled }}
-{{- range .Values.ingress.traefik.hosts }}
-{{- if .customRequestHeaders }}
-apiVersion: traefik.containo.us/v1alpha1
-kind: Middleware
-metadata:
-  name: {{ $.Release.Name }}-{{ .name }}-request-headers
-spec:
-  headers:
-    customRequestHeaders:
-{{- range $key, $value := .customRequestHeaders }}
-      {{ $key }}: "{{ $value }}"
-{{- end }}
-{{- end }}
-{{- end }}
-{{- end }}
----
-{{- if .Values.ingress.traefik.enabled }}
-{{- range .Values.ingress.traefik.hosts }}
-{{- if .customResponseHeaders }}
-apiVersion: traefik.containo.us/v1alpha1
-kind: Middleware
-metadata:
-  name: {{ $.Release.Name }}-{{ .name }}-response-headers
-spec:
-  headers:
-    customResponseHeaders:
-{{- range $key, $value := .customResponseHeaders }}
-      {{ $key }}: "{{ $value }}"
-{{- end }}
-{{- end }}
-{{- end }}
+  {{- range .Values.ingress.traefik.hosts }}
+    {{- $middlewareName := printf "%s-%s-middleware" $.Release.Name .name }}
+
+    apiVersion: traefik.containo.us/v1alpha1
+    kind: Middleware
+    metadata:
+      name: {{ $middlewareName }}
+    spec:
+      headers:
+        {{- if .cors.enabled }}
+        accessControlAllowMethods:
+          {{- range .cors.accessControlAllowMethods }}
+          - "{{ . }}"
+          {{- end }}
+        accessControlAllowHeaders:
+          {{- range .cors.accessControlAllowHeaders }}
+          - "{{ . }}"
+          {{- end }}
+        accessControlAllowOriginList:
+          {{- range .cors.accessControlAllowOriginList }}
+          - "{{ . }}"
+          {{- end }}
+        accessControlMaxAge: {{ .cors.accessControlMaxAge }}
+        addVaryHeader: {{ .cors.addVaryHeader }}
+        {{- end }}
+        {{- if .customRequestHeaders }}
+        customRequestHeaders:
+          {{- range $key, $value := .customRequestHeaders }}
+          {{ $key }}: "{{ $value }}"
+          {{- end }}
+        {{- end }}
+        {{- if .customResponseHeaders }}
+        customResponseHeaders:
+          {{- range $key, $value := .customResponseHeaders }}
+          {{ $key }}: "{{ $value }}"
+          {{- end }}
+        {{- end }}
+  {{- end }}
 {{- end }}
