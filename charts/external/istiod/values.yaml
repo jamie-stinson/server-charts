@@ -1,5 +1,4 @@
-defaults:
-  pilot:
-    resources:
-      requests:
-        memory: 512Mi
+pilot:
+  resources:
+    requests:
+      memory: 512Mi
