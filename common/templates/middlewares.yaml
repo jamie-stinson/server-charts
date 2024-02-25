@@ -25,19 +25,36 @@ spec:
 {{- end }}
 {{- end }}
 ---
-{{- if eq .Release.Name "traefik" }}
+{{- if .Values.ingress.traefik.enabled }}
+{{- range .Values.ingress.traefik.hosts }}
+{{- if .customRequestHeaders }}
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
-  name: security-headers
+  name: {{ $.Release.Name }}-{{ .name }}-request-headers
+spec:
+  headers:
+    customRequestHeaders:
+{{- range $key, $value := .customRequestHeaders }}
+      {{ $key }}: "{{ $value }}"
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
+---
+{{- if .Values.ingress.traefik.enabled }}
+{{- range .Values.ingress.traefik.hosts }}
+{{- if .customResponseHeaders }}
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: {{ $.Release.Name }}-{{ .name }}-response-headers
 spec:
   headers:
     customResponseHeaders:
-      X-Content-Type-Options: "nosniff"
-      X-XSS-Protection: "1; mode=block"
-      X-Frame-Options: "SAMEORIGIN"
-      Content-Security-Policy: "upgrade-insecure-requests"
-      Server: "Proxy"
-      X-Powered-By: "Proxy"
-      Permissions-Policy: "interest-cohort=()"
+{{- range $key, $value := .customResponseHeaders }}
+      {{ $key }}: "{{ $value }}"
+{{- end }}
+{{- end }}
+{{- end }}
 {{- end }}

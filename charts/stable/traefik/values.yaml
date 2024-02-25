@@ -141,4 +141,13 @@ ingress:
         accessControlAllowOriginList: []
         accessControlMaxAge: null
         addVaryHeader: null
+      customRequestHeaders: []
+      customResponseHeaders:
+        X-Content-Type-Options: "nosniff"
+        X-XSS-Protection: "1; mode=block"
+        X-Frame-Options: "SAMEORIGIN"
+        Content-Security-Policy: "upgrade-insecure-requests"
+        Server: "Proxy"
+        X-Powered-By: "Proxy"
+        Permissions-Policy: "interest-cohort=()"
       tls: true
