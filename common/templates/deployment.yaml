@@ -32,7 +32,7 @@ spec:
           securityContext:
             privileged: false
             readOnlyRootFilesystem: false
-            allowPrivilegeEscalation: false
+            allowPrivilegeEscalation: true
             capabilities:
               drop:
                 - all  
