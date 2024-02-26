@@ -13,14 +13,6 @@ spec:
         app: {{ .Release.Name }}
     spec:
       serviceAccountName: {{ .Release.Name }}
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 556
-        runAsGroup: 556
-        fsGroup: 556
-        fsGroupChangePolicy: "Always"
-        # seccompProfile:
-        #   type: RuntimeDefault
       containers:
         - name: {{ .Release.Name }}
           image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -35,14 +27,21 @@ spec:
               value: {{ .value }}
             {{- end }}
             {{- end }}
+          securityContext:
+            privileged: false
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - all  
+            runAsNonRoot: true
+            runAsUser: 556
+            runAsGroup: 556
+            fsGroup: 556
+            fsGroupChangePolicy: "Always"
+            seccompProfile:
+              type: RuntimeDefault
           {{- if .Values.resources.enabled }}
-          # securityContext:
-          #   privileged: false
-          #   readOnlyRootFilesystem: true
-          #   allowPrivilegeEscalation: false
-          #   capabilities:
-          #     drop:
-          #       - all  
           resources:
             requests:
               cpu: {{ .Values.resources.requests.cpu }}
@@ -66,7 +65,7 @@ spec:
             - --accesslog.format={{ .Values.traefik.accessLogFormat }}
             - --log.format={{ .Values.traefik.logFormat }}
             - --log.level={{ .Values.traefik.logLevel }}
-            - --api.dashboard
+            - --api.dashboard=false
             - --ping
             - --providers.kubernetescrd
             {{- range .Values.traefik.entrypoints }}

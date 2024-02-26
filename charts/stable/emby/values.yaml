@@ -44,7 +44,7 @@ service:
 
 ingress:
   traefik:
-    enabled: false
+    enabled: true
     hosts:
     - name: https
       entrypoint: "websecure"
