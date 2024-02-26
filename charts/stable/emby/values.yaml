@@ -3,9 +3,9 @@ image:
   repository: "emby/embyserver"
   tag: "4.8.1.0"
 
-containerEnvs:
+containerEvs:
   - name: S6_READ_ONLY_ROOT
-    value: "1"
+    value: 1
 
 probes:
   readiness:

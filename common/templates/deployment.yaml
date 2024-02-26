@@ -17,16 +17,14 @@ spec:
         - name: {{ .Release.Name }}
           image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           env:
-            - name: "UID"
+            - name: UID
               value: "556"
-            - name: "GID"
+            - name: GID
               value: "556"
-            - name: "S6_READ_ONLY_ROOT"
-              value: "1"
             {{- if .Values.containerEnvs }}
             {{- range .Values.containerEnvs }}
             - name: {{ .name }}
-              value: {{ .value }}
+              value: {{ .value | quote }}
             {{- end }}
             {{- end }}
           securityContext:
