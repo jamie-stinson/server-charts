@@ -4,8 +4,8 @@ image:
   tag: "4.8.1.0"
 
 containerEnvs:
-  - name: S6_READ_ONLY_ROOT
-    value: 1
+  - name: "S6_READ_ONLY_ROOT"
+    value: "1"
 
 probes:
   readiness:
