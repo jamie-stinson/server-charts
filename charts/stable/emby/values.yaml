@@ -1,11 +1,7 @@
 image:
   registry: "docker.io"
-  repository: "emby/embyserver"
-  tag: "4.8.1.0"
-
-containerEvs:
-  - name: S6_READ_ONLY_ROOT
-    value: 1
+  repository: "linuxserver/emby"
+  tag: "4.8.1"
 
 probes:
   readiness:
