@@ -1,13 +1,13 @@
 image:
   registry: "docker.io"
-  repository: "emby/embyserver"
-  tag: "4.8.1.0"
+  repository: "jellyfin/jellyfin"
+  tag: "10.8.13"
 
 probes:
   readiness:
     enabled: true
     type: "http"
-    httpPath: "/emby/system/info/public"
+    httpPath: "/health"
     httpPort: 8096
     initialDelaySeconds: 2
     periodSeconds: 10
@@ -17,7 +17,7 @@ probes:
   liveness:
     enabled: true
     type: "http"
-    httpPath: "/emby/system/info/public"
+    httpPath: "/health"
     httpPort: 8096
     initialDelaySeconds: 2
     periodSeconds: 10
@@ -27,7 +27,7 @@ probes:
   startup:
     enabled: true
     type: "http"
-    httpPath: "/emby/system/info/public"
+    httpPath: "/health"
     httpPort: 8096
     initialDelaySeconds: 5
     periodSeconds: 5
@@ -38,7 +38,7 @@ probes:
 service:
   enabled: true
   clusterip:
-    - name: emby
+    - name: jellyfin
       protocol: TCP
       port: 8096
 
