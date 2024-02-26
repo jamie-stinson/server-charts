@@ -33,7 +33,7 @@ spec:
             {{- end }}
           securityContext:
             privileged: false
-            readOnlyRootFilesystem: true
+            readOnlyRootFilesystem: false
             allowPrivilegeEscalation: false
             capabilities:
               drop:
