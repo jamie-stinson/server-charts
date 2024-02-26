@@ -40,7 +40,7 @@ spec:
             runAsUser: {{ .Values.securityContext.group }}
             runAsGroup: {{ .Values.securityContext.group }}
             fsGroup: {{ .Values.securityContext.group }}
-            fsGroupChangePolicy: "Always"
+            # fsGroupChangePolicy: "Always"
             seccompProfile:
               type: RuntimeDefault
           {{- if .Values.resources.enabled }}
