@@ -5,7 +5,7 @@ image:
 
 containerEnvs:
   - name: S6_READ_ONLY_ROOT
-    value: 1
+    value: "1"
 
 probes:
   readiness:
