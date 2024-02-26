@@ -172,8 +172,12 @@ spec:
           hostPath:
             path: {{ .hostPath }}
           {{- else if eq .type "emptyDir" }}
+            {{- if .size }}
           emptyDir:
             sizeLimit: {{ .size }}
+            {{- else }}
+          emptyDir: {}        
+            {{- end}}
           {{- end }}
       {{- end}}
           {{- end}}

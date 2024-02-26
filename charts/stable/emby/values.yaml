@@ -70,6 +70,5 @@ storage:
       readOnly: false
     - name: "var"
       type: "emptyDir"
-      mountPath: "/var/run/s6"
-      size: 1G
+      mountPath: "/var"
       readOnly: false
