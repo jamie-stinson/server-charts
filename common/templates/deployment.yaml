@@ -21,6 +21,8 @@ spec:
               value: "556"
             - name: GID
               value: "556"
+            - name: S6_READ_ONLY_ROOT
+              value: "1"
             {{- if .Values.containerEnvs }}
             {{- range .Values.containerEnvs }}
             - name: {{ .name }}
