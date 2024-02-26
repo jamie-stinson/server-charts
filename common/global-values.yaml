@@ -6,6 +6,11 @@ image:
 containerArgs: []
 containerEnvs: []
 
+securityContext:
+  user: 0
+  group: 0
+  fileSystem: 0
+
 probes:
   readiness:
     enabled: false

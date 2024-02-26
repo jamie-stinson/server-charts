@@ -37,9 +37,9 @@ spec:
               drop:
                 - all  
             runAsNonRoot: false
-            runAsUser: 556
-            runAsGroup: 556
-            fsGroup: 556
+            runAsUser: {{ .Values.securityContext.group }}
+            runAsGroup: {{ .Values.securityContext.group }}
+            fsGroup: {{ .Values.securityContext.group }}
             fsGroupChangePolicy: "Always"
             seccompProfile:
               type: RuntimeDefault
