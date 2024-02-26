@@ -17,9 +17,9 @@ spec:
         - name: {{ .Release.Name }}
           image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           env:
-            - name: UID
+            - name: PUID
               value: "556"
-            - name: GID
+            - name: PGID
               value: "556"
             {{- if .Values.containerEnvs }}
             {{- range .Values.containerEnvs }}
