@@ -70,6 +70,7 @@ spec:
             - --api.dashboard=false
             - --ping
             - --providers.kubernetescrd
+            - -—providers.kubernetescrd.allowCrossNamespace=true
             {{- range .Values.traefik.entrypoints }}
             - --entryPoints.{{ .name }}.address=:{{ .port }}/{{ lower .protocol }}
               {{- if .redirectToEntrypoint }}
