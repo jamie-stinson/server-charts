@@ -68,3 +68,8 @@ storage:
       hostPath: "/mnt/test-pool/config/emby"
       mountPath: "/config"
       readOnly: false
+    - name: "var"
+      type: "emptyDir"
+      mountPath: "/var"
+      size: 1G
+      readOnly: false
