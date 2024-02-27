@@ -1,2 +1,7 @@
-certmanager:
+cert-manager:
   installCRDs: true
+
+  global:
+    leaderElection:
+      namespace: {{ .Release.Namespace }}
+  namespace: {{ .Release.Namespace }}

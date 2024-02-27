@@ -5,7 +5,12 @@ istiod:
   global:
     variant: "distroless"
     logAsJson: true
+    istioNamespace: {{ .Release.Namespace }}
 
   istio_cni:
     enabled: true
     chained: true
+  
+  sidecarInjectorWebhook:
+    enableNamespacesByDefault: true
+  

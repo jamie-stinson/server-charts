@@ -2,3 +2,4 @@ istio-cni:
   cni:
     cniBinDir: "/var/lib/rancher/k3s/data/current/bin"
     cniConfDir: "/var/lib/rancher/k3s/agent/etc/cni/net.d"
+    chained: true

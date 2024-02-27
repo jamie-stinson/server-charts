@@ -6,7 +6,7 @@ dependencies:
     version: v1.13.3
     repository: https://charts.jetstack.io
     condition: ""
-    alias: certmanager
+    alias: cert-manager
     tags: []
     import-values: []
 deprecated: false
