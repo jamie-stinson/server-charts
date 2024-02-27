@@ -1,3 +1,4 @@
 cni:
-  cniBinDir: "/opt/cni/bin"
-  cniConfDir: "/etc/cni/net.d"
+  privileged: true
+  cniBinDir: "/var/lib/rancher/k3s/data/current/bin"
+  cniConfDir: "/var/lib/rancher/k3s/agent/etc/cni/net.d"
