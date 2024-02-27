@@ -3,5 +3,5 @@ cert-manager:
 
   global:
     leaderElection:
-      namespace: {{ .Release.Namespace }}
-  namespace: {{ .Release.Namespace }}
+      namespace: platform-security
+  namespace: platform-security

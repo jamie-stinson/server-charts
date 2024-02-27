@@ -5,7 +5,7 @@ istiod:
   global:
     variant: "distroless"
     logAsJson: true
-    istioNamespace: {{ .Release.Namespace }}
+    istioNamespace: platform-mesh
 
   istio_cni:
     enabled: true
