@@ -1,26 +1,19 @@
-{{- if .Values.ingress.traefik.enabled }}
-{{- range .Values.ingress.traefik.hosts }}
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
 metadata:
-  name: {{ $.Release.Name }}
+  name: test
+  namespace: platform-domain
 spec:
-  entryPoints:
-    - {{ .entrypoint }}
-  routes:
-  - match: Host(`{{ .host }}`)
-    kind: Rule
-    services:
-    - name: {{ $.Release.Name }}-clusterip
-      port: {{ .backendPort }}
-    middlewares:
-      - name: security-headers
-      {{- if .cors.enabled }}
-      - name: {{ $.Release.Name }}-{{ .name }}-cors
-      {{- end}}
-{{- if .tls }}
-  tls:
-    secretName: letsencrypt-production-tls
-{{- end }}
-{{- end }}
-{{- end }}
+  hosts:
+  - emby.projectwhitebox.com
+  gateways:
+  - platform-ingress/public-ingress-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        port:
+          number: 8096
+        host: emby-clusterip.platform-domain.svc.cluster.local
