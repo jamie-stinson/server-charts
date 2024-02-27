@@ -1,8 +1,8 @@
-{{- if eq .Release.Name "traefik" }}
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: {{ .Release.Name }}-certificate
+  namespace: {{.Release.Namespace}}
 spec:
   secretName: {{ .Values.traefik.certificateIssuer.name }}-tls
   issuerRef:
@@ -12,4 +12,3 @@ spec:
     {{- range .Values.traefik.certificateIssuer.solvers.dns.dnsZones }}
     - "{{ . }}"
     {{- end }}
-{{- end }}
