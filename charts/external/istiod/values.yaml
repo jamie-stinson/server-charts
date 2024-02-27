@@ -1,10 +1,11 @@
-pilot:
-  variant: "distroless"
+istiod:  
+  pilot:
+    variant: "distroless"
 
-global:
-  variant: "distroless"
-  logAsJson: true
+  global:
+    variant: "distroless"
+    logAsJson: true
 
-istio_cni:
-  enabled: true
-  chained: true
+  istio_cni:
+    enabled: true
+    chained: true
