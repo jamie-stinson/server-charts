@@ -1,0 +1,20 @@
+image:
+  registry: "docker.io"
+  repository: "postgres"
+  tag: "16.2"
+
+service:
+  enabled: true
+  clusterip:
+    - name: postgresql
+      protocol: TCP
+      port: 5432
+
+storage:
+  enabled: true
+  volumes:
+    - name: "config"
+      type: "host"
+      hostPath: "/mnt/test-pool/data/postgresql"
+      mountPath: "/var/lib/postgresql/data"
+      readOnly: false
