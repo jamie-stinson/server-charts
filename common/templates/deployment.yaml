@@ -29,6 +29,15 @@ spec:
               value: {{ .value | quote }}
             {{- end }}
             {{- end }}
+            {{- if .Values.containerEnvsConfigMap }}
+            {{- range .Values.containerEnvsConfigMap }}
+            - name: {{ .name }}
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .configMap }}
+                  key: {{ .name }}
+            {{- end }}
+            {{- end }}
           # securityContext:
             # privileged: false
             # readOnlyRootFilesystem: false

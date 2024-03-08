@@ -3,6 +3,14 @@ image:
   repository: "postgres"
   tag: "16.2"
 
+containerEnvsConfigMap:
+  - name: POSTGRES_DB
+    configMap: postgres-secret
+  - name: POSTGRES_USER
+    configMap: postgres-secret
+  - name: POSTGRES_PASSWORD
+    configMap: postgres-secret
+
 service:
   enabled: true
   clusterip:
