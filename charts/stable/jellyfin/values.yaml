@@ -1,4 +1,6 @@
 type: deployment
+replicaCount: 1
+
 image:
   registry: "docker.io"
   repository: "jellyfin/jellyfin"

@@ -1,10 +1,12 @@
-{{- if eq .Values.type "statefulset" }}
+{{- if eq .Values.type "statefulSet" }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ .Release.Name }}
 spec:
-  serviceName: "{{ .Release.Name }}"
+  {{- if .Values.service.clusterip }}
+  serviceName: "{{ .Release.Name }}-clusterip"
+  {{- end}}
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
@@ -69,7 +71,18 @@ spec:
             {{- end }}
             {{- end }}
           {{- end }}
-          {{- include "custom-probes" . | nindent 10 }}
+          {{- if .Values.probes.readiness.enabled }}
+          readinessProbe:
+            {{- template logic for readiness probe }}
+          {{- end }}
+          {{- if .Values.probes.liveness.enabled }}
+          livenessProbe:
+            {{- template logic for liveness probe }}
+          {{- end }}
+          {{- if .Values.probes.startup.enabled }}
+          startupProbe:
+            {{- template logic for startup probe }}
+          {{- end }}
           {{- if .Values.storage.enabled }}
           volumeMounts:
             {{- range .Values.storage.volumes }}
@@ -77,17 +90,17 @@ spec:
               mountPath: {{ .mountPath }}
               readOnly: {{ .readOnly }}
             {{- end }}
-          {{- if .Values.storage.volumeClaimTemplates }}
-          volumeClaimTemplates:
-          {{- range .Values.storage.volumeClaimTemplates }}
-            - metadata:
-                name: {{ .name }}
-              spec:
-                accessModes: [ "ReadWriteOnce" ]
-                resources:
-                  requests:
-                    storage: {{ .storage }}
           {{- end }}
-          {{- end }}
-          {{- end }}
+  {{- if .Values.storage.enabled }}
+  volumeClaimTemplates:
+  {{- range .Values.storage.volumeClaims }}
+  - metadata:
+      name: {{ .name }}
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: {{ .size }}
+  {{- end }}
+  {{- end }}
 {{- end }}
