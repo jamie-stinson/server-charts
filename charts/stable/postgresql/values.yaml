@@ -1,3 +1,6 @@
+type: statefulset
+replicaCount: 3
+
 image:
   registry: "docker.io"
   repository: "postgres"
@@ -13,6 +16,7 @@ containerEnvsConfigMap:
 
 service:
   enabled: true
+  headless: true
   clusterip:
     - name: postgresql
       protocol: TCP

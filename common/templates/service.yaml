@@ -24,6 +24,9 @@ spec:
   type: ClusterIP
   selector:
     app: {{ .Release.Name }}
+  {{- if .Values.service.headless }}
+  clusterIP: None
+  {{- end }}
   ports:
   {{- range .Values.service.clusterip }}
   - name: {{ .name }}
