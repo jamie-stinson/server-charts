@@ -77,16 +77,17 @@ spec:
               mountPath: {{ .mountPath }}
               readOnly: {{ .readOnly }}
             {{- end }}
-  {{- if .Values.storage.volumeClaimTemplates }}
-  volumeClaimTemplates:
-  {{- range .Values.storage.volumeClaimTemplates }}
-    - metadata:
-        name: {{ .name }}
-      spec:
-        accessModes: [ "ReadWriteOnce" ]
-        resources:
-          requests:
-            storage: {{ .storage }}
-  {{- end }}
-  {{- end }}
+          {{- if .Values.storage.volumeClaimTemplates }}
+          volumeClaimTemplates:
+          {{- range .Values.storage.volumeClaimTemplates }}
+            - metadata:
+                name: {{ .name }}
+              spec:
+                accessModes: [ "ReadWriteOnce" ]
+                resources:
+                  requests:
+                    storage: {{ .storage }}
+          {{- end }}
+          {{- end }}
+          {{- end }}
 {{- end }}
