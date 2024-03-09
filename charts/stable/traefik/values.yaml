@@ -3,6 +3,34 @@ image:
   repository: "traefik"
   tag: "v2.10.7"
 
+containerArgs:
+  - --global.checknewversion=false
+  - --global.sendanonymoususage=false
+  - --accesslog.format=common
+  - --log.format=common
+  - --log.level=info
+  - --api.dashboard=false
+  - --ping
+  - --providers.kubernetescrd
+  - --providers.kubernetescrd.allowcrossnamespace=true
+  - --entryPoints.traefik.address=:8080/tcp
+  - --entryPoints.web.address=:80/tcp
+  - --entryPoints.websecure.address=:443/tcp
+  - --entrypoints.web.http.redirections.entryPoint.to=websecure
+
+traefik:
+  certificateIssuer:
+    enabled: true
+    name: "letsencrypt-production"
+    email: "contact@projectwhitebox.com"
+    solvers:
+      dns:
+        enabled: true
+        provider: cloudflare # cloudflare | njalla
+        email: "contact@projectwhitebox.com"
+        dnsZones:
+          - "*.projectwhitebox.com"
+
 probes:
   readiness:
     enabled: true
@@ -48,33 +76,6 @@ service:
     - name: https
       protocol: TCP
       port: 443
-
-traefik:
-  accessLogFormat: "common"
-  logFormat: "common"
-  logLevel: "info"
-  entrypoints:
-    - name: traefik
-      port: 8080
-      protocol: TCP
-    - name: web
-      port: 80
-      protocol: TCP
-      redirectToEntrypoint: "websecure"
-    - name: websecure
-      port: 443
-      protocol: TCP
-  certificateIssuer:
-    enabled: true
-    name: "letsencrypt-production"
-    email: "contact@projectwhitebox.com"
-    solvers:
-      dns:
-        enabled: true
-        provider: cloudflare # cloudflare | njalla
-        email: "contact@projectwhitebox.com"
-        dnsZones:
-          - "*.projectwhitebox.com"
 
 rbac:
   enabled: true

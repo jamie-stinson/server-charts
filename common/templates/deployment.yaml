@@ -62,32 +62,9 @@ spec:
               memory: {{ .Values.resources.limits.memory }}
               gpu: {{ .Values.resources.limits.gpu }}
           {{- end }}
-          {{- if or .Values.containerArgs (eq .Release.Name "traefik") }}
+          {{- if .Values.containerArgs }}
           args:
-            {{- if .Values.containerArgs }}
-            # Container Args
-            {{- toYaml .Values.containerArgs | nindent 12 }}
-            {{- end }}
-
-            {{- if eq .Release.Name "traefik" }}
-            # Traefik
-            - --global.checknewversion=false
-            - --global.sendanonymoususage=false
-            - --accesslog.format={{ .Values.traefik.accessLogFormat }}
-            - --log.format={{ .Values.traefik.logFormat }}
-            - --log.level={{ .Values.traefik.logLevel }}
-            - --api.dashboard=false
-            - --ping
-            - --providers.kubernetescrd
-            - --providers.kubernetescrd.allowcrossnamespace=true
-            {{- range .Values.traefik.entrypoints }}
-            - --entryPoints.{{ .name }}.address=:{{ .port }}/{{ lower .protocol }}
-              {{- if .redirectToEntrypoint }}
-            - --entrypoints.{{ .name }}.http.redirections.entryPoint.to={{ .redirectToEntrypoint }}
-              {{- end }}
-            {{- end }}                
-            {{- end }}
-
+          {{- toYaml .Values.containerArgs | nindent 12 }}
           {{- end }}
           {{- if .Values.service.enabled }}
           ports:

@@ -1,0 +1,115 @@
+{{- if eq .Release.Name "postgresql" }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  serviceName: "{{ .Release.Name }}"
+  replicas: 3
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      serviceAccountName: {{ .Release.Name }}
+      containers:
+        - name: {{ .Release.Name }}
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          env:
+            - name: PUID
+              value: "556"
+            - name: PGID
+              value: "556"
+            - name: TZ
+              value: "GB"
+            {{- if .Values.containerEnvs }}
+            {{- range .Values.containerEnvs }}
+            - name: {{ .name }}
+              value: {{ .value | quote }}
+            {{- end }}
+            {{- end }}
+            {{- if .Values.containerEnvsConfigMap }}
+            {{- range .Values.containerEnvsConfigMap }}
+            - name: {{ .name }}
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .configMap }}
+                  key: {{ .name }}
+            {{- end }}
+            {{- end }}
+          {{- if .Values.resources.enabled }}
+          resources:
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
+              gpu: {{ .Values.resources.limits.gpu }}
+          {{- end }}
+          {{- if or .Values.containerArgs (eq .Release.Name "traefik") }}
+          args:
+            {{- if .Values.containerArgs }}
+            # Container Args
+            {{- toYaml .Values.containerArgs | nindent 12 }}
+            {{- end }}
+
+            {{- if eq .Release.Name "traefik" }}
+            # Traefik
+            - --global.checknewversion=false
+            - --global.sendanonymoususage=false
+            - --accesslog.format={{ .Values.traefik.accessLogFormat }}
+            - --log.format={{ .Values.traefik.logFormat }}
+            - --log.level={{ .Values.traefik.logLevel }}
+            - --api.dashboard=false
+            - --ping
+            - --providers.kubernetescrd
+            - --providers.kubernetescrd.allowcrossnamespace=true
+            {{- range .Values.traefik.entrypoints }}
+            - --entryPoints.{{ .name }}.address=:{{ .port }}/{{ lower .protocol }}
+              {{- if .redirectToEntrypoint }}
+            - --entrypoints.{{ .name }}.http.redirections.entryPoint.to={{ .redirectToEntrypoint }}
+              {{- end }}
+            {{- end }}                
+            {{- end }}
+
+          {{- end }}
+          {{- if .Values.service.enabled }}
+          ports:
+            {{- if .Values.service.loadbalancer }}
+            {{- range .Values.service.loadbalancer }}
+            - name: {{ .name }}
+              containerPort: {{ .port }}
+            {{- end }}
+            {{- end }}
+            {{- if .Values.service.clusterip }}
+            {{- range .Values.service.clusterip }}
+            - name: {{ .name }}
+              containerPort: {{ .port }}
+            {{- end }}
+            {{- end }}
+          {{- end }}
+          {{- include "custom-probes" . | nindent 10 }}
+          {{- if .Values.storage.enabled }}
+          volumeMounts:
+            {{- range .Values.storage.volumes }}
+            - name: {{ .name }}
+              mountPath: {{ .mountPath }}
+              readOnly: {{ .readOnly }}
+            {{- end }}
+  {{- if .Values.storage.volumeClaimTemplates }}
+  volumeClaimTemplates:
+  {{- range .Values.storage.volumeClaimTemplates }}
+    - metadata:
+        name: {{ .name }}
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: {{ .storage }}
+  {{- end }}
+  {{- end }}
+{{- end }}
