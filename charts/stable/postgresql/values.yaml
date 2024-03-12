@@ -25,8 +25,7 @@ service:
 storage:
   enabled: true
   volumes:
-    - name: "config"
-      type: "host"
-      hostPath: "/mnt/test-pool/data/postgresql"
+    - name: "data"
+      type: "pvc"
       mountPath: "/var/lib/postgresql/data"
       readOnly: false

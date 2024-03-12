@@ -142,20 +142,14 @@ spec:
               mountPath: {{ .mountPath }}
               readOnly: {{ .readOnly }}
             {{- end }}
-      volumes:
-      {{- range .Values.storage.volumes }}
-        - name: {{ .name }}
-          {{- if eq .type "host" }}
-          hostPath:
-            path: {{ .hostPath }}
-          {{- else if eq .type "emptyDir" }}
-          emptyDir:
-            {{- if .size }}
-            sizeLimit: {{ .size }}
-            {{- else }}
-            emptyDir: {}
-            {{- end }}
-          {{- end }}
-      {{- end }}
-          {{- end }}
+      volumeClaimTemplates:
+      - metadata:
+          name: data
+        spec:
+          accessModes:
+          - ReadWriteOnce
+          storageClassName: local-path
+          resources:
+            requests:
+              storage: 1Gi
 {{- end }}

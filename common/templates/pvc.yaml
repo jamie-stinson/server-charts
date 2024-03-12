@@ -1,0 +1,15 @@
+# {{- $replicaCount := .Values.replicaCount -}}
+# {{- range $i := until $replicaCount }}
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: statefulset-pvc-{{ $i }}
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   storageClassName: local-path
+#   resources:
+#     requests:
+#       storage: 1Gi
+# ---
+# {{- end }}
