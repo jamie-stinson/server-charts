@@ -1,4 +1,4 @@
-{{- if eq .Values.type "statefulSet" }}
+{{- if eq .Values.type "statefulset" }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -71,18 +71,70 @@ spec:
             {{- end }}
             {{- end }}
           {{- end }}
+          # Probes are kept as in the original deployment template
           {{- if .Values.probes.readiness.enabled }}
           readinessProbe:
-            {{- template logic for readiness probe }}
+            {{- if eq .Values.probes.readiness.type "tcp" }}
+            tcpSocket:
+              port: {{ .Values.probes.readiness.tcpPort }}
+            {{- else if eq .Values.probes.readiness.type "http" }}
+            httpGet:
+              path: {{ .Values.probes.readiness.httpPath }}
+              port: {{ .Values.probes.readiness.httpPort }}
+            {{- else if eq .Values.probes.readiness.type "exec" }}
+            exec:
+              command:
+                - {{ .Values.probes.readiness.execCommand }}
+            {{- end }}
+            initialDelaySeconds: {{ .Values.probes.readiness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.readiness.periodSeconds }}
+            timeoutSeconds: {{ .Values.probes.readiness.timeoutSeconds }}
+            successThreshold: {{ .Values.probes.readiness.successThreshold }}
+            failureThreshold: {{ .Values.probes.readiness.failureThreshold }}
           {{- end }}
+
           {{- if .Values.probes.liveness.enabled }}
           livenessProbe:
-            {{- template logic for liveness probe }}
+            {{- if eq .Values.probes.liveness.type "tcp" }}
+            tcpSocket:
+              port: {{ .Values.probes.liveness.tcpPort }}
+            {{- else if eq .Values.probes.liveness.type "http" }}
+            httpGet:
+              path: {{ .Values.probes.liveness.httpPath }}
+              port: {{ .Values.probes.liveness.httpPort }}
+            {{- else if eq .Values.probes.liveness.type "exec" }}
+            exec:
+              command:
+                - {{ .Values.probes.liveness.execCommand }}
+            {{- end }}
+            initialDelaySeconds: {{ .Values.probes.liveness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.liveness.periodSeconds }}
+            timeoutSeconds: {{ .Values.probes.liveness.timeoutSeconds }}
+            successThreshold: {{ .Values.probes.liveness.successThreshold }}
+            failureThreshold: {{ .Values.probes.liveness.failureThreshold }}
           {{- end }}
+
           {{- if .Values.probes.startup.enabled }}
           startupProbe:
-            {{- template logic for startup probe }}
+            {{- if eq .Values.probes.startup.type "tcp" }}
+            tcpSocket:
+              port: {{ .Values.probes.startup.tcpPort }}
+            {{- else if eq .Values.probes.startup.type "http" }}
+            httpGet:
+              path: {{ .Values.probes.startup.httpPath }}
+              port: {{ .Values.probes.startup.httpPort }}
+            {{- else if eq .Values.probes.startup.type "exec" }}
+            exec:
+              command:
+                - {{ .Values.probes.startup.execCommand }}
+            {{- end }}
+            initialDelaySeconds: {{ .Values.probes.startup.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.startup.periodSeconds }}
+            timeoutSeconds: {{ .Values.probes.startup.timeoutSeconds }}
+            successThreshold: {{ .Values.probes.startup.successThreshold }}
+            failureThreshold: {{ .Values.probes.startup.failureThreshold }}
           {{- end }}
+          # Volume mounts and volumes section remains the same
           {{- if .Values.storage.enabled }}
           volumeMounts:
             {{- range .Values.storage.volumes }}
@@ -90,17 +142,20 @@ spec:
               mountPath: {{ .mountPath }}
               readOnly: {{ .readOnly }}
             {{- end }}
+      volumes:
+      {{- range .Values.storage.volumes }}
+        - name: {{ .name }}
+          {{- if eq .type "host" }}
+          hostPath:
+            path: {{ .hostPath }}
+          {{- else if eq .type "emptyDir" }}
+          emptyDir:
+            {{- if .size }}
+            sizeLimit: {{ .size }}
+            {{- else }}
+            emptyDir: {}
+            {{- end }}
           {{- end }}
-  {{- if .Values.storage.enabled }}
-  volumeClaimTemplates:
-  {{- range .Values.storage.volumeClaims }}
-  - metadata:
-      name: {{ .name }}
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      resources:
-        requests:
-          storage: {{ .size }}
-  {{- end }}
-  {{- end }}
+      {{- end }}
+          {{- end }}
 {{- end }}

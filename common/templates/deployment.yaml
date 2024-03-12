@@ -39,20 +39,6 @@ spec:
                   key: {{ .name }}
             {{- end }}
             {{- end }}
-          # securityContext:
-            # privileged: false
-            # readOnlyRootFilesystem: false
-            # allowPrivilegeEscalation: true
-            # capabilities:
-            #   drop:
-            #     - all  
-            # runAsNonRoot: false
-            # runAsUser: {{ .Values.securityContext.group }}
-            # runAsGroup: {{ .Values.securityContext.group }}
-            # fsGroup: {{ .Values.securityContext.group }}
-            # fsGroupChangePolicy: "Always"
-            # seccompProfile:
-            #   type: RuntimeDefault
           {{- if .Values.resources.enabled }}
           resources:
             requests:
