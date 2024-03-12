@@ -71,8 +71,8 @@ spec:
             {{- end }}
             {{- end }}
           {{- end }}
-          # Probes are kept as in the original deployment template
           {{- if .Values.probes.readiness.enabled }}
+          # Readiness Probe
           readinessProbe:
             {{- if eq .Values.probes.readiness.type "tcp" }}
             tcpSocket:
@@ -94,6 +94,7 @@ spec:
           {{- end }}
 
           {{- if .Values.probes.liveness.enabled }}
+          # Liveness Probe
           livenessProbe:
             {{- if eq .Values.probes.liveness.type "tcp" }}
             tcpSocket:
@@ -115,6 +116,7 @@ spec:
           {{- end }}
 
           {{- if .Values.probes.startup.enabled }}
+          # Startup Probe
           startupProbe:
             {{- if eq .Values.probes.startup.type "tcp" }}
             tcpSocket:
@@ -134,7 +136,7 @@ spec:
             successThreshold: {{ .Values.probes.startup.successThreshold }}
             failureThreshold: {{ .Values.probes.startup.failureThreshold }}
           {{- end }}
-          # Volume mounts and volumes section remains the same
+
           {{- if .Values.storage.enabled }}
           volumeMounts:
             {{- range .Values.storage.volumes }}
@@ -152,4 +154,5 @@ spec:
           resources:
             requests:
               storage: 1Gi
+          {{- end}}
 {{- end }}
