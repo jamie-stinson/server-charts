@@ -1,0 +1,21 @@
+apiVersion: v2
+appVersion: 0.0.26
+version: 0.0.26
+dependencies:
+  - name: local-path-provisioner
+    version: 0.0.26
+    repository: local-path-provisioner
+    condition: ""
+    alias: local-path-provisioner
+    tags: []
+    import-values: []
+deprecated: false
+description: Use HostPath for persistent local storage with Kubernetes
+keywords:
+  - storage
+  - hostpath
+kubeVersion: ">=1.24.0-0"
+name: local-path-provisioner
+sources:
+  - https://github.com/rancher/local-path-provisioner.git
+type: application
