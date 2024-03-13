@@ -1,3 +1,0 @@
-istio-base:
-  global:
-    istioNamespace: platform-mesh

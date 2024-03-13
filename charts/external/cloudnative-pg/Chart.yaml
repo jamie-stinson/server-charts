@@ -1,0 +1,24 @@
+apiVersion: v2
+appVersion: 1.22.1
+version: 0.20.1
+dependencies:
+  - name: cloudnative-pg
+    version: 0.20.1
+    repository: https://cloudnative-pg.io/charts/
+    condition: ""
+    alias: cloudnative-pg
+    tags: []
+    import-values: []
+deprecated: false
+description: CloudNativePG Operator Helm Chart
+keywords:
+  - operator
+  - controller
+  - postgresql
+  - postgres
+  - database
+kubeVersion: ">=1.24.0-0"
+name: cloudnative-pg
+sources:
+  - https://github.com/cloudnative-pg/charts
+type: application

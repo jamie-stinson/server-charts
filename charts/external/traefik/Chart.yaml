@@ -1,0 +1,23 @@
+apiVersion: v2
+appVersion: v2.11.0
+version: 26.1.0
+dependencies:
+  - name: traefik
+    version: 26.1.0
+    repository: https://traefik.github.io/charts
+    condition: ""
+    alias: traefik
+    tags: []
+    import-values: []
+deprecated: false
+description: A Traefik based Kubernetes ingress controller
+keywords:
+  - traefik
+  - ingress
+  - networking
+kubeVersion: ">=1.24.0-0"
+name: traefik
+sources:
+  - https://github.com/traefik/traefik
+  - https://github.com/traefik/traefik-helm-chart
+type: application

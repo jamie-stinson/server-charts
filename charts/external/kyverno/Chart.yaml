@@ -1,0 +1,31 @@
+apiVersion: v2
+appVersion: v1.11.4
+version: 3.1.4
+dependencies:
+  - name: kyverno
+    version: 3.1.4
+    repository: https://kyverno.github.io/kyverno/
+    condition: ""
+    alias: kyverno
+    tags: []
+    import-values: []
+deprecated: false
+description: Kubernetes Native Policy Management
+keywords:
+  - kubernetes
+  - nirmata
+  - policy agent
+  - policy
+  - validating webhook
+  - admission controller
+  - mutation
+  - mutate
+  - validate
+  - generate
+  - supply chain
+  - security
+kubeVersion: ">=1.24.0-0"
+name: kyverno
+sources:
+  - https://github.com/kyverno/kyverno
+type: application

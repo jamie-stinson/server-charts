@@ -1,0 +1,7 @@
+cert-manager:
+  installCRDs: true
+
+  global:
+    leaderElection:
+      namespace: platform-security
+  namespace: platform-security
