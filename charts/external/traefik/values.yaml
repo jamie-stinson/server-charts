@@ -18,12 +18,12 @@ traefik:
     traefik:
       port: 9000
       expose: false
-      exposeInternal: false
+      exposeInternal: true
       protocol: TCP
     metrics:
       port: 9100
       expose: false
-      exposeInternal: false
+      exposeInternal: true
       protocol: TCP
     web:
       port: 80
