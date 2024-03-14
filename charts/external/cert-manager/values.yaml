@@ -1,7 +1,29 @@
 cert-manager:
-  installCRDs: true
+  crds:
+    enabled: true
+    keep: false
 
   global:
     leaderElection:
       namespace: platform-security
   namespace: platform-security
+
+  enableCertificateOwnerRef: true
+
+  replicaCount: 2
+  podDisruptionBudget:
+    enabled: true
+    maxUnavailable: 1
+
+  webhook:
+    replicaCount: 2
+    podDisruptionBudget:
+      enabled: true
+      maxUnavailable: 1
+
+  cainjector:
+    enabled: true
+    replicaCount: 2
+    podDisruptionBudget:
+      enabled: true
+      maxUnavailable: 1
