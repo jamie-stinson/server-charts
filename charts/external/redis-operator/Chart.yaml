@@ -4,7 +4,7 @@ version: 3.3.0
 dependencies:
   - name: redis-operator
     version: 3.3.0
-    repository: https://prometheus-community.github.io/helm-charts
+    repository: https://spotahome.github.io/redis-operator
     condition: ""
     alias: redis-operator
     tags: []
