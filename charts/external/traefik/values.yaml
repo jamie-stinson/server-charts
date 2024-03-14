@@ -17,11 +17,13 @@ traefik:
   ports:
     traefik:
       port: 9000
+      exposedPort: 9000
       expose: false
       exposeInternal: true
       protocol: TCP
     metrics:
       port: 9100
+      exposedPort: 9100
       expose: false
       exposeInternal: true
       protocol: TCP
