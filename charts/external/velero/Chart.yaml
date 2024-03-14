@@ -1,0 +1,20 @@
+apiVersion: v2
+appVersion: 1.13.0
+version: 6.0.0
+dependencies:
+  - name: velero
+    version: 6.0.0
+    repository: https://velero.github.io/charts
+    condition: ""
+    alias: velero
+    tags: []
+    import-values: []
+deprecated: false
+description: A Helm chart for velero
+keywords:
+  - velero
+kubeVersion: ">=1.24.0-0"
+name: velero
+sources:
+- https://github.com/vmware-tanzu/velero
+type: application

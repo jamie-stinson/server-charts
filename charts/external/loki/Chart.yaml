@@ -1,0 +1,22 @@
+apiVersion: v2
+appVersion: 2.9.4
+version: 5.43.6
+dependencies:
+  - name: loki
+    version: 5.43.6
+    repository: https://grafana.github.io/helm-charts
+    condition: ""
+    alias: loki
+    tags: []
+    import-values: []
+deprecated: false
+description: Helm chart for Grafana Loki in simple, scalable mode
+keywords:
+  - loki
+kubeVersion: ">=1.24.0-0"
+name: loki
+sources:
+  - https://github.com/grafana/loki
+  - https://grafana.com/oss/loki/
+  - https://grafana.com/docs/loki/latest/
+type: application
