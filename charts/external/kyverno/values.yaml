@@ -8,18 +8,22 @@ kyverno:
     podDisruptionBudget:
       enabled: true
       maxUnavailable: 1
+      minAvailable: []
   backgroundController:
     replicas: 2
     podDisruptionBudget:
       enabled: true
       maxUnavailable: 1
+      minAvailable: []
   cleanupController:
     replicas: 2
     podDisruptionBudget:
       enabled: true
       maxUnavailable: 1
+      minAvailable: []
   reportsController:
     replicas: 2
     podDisruptionBudget:
       enabled: true
       maxUnavailable: 1
+      minAvailable: []
