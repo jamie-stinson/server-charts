@@ -20,3 +20,7 @@ kube-prometheus-stack:
     podDisruptionBudget:
       enabled: true
       maxUnavailable: 1
+  prometheus-node-exporter:
+    hostRootFsMount:
+      enabled: false
+      mountPropagation: "HostToContainer"
