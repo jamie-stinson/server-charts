@@ -27,6 +27,9 @@ spec:
   {{- if .Values.service.headless }}
   clusterIP: None
   {{- end }}
+  {{- if .Values.service.publishNotReadyAddresse }}
+  publishNotReadyAddresses: true
+  {{- end }}
   ports:
   {{- range .Values.service.clusterip }}
   - name: {{ .name }}

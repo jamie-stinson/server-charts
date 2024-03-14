@@ -4,6 +4,7 @@ kind: StatefulSet
 metadata:
   name: {{ .Release.Name }}
 spec:
+  podManagementPolicy: OrderedReady
   {{- if .Values.service.clusterip }}
   serviceName: "{{ .Release.Name }}-clusterip"
   {{- end}}
@@ -17,10 +18,23 @@ spec:
         app: {{ .Release.Name }}
     spec:
       serviceAccountName: {{ .Release.Name }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      {{- if .Values.initContainers }}
+      initContainers:
+        {{- toYaml .Values.initContainers | nindent 8 }}
+      {{- end }}
       containers:
         - name: {{ .Release.Name }}
           image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           env:
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
             - name: PUID
               value: "556"
             - name: PGID
@@ -51,6 +65,10 @@ spec:
               cpu: {{ .Values.resources.limits.cpu }}
               memory: {{ .Values.resources.limits.memory }}
               gpu: {{ .Values.resources.limits.gpu }}
+          {{- end }}
+          {{- if .Values.containerCommands }}
+          command:
+          {{- toYaml .Values.containerCommands | nindent 12 }}
           {{- end }}
           {{- if .Values.containerArgs }}
           args:
@@ -84,7 +102,7 @@ spec:
             {{- else if eq .Values.probes.readiness.type "exec" }}
             exec:
               command:
-                - {{ .Values.probes.readiness.execCommand }}
+              {{- toYaml .Values.probes.readiness.commands | nindent 14 }}
             {{- end }}
             initialDelaySeconds: {{ .Values.probes.readiness.initialDelaySeconds }}
             periodSeconds: {{ .Values.probes.readiness.periodSeconds }}
@@ -92,6 +110,11 @@ spec:
             successThreshold: {{ .Values.probes.readiness.successThreshold }}
             failureThreshold: {{ .Values.probes.readiness.failureThreshold }}
           {{- end }}
+
+          securityContext:
+              capabilities:
+                add:
+                  - IPC_LOCK
 
           {{- if .Values.probes.liveness.enabled }}
           # Liveness Probe
@@ -106,7 +129,7 @@ spec:
             {{- else if eq .Values.probes.liveness.type "exec" }}
             exec:
               command:
-                - {{ .Values.probes.liveness.execCommand }}
+              {{- toYaml .Values.probes.liveness.commands | nindent 14 }}
             {{- end }}
             initialDelaySeconds: {{ .Values.probes.liveness.initialDelaySeconds }}
             periodSeconds: {{ .Values.probes.liveness.periodSeconds }}
@@ -128,7 +151,7 @@ spec:
             {{- else if eq .Values.probes.startup.type "exec" }}
             exec:
               command:
-                - {{ .Values.probes.startup.execCommand }}
+              {{- toYaml .Values.probes.startup.commands | nindent 14 }}
             {{- end }}
             initialDelaySeconds: {{ .Values.probes.startup.initialDelaySeconds }}
             periodSeconds: {{ .Values.probes.startup.periodSeconds }}
@@ -137,16 +160,29 @@ spec:
             failureThreshold: {{ .Values.probes.startup.failureThreshold }}
           {{- end }}
 
-          {{- if .Values.storage.enabled }}
           volumeMounts:
+            - name: podinfo
+              mountPath: /etc/podinfo
+              readOnly: false
+            {{- if .Values.storage.enabled }}              
             {{- range .Values.storage.volumes }}
             - name: {{ .name }}
               mountPath: {{ .mountPath }}
               readOnly: {{ .readOnly }}
             {{- end }}
+  volumes:
+  # Insert our pre-baked Redis configuration file into /conf/redis.conf
+  - name: conf
+    configMap:
+      name: redis-cluster-config
+      items: 
+      - key: redis.conf
+        path: redis.conf
+      - key: bootstrap-pod.sh  # TODO: Move this or extract it into its own Docker image
+        path: bootstrap-pod.sh
   volumeClaimTemplates:
   - metadata:
-      name: data
+      name: datadir
     spec:
       accessModes: [ "ReadWriteOnce" ]
       storageClassName: "local-path"
