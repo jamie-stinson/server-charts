@@ -102,7 +102,7 @@ spec:
             {{- else if eq .Values.probes.readiness.type "exec" }}
             exec:
               command:
-              {{- toYaml .Values.probes.readiness.commands | nindent 14 }}
+              {{- toYaml .Values.probes.readiness.execCommands | nindent 14 }}
             {{- end }}
             initialDelaySeconds: {{ .Values.probes.readiness.initialDelaySeconds }}
             periodSeconds: {{ .Values.probes.readiness.periodSeconds }}
@@ -129,7 +129,7 @@ spec:
             {{- else if eq .Values.probes.liveness.type "exec" }}
             exec:
               command:
-              {{- toYaml .Values.probes.liveness.commands | nindent 14 }}
+              {{- toYaml .Values.probes.liveness.execCommands | nindent 14 }}
             {{- end }}
             initialDelaySeconds: {{ .Values.probes.liveness.initialDelaySeconds }}
             periodSeconds: {{ .Values.probes.liveness.periodSeconds }}
@@ -151,7 +151,7 @@ spec:
             {{- else if eq .Values.probes.startup.type "exec" }}
             exec:
               command:
-              {{- toYaml .Values.probes.startup.commands | nindent 14 }}
+              {{- toYaml .Values.probes.startup.execCommands | nindent 14 }}
             {{- end }}
             initialDelaySeconds: {{ .Values.probes.startup.initialDelaySeconds }}
             periodSeconds: {{ .Values.probes.startup.periodSeconds }}
