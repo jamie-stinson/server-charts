@@ -112,9 +112,9 @@ spec:
           {{- end }}
 
           securityContext:
-              capabilities:
-                add:
-                  - IPC_LOCK
+            capabilities:
+              add:
+                - IPC_LOCK
 
           {{- if .Values.probes.liveness.enabled }}
           # Liveness Probe
