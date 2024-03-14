@@ -1,0 +1,2 @@
+velero:
+  deployNodeAgent: true
