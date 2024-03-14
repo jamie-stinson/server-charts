@@ -1,8 +1,7 @@
 type: statefulset
 replicaCount: 6
 
-podDisruptionBudget:
-  maxUnavailable: 0
+podDisruptionBudget: 0
 terminationGracePeriodSeconds: 10
 
 containerEnvs:
