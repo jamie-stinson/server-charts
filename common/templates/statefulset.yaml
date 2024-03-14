@@ -196,7 +196,7 @@ spec:
         - path: "pod_namespace"
           fieldRef:
             fieldPath: metadata.namespace
-  volumeClaimTemplatses:
+  volumeClaimTemplates:
   - metadata:
       name: datadir
     spec:
