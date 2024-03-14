@@ -33,6 +33,9 @@ traefik:
       expose: true
       exposeInternal: false
       protocol: TCP
+      redirectTo:
+        port: websecure
+        priority: 1
     websecure:
       port: 443
       exposedPort: 443
