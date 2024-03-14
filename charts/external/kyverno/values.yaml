@@ -1,5 +1,25 @@
 kyverno:
-  config:
-    excludeKyvernoNamespace: false
   crds:
     install: true
+  config:
+    excludeKyvernoNamespace: false
+  admissionController:
+    replicas: 2
+    podDisruptionBudget:
+      enabled: true
+      maxUnavailable: 1
+  backgroundController:
+    replicas: 2
+    podDisruptionBudget:
+      enabled: true
+      maxUnavailable: 1
+  cleanupController:
+    replicas: 2
+    podDisruptionBudget:
+      enabled: true
+      maxUnavailable: 1
+  reportsController:
+    replicas: 2
+    podDisruptionBudget:
+      enabled: true
+      maxUnavailable: 1

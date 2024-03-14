@@ -1,0 +1,22 @@
+kube-prometheus-stack:
+  crds:
+    enabled: true
+  alertmanager:
+    alertmanagerSpec:
+      replicas: 2
+    podDisruptionBudget:
+      enabled: true
+      maxUnavailable: 1
+  prometheusOperator:
+    admissionWebhooks:
+      deployment:
+        replicas: 2
+        podDisruptionBudget:
+          enabled: true
+          maxUnavailable: 1
+  prometheus:
+    prometheusSpec:
+      replicas: 2
+    podDisruptionBudget:
+      enabled: true
+      maxUnavailable: 1
