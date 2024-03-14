@@ -180,7 +180,23 @@ spec:
         path: redis.conf
       - key: bootstrap-pod.sh  # TODO: Move this or extract it into its own Docker image
         path: bootstrap-pod.sh
-  volumeClaimTemplates:
+  # The init container will use this info to find cluster peers
+  - name: podinfo
+    downwardAPI:
+      items:
+        - path: "labels"
+          fieldRef:
+            fieldPath: metadata.labels
+        - path: "annotations"
+          fieldRef:
+            fieldPath: metadata.annotations
+        - path: "pod_name"
+          fieldRef:
+            fieldPath: metadata.name
+        - path: "pod_namespace"
+          fieldRef:
+            fieldPath: metadata.namespace
+  volumeClaimTemplatses:
   - metadata:
       name: datadir
     spec:
@@ -191,3 +207,4 @@ spec:
           storage: 1Gi
             {{- end}}
 {{- end }}
+

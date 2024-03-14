@@ -91,32 +91,6 @@ initContainers:
   - name: init-redis-cluster
     image: busybox:1.28
     command: ['sh', '-c', "until nslookup redis-cluster.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for redis-cluster; sleep 2; done"]
-  volumes:
-  # Insert our pre-baked Redis configuration file into /conf/redis.conf
-  - name: conf
-    configMap:
-      name: redis-cluster-config
-      items: 
-      - key: redis.conf
-        path: redis.conf
-      - key: bootstrap-pod.sh  # TODO: Move this or extract it into its own Docker image
-        path: bootstrap-pod.sh
-  # The init container will use this info to find cluster peers
-  - name: podinfo
-    downwardAPI:
-      items:
-        - path: "labels"
-          fieldRef:
-            fieldPath: metadata.labels
-        - path: "annotations"
-          fieldRef:
-            fieldPath: metadata.annotations
-        - path: "pod_name"
-          fieldRef:
-            fieldPath: metadata.name
-        - path: "pod_namespace"
-          fieldRef:
-            fieldPath: metadata.namespace
 
 image:
   registry: "docker.io"
