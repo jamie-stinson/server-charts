@@ -4,7 +4,7 @@ version: 6.0.0
 dependencies:
   - name: velero
     version: 6.0.0
-    repository: https://velero.github.io/charts
+    repository: https://vmware-tanzu.github.io/helm-charts/
     condition: ""
     alias: velero
     tags: []
