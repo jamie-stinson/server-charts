@@ -192,6 +192,5 @@ spec:
             successThreshold: {{ .Values.probes.startup.successThreshold }}
             failureThreshold: {{ .Values.probes.startup.failureThreshold }}
           {{- end }}
-            {{- end}}
 {{- end }}
 
