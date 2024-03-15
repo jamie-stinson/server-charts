@@ -9,6 +9,15 @@ spec:
   serviceName: "{{ .Release.Name }}-clusterip"
   {{- end}}
   replicas: {{ .Values.replicaCount }}
+  volumeClaimTemplates:
+  - metadata:
+      name: datadir
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "local-path"
+      resources:
+        requests:
+          storage: 1Gi
   selector:
     matchLabels:
       app: {{ .Release.Name }}
