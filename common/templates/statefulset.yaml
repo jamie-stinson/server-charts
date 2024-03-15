@@ -9,15 +9,6 @@ spec:
   serviceName: "{{ .Release.Name }}-clusterip"
   {{- end}}
   replicas: {{ .Values.replicaCount }}
-  volumeClaimTemplates:
-  - metadata:
-      name: datadir
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      storageClassName: "local-path"
-      resources:
-        requests:
-          storage: 1Gi
   selector:
     matchLabels:
       app: {{ .Release.Name }}
@@ -60,6 +51,13 @@ spec:
       {{- end }}
       containers:
         - name: {{ .Release.Name }}
+          volumeMounts:
+            - name: conf
+              mountPath: /conf
+              readOnly: false
+            - name: podinfo
+              mountPath: /etc/podinfo
+              readOnly: false
           image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           env:
             - name: POD_NAMESPACE
@@ -194,17 +192,6 @@ spec:
             successThreshold: {{ .Values.probes.startup.successThreshold }}
             failureThreshold: {{ .Values.probes.startup.failureThreshold }}
           {{- end }}
-
-          volumeMounts:
-            - name: podinfo
-              mountPath: /etc/podinfo
-              readOnly: false
-            {{- if .Values.storage.enabled }}              
-            {{- range .Values.storage.volumes }}
-            - name: {{ .name }}
-              mountPath: {{ .mountPath }}
-              readOnly: {{ .readOnly }}
-            {{- end }}
             {{- end}}
 {{- end }}
 
