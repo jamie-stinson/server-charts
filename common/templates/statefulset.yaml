@@ -32,7 +32,9 @@ spec:
         {{- toYaml .Values.initContainers | nindent 8 }}
       {{- end }}
       containers:
+          # Name  
         - name: {{ .Release.Name }}
+        
           # Image
           image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
 
