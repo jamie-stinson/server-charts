@@ -10,8 +10,13 @@ containerEnvs:
 
 containerCommands:
   - sh
+
 containerArgs:
   - /conf/bootstrap-pod.sh
+
+securityContext:
+  capabilities:
+    - IPC_LOCK
 
 configMaps:
   - name: redis-cluster-config
@@ -30,7 +35,7 @@ configMaps:
         set -ex
 
         # Find which member of the Stateful Set this pod is running
-        # e.g. "redis-cluster-0" -> "0"
+        # e.g. "redis-0" -> "0"
         PET_ORDINAL=$(cat /etc/podinfo/pod_name | rev | cut -d- -f1)
         MY_SHARD=$(($PET_ORDINAL % $NUM_SHARDS))
 
@@ -82,8 +87,16 @@ probes:
     timeoutSeconds: 5
     successThreshold: 1
     failureThreshold: 3
-  startup:
-    enabled: false
+
+resources:
+  enabled: true
+  requests:
+    cpu: "100m"
+    memory: "256Mi"
+  limits:
+    cpu: "100m"
+    memory: "256Mi"
+    gpu: "1"
 
 initContainers:
     # Wait for the redis-cluster service to exist. We need it to resolve the hostnames of our nodes
@@ -109,9 +122,32 @@ service:
       port: 16379
 
 storage:
-  enabled: false
+  enabled: true
   volumes:
-    - name: "data"
-      type: "pvc"
-      mountPath: "/var/lib/postgresql/data"
-      readOnly: false
+    - name: "config"
+      type: "emptyDir"
+      readOnly: true
+      mountPath: "/conf"
+      configMapName: "redis-cluster-config"
+      items:
+        - key: "redis.conf"
+          path: "redis.conf"
+        - key: "bootstrap-pod.sh"
+          path: "bootstrap-pod.sh"
+    - name: "podinfo"
+      type: "downwardAPI"
+      readOnly: true
+      mountPath: "/etc/podinfo"
+      items:
+        - path: "labels"
+          fieldRef:
+            fieldPath: "metadata.labels"
+        - path: "annotations"
+          fieldRef:
+            fieldPath: "metadata.annotations"
+        - path: "pod_name"
+          fieldRef:
+            fieldPath: "metadata.name"
+        - path: "pod_namespace"
+          fieldRef:
+            fieldPath: "metadata.namespace"
