@@ -43,7 +43,7 @@ configMaps:
         redis-server /conf/redis.conf &
     
         # TODO: Wait until redis-server process is ready
-        sleep 1
+        sleep 1999999999999
 
         if [ $PET_ORDINAL -lt $NUM_SHARDS ]; then
           # Set up primary nodes. Divide slots into equal(ish) contiguous blocks
