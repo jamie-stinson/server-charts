@@ -126,7 +126,7 @@ storage:
   volumes:
     - name: "config"
       type: "configMap"
-      readOnly: true
+      readOnly: false
       mountPath: "/conf"
       configMapName: "redis-cluster-config"
       items:
@@ -136,7 +136,7 @@ storage:
           path: "bootstrap-pod.sh"
     - name: "podinfo"
       type: "downwardAPI"
-      readOnly: true
+      readOnly: false
       mountPath: "/etc/podinfo"
       items:
         - path: "labels"
