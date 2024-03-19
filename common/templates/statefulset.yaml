@@ -20,11 +20,9 @@ spec:
       spec:
         accessModes: {{ .accessModes | toYaml | nindent 10 }}
         storageClassName: {{ .storageClass }}
-        {{- if .size }}
         resources:
           requests:
-            storage: {{ .size }}
-        {{- end }}
+            storage: {{ .size | default "1Gi" }}
     {{- end }}
     {{- end }}
   {{- end }}
