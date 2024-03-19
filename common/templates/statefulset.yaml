@@ -9,6 +9,7 @@ spec:
   serviceName: "{{ .Release.Name }}-clusterip"
   {{- end}}
   replicas: {{ .Values.replicaCount }}
+
   {{- if .Values.storage.enabled }}
   {{- if eq .Values.type "statefulset" }}
   volumeClaimTemplates:
@@ -17,7 +18,7 @@ spec:
     - metadata:
         name: {{ .name }}
       spec:
-        accessModes: {{ .accessModes | toYaml | nindent 12 }}
+        accessModes: {{ .accessModes | toYaml | nindent 10 }}
         storageClassName: {{ .storageClass }}
         {{- if .size }}
         resources:
@@ -28,6 +29,7 @@ spec:
     {{- end }}
   {{- end }}
   {{- end }}
+
   selector:
     matchLabels:
       app: {{ .Release.Name }}
