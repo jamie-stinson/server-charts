@@ -82,6 +82,15 @@ spec:
                   key: {{ .name }}
             {{- end }}
             {{- end }}
+            {{- if .Values.containerEnvsSecret }}
+            {{- range .Values.containerEnvsSecret }}
+            - name: {{ .name }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .secret }}
+                  key: {{ .key }}
+            {{- end }}
+            {{- end }}
 
           # Resources      
           {{- if .Values.resources.enabled }}

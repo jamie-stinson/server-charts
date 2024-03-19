@@ -1,0 +1,50 @@
+type: statefulset
+replicaCount: 3
+
+podDisruptionBudget: 0
+terminationGracePeriodSeconds: 10
+
+containerEnvsSecret:
+  - name: POSTGRES_DB
+    configMap: postgres-secret
+  - name: POSTGRES_USER
+    configMap: postgres-secret
+  - name: POSTGRES_PASSWORD
+    configMap: postgres-secret
+
+securityContext:
+  user: 70
+
+resources:
+  enabled: true
+  requests:
+    cpu: "100m"
+    memory: "256Mi"
+  limits:
+    cpu: "100m"
+    memory: "256Mi"
+    gpu: "0"
+
+image:
+  registry: "docker.io"
+  repository: "postgres"
+  tag: "16.2-alpine"
+
+service:
+  enabled: true
+  headless: true
+  publishNotReadyAddresses: true
+  clusterip:
+    - name: client
+      protocol: TCP
+      port: 5432
+
+storage:
+  enabled: true
+  volumes:
+    - name: datadir
+      type: "template"
+      accessModes:
+      - ReadWriteOnce
+      storageClass: "local-path"
+      readOnly: false
