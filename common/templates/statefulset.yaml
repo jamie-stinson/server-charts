@@ -18,7 +18,7 @@ spec:
     - metadata:
         name: {{ .name }}
       spec:
-        accessModes: {{ .accessModes | toYaml | nindent 10 }}
+        accessModes: [ "ReadWriteOnce" ]
         storageClassName: {{ .storageClass }}
         resources:
           requests:
