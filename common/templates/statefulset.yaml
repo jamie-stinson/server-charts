@@ -136,12 +136,12 @@ spec:
             # seccompProfile:
             #   type: RuntimeDefault
             capabilities:
-              drop:
-              - ALL
               add:
               {{- range .Values.securityContext.capabilities }}
               - {{ . }}
               {{- end }}
+              drop:
+              - ALL              
 
           {{- if .Values.probes.readiness.enabled }}
           # Readiness Probe

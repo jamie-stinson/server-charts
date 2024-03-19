@@ -16,8 +16,8 @@ containerArgs:
 
 securityContext:
   capabilities:
-    - CAP_IPC_LOCK
-    - CAP_SYS_RESOURCE
+    - SYS_RESOURCE
+    - IPC_LOCK
 
 configMaps:
   - name: redis-cluster-config
