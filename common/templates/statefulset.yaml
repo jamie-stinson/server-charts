@@ -121,19 +121,20 @@ spec:
             {{- end }}
           # Security Context
           securityContext:
-            runAsUser: 1001
-            runAsGroup: 1001
-            fsGroup: 1001
+            runAsUser: 556
+            runAsGroup: 556
+            fsGroup: 556
             fsGroupChangePolicy: "Always"
             runAsNonRoot: true
             allowPrivilegeEscalation: false
+            privileged: false
             readOnlyRootFilesystem: true
             seLinuxOptions: null
             seccompProfile:
               type: RuntimeDefault
             capabilities:
-              drop:
-              - ALL
+              # drop:
+              # - ALL
               add:
               {{- range .Values.securityContext.capabilities }}
               - {{ . }}
