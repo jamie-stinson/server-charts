@@ -124,9 +124,9 @@ spec:
             {{- end }}
           # Security Context
           securityContext:
-            runAsUser: 556
-            runAsGroup: 556
-            fsGroup: 556
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
             fsGroupChangePolicy: "Always"
             runAsNonRoot: true
             allowPrivilegeEscalation: false
