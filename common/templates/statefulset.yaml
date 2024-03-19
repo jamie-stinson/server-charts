@@ -126,7 +126,7 @@ spec:
             fsGroup: 1000
             fsGroupChangePolicy: "Always"
             runAsNonRoot: true
-            allowPrivilegeEscalation: false
+            allowPrivilegeEscalation: true
             privileged: true
             readOnlyRootFilesystem: true
             seLinuxOptions: null
