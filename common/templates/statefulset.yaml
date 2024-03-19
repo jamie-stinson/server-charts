@@ -186,63 +186,62 @@ spec:
             failureThreshold: {{ .Values.probes.startup.failureThreshold }}
           {{- end }}
 
-  {{- if .Values.storage.enabled }}
-  # Storage
-            {{- range .Values.storage.volumes }}          
-            {{- if ne .type "template" }}
           volumeMounts:
+            {{- range .Values.storage.volumes }}
+            {{- if ne .type "template" }}
             - name: {{ .name }}
               mountPath: {{ .mountPath }}
-              readOnly: {{ .readOnly }}
-            {{- end }}     
+              readOnly: {{ .readOnly | default false }}
             {{- end }}
-      volumes:
-        {{- range .Values.storage.volumes }}
-          {{- if eq .type "emptyDir" }}
-        - name: {{ .name }}
-          emptyDir:
-            {{- if .ramDisk }}
-            medium: "Memory"
             {{- end }}
-            {{- if .sizeLimit }}
-            sizeLimit: {{ .sizeLimit }}
-            {{- end }}
-          {{- else if eq .type "configMap" }}
-        - name: {{ .name }}
-          configMap:
-            name: {{ .configMapName }}
-            items:
-            {{- range .items }}
-              - key: {{ .key }}
-                path: {{ .path }}
-            {{- end }}
-          {{- else if eq .type "downwardAPI" }}
-        - name: {{ .name }}
-          downwardAPI:
-            items:
-              {{- range .items }}
-              - path: {{ .path }}
-                fieldRef:
-                  fieldPath: {{ .fieldRef.fieldPath }}
-              {{- end }}
+
+  volumes:
+    {{- range .Values.storage.volumes }}
+    {{- if eq .type "configMap" }}
+    - name: {{ .name }}
+      configMap:
+        name: {{ .configMapName }}
+        items:
+          {{- range .items }}
+          - key: {{ .key }}
+            path: {{ .path }}
           {{- end }}
+    {{- else if eq .type "emptyDir" }}
+    - name: {{ .name }}
+      emptyDir:
+        {{- if .ramDisk }}
+        medium: "Memory"
         {{- end }}
-  {{- range .Values.storage.volumes }}
-  {{- if eq .type "template" }}
-  volumeClaimTemplates:
-  - metadata:
-      name: {{ .name }}
-    spec:
-      accessModes: {{ .accessModes | toYaml | nindent 12 }}
-      storageClassName: {{ .storageClass }}
-      {{- if .size }}
-      resources:
-        requests:
-          storage: {{ .size }}
+        {{- if .sizeLimit }}
+        sizeLimit: {{ .sizeLimit }}
+        {{- end }}
+    {{- else if eq .type "downwardAPI" }}
+    - name: {{ .name }}
+      downwardAPI:
+        items:
+          {{- range .items }}
+          - path: {{ .path }}
+            fieldRef:
+              fieldPath: {{ .fieldRef.fieldPath }}
+          {{- end }}
+    {{- end }}
+    {{- end }}
+
+  {{- if .Values.storage.enabled }}
+  # Dynamic provisioning for StatefulSets using volumeClaimTemplates
+  {{- if eq .Values.type "statefulset" }}
+    volumeClaimTemplates:
+      {{- range .Values.storage.volumes }}
+      {{- if eq .type "template" }}
+      - metadata:
+          name: {{ .name }}
+        spec:
+          accessModes: {{ .accessModes | toYaml | nindent 12 }}
+          storageClassName: {{ .storageClass }}
+          resources:
+            requests:
+              storage: {{ .size | default "1Gi" }} # Assuming 'size' is always provided for type 'template'
+      {{- end }}
       {{- end }}
   {{- end }}
   {{- end }}
-  {{- end }}
-{{- end }}
-
-
