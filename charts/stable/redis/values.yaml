@@ -108,7 +108,7 @@ initContainers:
 image:
   registry: "docker.io"
   repository: "redis"
-  tag: "7.2.4"
+  tag: "7.2.4-alpine"
 
 service:
   enabled: true
