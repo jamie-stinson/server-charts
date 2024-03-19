@@ -135,6 +135,9 @@ spec:
             seLinuxOptions: null
             seccompProfile:
               type: RuntimeDefault
+            sysctls:
+            - name: fs.file-max
+              value: "10032"
             capabilities:
               add:
               {{- range .Values.securityContext.capabilities }}
