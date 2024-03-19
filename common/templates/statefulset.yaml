@@ -119,15 +119,16 @@ spec:
               containerPort: {{ .port }}
             {{- end }}
             {{- end }}
-
           # Security Context
           securityContext:
-            runAsUser: 556
-            runAsGroup: 556
-            fsGroup: 556
+            runAsUser: 1001
+            runAsGroup: 1001
+            fsGroup: 1001
             fsGroupChangePolicy: "Always"
             runAsNonRoot: true
             allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            seLinuxOptions: null
             seccompProfile:
               type: RuntimeDefault
             capabilities:
