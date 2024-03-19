@@ -5,11 +5,14 @@ podDisruptionBudget: 0
 terminationGracePeriodSeconds: 10
 
 containerEnvsSecret:
-  - key: POSTGRES_DB
+  - name: DB
+    key: POSTGRES_DB
     secret: postgres-secret
-  - key: POSTGRES_USER
+  - name: USER
+    key: POSTGRES_USER
     secret: postgres-secret
-  - key: POSTGRES_PASSWORD
+  - name: PASS
+    key: POSTGRES_PASSWORD
     secret: postgres-secret
 
 securityContext:
