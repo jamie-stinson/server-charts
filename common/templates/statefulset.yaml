@@ -188,12 +188,14 @@ spec:
 
   {{- if .Values.storage.enabled }}
   # Storage
-          volumeMounts:
+            {{- range .Values.storage.volumes }}          
             {{- if ne .type "template" }}
+          volumeMounts:
             - name: {{ .name }}
               mountPath: {{ .mountPath }}
               readOnly: {{ .readOnly }}
-            {{- end }}              
+            {{- end }}     
+            {{- end }}
       volumes:
         {{- range .Values.storage.volumes }}
           {{- if eq .type "emptyDir" }}
