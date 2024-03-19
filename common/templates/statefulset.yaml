@@ -123,8 +123,8 @@ spec:
           # Security Context
           securityContext:
             capabilities:
-              drop:
-              - ALL
+              # drop:
+              # - ALL
               add:
               {{- range .Values.securityContext.capabilities }}
               - {{ . }}
