@@ -84,7 +84,7 @@ spec:
             {{- end }}
             {{- if .Values.containerEnvsSecret }}
             {{- range .Values.containerEnvsSecret }}
-            - name: {{ .name }}
+            - name: {{ .key }}
               valueFrom:
                 secretKeyRef:
                   name: {{ .secret }}
