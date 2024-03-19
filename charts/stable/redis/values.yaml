@@ -18,41 +18,41 @@ securityContext:
   capabilities:
     - SYS_RESOURCE
     - IPC_LOCK
-    - NET_ADMIN
-    - SYS_MODULE
-    - SYS_ADMIN
-    - SYS_CHROOT
-    - SETPCAP
-    - SETFCAP
-    - SETGID
-    - SETUID
-    - NET_RAW
-    - MKNOD
-    - FOWNER
-    - FSETID
-    - CHOWN
-    - SYS_RAWIO
-    - SYS_PACCT
-    - SYS_NICE
-    - SYS_TIME
-    - SYS_TTY_CONFIG
-    - AUDIT_WRITE
-    # - AUDIT_CONTROL
-    # - MAC_OVERRIDE
-    # - MAC_ADMIN
-    # - SYSLOG
-    # - DAC_OVERRIDE
-    # - DAC_READ_SEARCH
-    # - KILL
-    # - LINUX_IMMUTABLE
-    # - NET_BIND_SERVICE
-    # - NET_BROADCAST
-    # - IPC_OWNER
-    # - SYS_PTRACE
-    # - SYS_BOOT
-    # - LEASE
-    # - WAKE_ALARM
-    # - BLOCK_SUSPEND
+    # - NET_ADMIN
+    # - SYS_MODULE
+    # - SYS_ADMIN
+    # - SYS_CHROOT
+    # - SETPCAP
+    # - SETFCAP
+    # - SETGID
+    # - SETUID
+    # - NET_RAW
+    # - MKNOD
+    # - FOWNER
+    # - FSETID
+    # - CHOWN
+    # - SYS_RAWIO
+    # - SYS_PACCT
+    # - SYS_NICE
+    # - SYS_TIME
+    # - SYS_TTY_CONFIG
+    # - AUDIT_WRITE
+    - AUDIT_CONTROL
+    - MAC_OVERRIDE
+    - MAC_ADMIN
+    - SYSLOG
+    - DAC_OVERRIDE
+    - DAC_READ_SEARCH
+    - KILL
+    - LINUX_IMMUTABLE
+    - NET_BIND_SERVICE
+    - NET_BROADCAST
+    - IPC_OWNER
+    - SYS_PTRACE
+    - SYS_BOOT
+    - LEASE
+    - WAKE_ALARM
+    - BLOCK_SUSPEND
 
 configMaps:
   - name: redis-cluster-config
