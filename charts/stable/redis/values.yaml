@@ -36,6 +36,15 @@ configMaps:
         #!/bin/sh
         set -ex
 
+        if perl -v > /dev/null 2>&1; then
+            echo "Perl is already installed."
+        else
+            echo "Perl is not installed. Installing Perl..."
+            # Update apk repositories and install Perl
+            apk update && apk add perl
+            echo "Perl has been installed."
+        fi
+
         # Find which member of the Stateful Set this pod is running
         # e.g. "redis-0" -> "0"
         PET_ORDINAL=$(cat /etc/podinfo/pod_name | rev | cut -d- -f1)
