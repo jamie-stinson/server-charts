@@ -133,8 +133,8 @@ spec:
             # privileged: true
             # readOnlyRootFilesystem: true
             # seLinuxOptions: null
-            seccompProfile:
-              type: RuntimeDefault
+            # seccompProfile:
+            #   type: RuntimeDefault
             capabilities:
               # drop:
               # - ALL
