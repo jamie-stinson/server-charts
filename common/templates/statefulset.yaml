@@ -186,8 +186,8 @@ spec:
             failureThreshold: {{ .Values.probes.startup.failureThreshold }}
           {{- end }}
 
-      {{- if .Values.storage.enabled }}
-      # Storage
+  {{- if .Values.storage.enabled }}
+  # Storage
           volumeMounts:
             {{- range .Values.storage.volumes }}
             - name: {{ .name }}
@@ -223,7 +223,22 @@ spec:
               {{- end }}
           {{- end }}
         {{- end }}
+  {{- range .Values.storage.volumes }}
+  {{- if eq .type "template" }}
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .name }}
+    spec:
+      accessModes: {{ .accessModes | toYaml | nindent 12 }}
+      storageClassName: {{ .storageClass }}
+      {{- if .size }}
+      resources:
+        requests:
+          storage: {{ .size }}
       {{- end }}
+  {{- end }}
+  {{- end }}
+  {{- end }}
 {{- end }}
 
 

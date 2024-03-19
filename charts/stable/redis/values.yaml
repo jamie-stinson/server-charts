@@ -126,7 +126,7 @@ storage:
   volumes:
     - name: "config"
       type: "configMap"
-      readOnly: false
+      readOnly: true
       mountPath: "/conf"
       configMapName: "redis-cluster-config"
       items:
@@ -151,3 +151,9 @@ storage:
         - path: "pod_namespace"
           fieldRef:
             fieldPath: "metadata.namespace"
+    - name: datadir
+      type: "template"
+      accessModes:
+      - ReadWriteOnce
+      storageClass: "local-path"
+      readOnly: false
