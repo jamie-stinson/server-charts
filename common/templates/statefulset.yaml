@@ -9,15 +9,6 @@ spec:
   serviceName: "{{ .Release.Name }}-clusterip"
   {{- end}}
   replicas: {{ .Values.replicaCount }}
-  volumeClaimTemplates:
-  - metadata:
-      name: datadir
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      storageClassName: "local-path"
-      resources:
-        requests:
-          storage: 1Gi
   selector:
     matchLabels:
       app: {{ .Release.Name }}
@@ -228,20 +219,19 @@ spec:
     {{- end }}
 
   {{- if .Values.storage.enabled }}
-  # Dynamic provisioning for StatefulSets using volumeClaimTemplates
   {{- if eq .Values.type "statefulset" }}
-    volumeClaimTemplates:
-      {{- range .Values.storage.volumes }}
-      {{- if eq .type "template" }}
-      - metadata:
-          name: {{ .name }}
-        spec:
-          accessModes: {{ .accessModes | toYaml | nindent 12 }}
-          storageClassName: {{ .storageClass }}
-          resources:
-            requests:
-              storage: {{ .size | default "1Gi" }} # Assuming 'size' is always provided for type 'template'
-      {{- end }}
-      {{- end }}
+  volumeClaimTemplates:
+    {{- range .Values.storage.volumes }}
+    {{- if eq .type "template" }}
+    - metadata:
+        name: {{ .name }}
+      spec:
+        accessModes: {{ .accessModes | toYaml | nindent 12 }}
+        storageClassName: {{ .storageClass }}
+        resources:
+          requests:
+            storage: {{ .size | default "1Gi" }} # Assuming 'size' is always provided for type 'template'
+    {{- end }}
+    {{- end }}
   {{- end }}
   {{- end }}
