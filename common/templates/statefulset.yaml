@@ -140,8 +140,8 @@ spec:
               {{- range .Values.securityContext.capabilities }}
               - {{ . }}
               {{- end }}
-              drop:
-              - ALL              
+              # drop:
+              # - ALL              
 
           {{- if .Values.probes.readiness.enabled }}
           # Readiness Probe
