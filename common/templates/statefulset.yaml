@@ -194,7 +194,6 @@ spec:
               mountPath: {{ .mountPath }}
               readOnly: {{ .readOnly }}
             {{- end }}              
-            {{- end }}
       volumes:
         {{- range .Values.storage.volumes }}
           {{- if eq .type "emptyDir" }}
