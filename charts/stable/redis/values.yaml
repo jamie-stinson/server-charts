@@ -18,7 +18,7 @@ securityContext:
   capabilities:
     - SYS_RESOURCE
     - IPC_LOCK
-    - DAC_OVERRIDE
+    # - DAC_OVERRIDE
 
 configMaps:
   - name: redis-cluster-config
