@@ -125,7 +125,7 @@ storage:
   enabled: true
   volumes:
     - name: "config"
-      type: "emptyDir"
+      type: "configmap"
       readOnly: true
       mountPath: "/conf"
       configMapName: "redis-cluster-config"
