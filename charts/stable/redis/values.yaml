@@ -21,7 +21,7 @@ securityContext:
     - AUDIT_CONTROL
     - MAC_OVERRIDE
     - MAC_ADMIN
-    # - SYSLOG
+    - SYSLOG
     # - DAC_OVERRIDE
 
 configMaps:
