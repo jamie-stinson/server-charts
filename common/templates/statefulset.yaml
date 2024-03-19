@@ -136,8 +136,8 @@ spec:
             # seccompProfile:
             #   type: RuntimeDefault
             capabilities:
-              # drop:
-              # - ALL
+              drop:
+              - ALL
               add:
               {{- range .Values.securityContext.capabilities }}
               - {{ . }}
