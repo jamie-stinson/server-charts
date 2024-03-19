@@ -196,8 +196,8 @@ spec:
             {{- end }}
       volumes:
         {{- range .Values.storage.volumes }}
-        - name: {{ .name }}
           {{- if eq .type "emptyDir" }}
+        - name: {{ .name }}
           emptyDir:
             {{- if .ramDisk }}
             medium: "Memory"
@@ -206,6 +206,7 @@ spec:
             sizeLimit: {{ .sizeLimit }}
             {{- end }}
           {{- else if eq .type "configMap" }}
+        - name: {{ .name }}
           configMap:
             name: {{ .configMapName }}
             items:
@@ -214,6 +215,7 @@ spec:
                 path: {{ .path }}
             {{- end }}
           {{- else if eq .type "downwardAPI" }}
+        - name: {{ .name }}
           downwardAPI:
             items:
               {{- range .items }}
