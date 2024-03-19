@@ -12,6 +12,9 @@ spec:
 
   {{- if .Values.storage.enabled }}
   {{- if eq .Values.type "statefulset" }}
+  persistentVolumeClaimRetentionPolicy:
+    whenDeleted: Retain
+    whenScaled: Retain
   volumeClaimTemplates:
     {{- range .Values.storage.volumes }}
     {{- if eq .type "template" }}
@@ -130,8 +133,8 @@ spec:
             # privileged: true
             # readOnlyRootFilesystem: true
             # seLinuxOptions: null
-            # seccompProfile:
-            #   type: RuntimeDefault
+            seccompProfile:
+              type: RuntimeDefault
             capabilities:
               # drop:
               # - ALL
