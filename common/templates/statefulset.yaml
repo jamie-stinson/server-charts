@@ -189,10 +189,11 @@ spec:
   {{- if .Values.storage.enabled }}
   # Storage
           volumeMounts:
-            {{- range .Values.storage.volumes }}
+            {{- if ne .type "template" }}
             - name: {{ .name }}
               mountPath: {{ .mountPath }}
               readOnly: {{ .readOnly }}
+            {{- end }}              
             {{- end }}
       volumes:
         {{- range .Values.storage.volumes }}
