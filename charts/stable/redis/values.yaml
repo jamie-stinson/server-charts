@@ -18,6 +18,16 @@ securityContext:
   capabilities:
     - SYS_RESOURCE
     - IPC_LOCK
+    - SYS_CHROOT
+    - SETPCAP
+    - SETFCAP
+    - SETGID
+    - SETUID
+    - NET_RAW
+    - MKNOD
+    - FOWNER
+    - FSETID
+    - CHOWN
 
 configMaps:
   - name: redis-cluster-config
