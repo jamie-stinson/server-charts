@@ -96,7 +96,7 @@ resources:
   limits:
     cpu: "100m"
     memory: "256Mi"
-    gpu: "1"
+    gpu: "0"
 
 initContainers:
     # Wait for the redis-cluster service to exist. We need it to resolve the hostnames of our nodes
