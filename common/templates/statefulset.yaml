@@ -124,9 +124,9 @@ spec:
             {{- end }}
           # Security Context
           securityContext:
-            runAsUser: 999
-            runAsGroup: 999
-            fsGroup: 999
+            runAsUser: {{ .Values.securityContext.user }}
+            runAsGroup: {{ .Values.securityContext.user }}
+            fsGroup: {{ .Values.securityContext.user }}
             fsGroupChangePolicy: "Always"
             runAsNonRoot: true
             allowPrivilegeEscalation: false
@@ -135,9 +135,6 @@ spec:
             seLinuxOptions: null
             seccompProfile:
               type: RuntimeDefault
-            sysctls:
-            - name: fs.file-max
-              value: "10032"
             capabilities:
               add:
               {{- range .Values.securityContext.capabilities }}

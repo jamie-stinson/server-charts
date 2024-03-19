@@ -15,6 +15,7 @@ containerArgs:
   - /conf/bootstrap-pod.sh
 
 securityContext:
+  user: 999
   capabilities:
     - SYS_RESOURCE
     - IPC_LOCK
@@ -42,8 +43,24 @@ configMaps:
 
         redis-server /conf/redis.conf &
     
-        # TODO: Wait until redis-server process is ready
-        sleep 1
+        # Wait until redis-server process is ready
+        REDIS_READY=0
+
+        # Loop until Redis server responds to commands
+        while [ $REDIS_READY -eq 0 ]; do
+          # Attempt to send a PING command to Redis using redis-cli
+          # and check if the response is "PONG"
+          if redis-cli PING | grep -q "PONG"; then
+            # If Redis responds with PONG, it's ready.
+            # Set the status to indicate this and break the loop.
+            REDIS_READY=1
+            echo "Redis server is ready."
+          else
+            # If Redis is not yet ready, wait for 5 seconds before retrying.
+            echo "Waiting for Redis server to become ready..."
+            sleep 5
+          fi
+        done
 
         if [ $PET_ORDINAL -lt $NUM_SHARDS ]; then
           # Set up primary nodes. Divide slots into equal(ish) contiguous blocks
