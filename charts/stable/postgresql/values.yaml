@@ -18,6 +18,32 @@ containerEnvsSecret:
 securityContext:
   user: 70
 
+probes:
+  readiness:
+    enabled: true
+    type: "exec"
+    execCommands: 
+      - sh
+      - -c
+      - exec pg_isready --host $POD_IP
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    timeoutSeconds: 3
+    successThreshold: 1
+    failureThreshold: 3
+  liveness:
+    enabled: true
+    type: "exec"
+    execCommands: 
+      - sh
+      - -c
+      - exec pg_isready --host $POD_IP
+    initialDelaySeconds: 60
+    periodSeconds: 10
+    timeoutSeconds: 5
+    successThreshold: 1
+    failureThreshold: 6
+
 resources:
   enabled: true
   requests:
