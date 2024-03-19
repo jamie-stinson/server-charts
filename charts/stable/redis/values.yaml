@@ -18,11 +18,11 @@ securityContext:
   capabilities:
     - SYS_RESOURCE
     - IPC_LOCK
-    - AUDIT_CONTROL
-    - MAC_OVERRIDE
-    - MAC_ADMIN
-    - SYSLOG
-    # - DAC_OVERRIDE
+    # - AUDIT_CONTROL
+    # - MAC_OVERRIDE
+    # - MAC_ADMIN
+    # - SYSLOG
+    - DAC_OVERRIDE
 
 configMaps:
   - name: redis-cluster-config
