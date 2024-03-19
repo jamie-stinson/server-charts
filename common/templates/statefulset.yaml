@@ -122,9 +122,17 @@ spec:
 
           # Security Context
           securityContext:
+            runAsUser: 556
+            runAsGroup: 556
+            fsGroup: 556
+            fsGroupChangePolicy: "Always"
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            seccompProfile:
+              type: RuntimeDefault
             capabilities:
-              # drop:
-              # - ALL
+              drop:
+              - ALL
               add:
               {{- range .Values.securityContext.capabilities }}
               - {{ . }}
