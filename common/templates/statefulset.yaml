@@ -109,7 +109,6 @@ spec:
               containerPort: {{ .port }}
             {{- end }}
             {{- end }}
-          {{- end }}
 
           # Security Context
           securityContext:
