@@ -127,7 +127,7 @@ spec:
             fsGroupChangePolicy: "Always"
             runAsNonRoot: true
             allowPrivilegeEscalation: false
-            privileged: false
+            privileged: true
             readOnlyRootFilesystem: true
             seLinuxOptions: null
             seccompProfile:
