@@ -18,7 +18,6 @@ securityContext:
   capabilities:
     - SYS_RESOURCE
     - IPC_LOCK
-    - NET_RAW
 
 configMaps:
   - name: redis-cluster-config
