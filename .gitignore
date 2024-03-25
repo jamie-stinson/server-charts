@@ -1,2 +1,3 @@
 
 charts/stable/postgresql/example_secret.yaml
+charts/stable/postgresql-master/example_secret.yaml

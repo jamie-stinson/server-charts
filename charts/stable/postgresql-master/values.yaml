@@ -1,0 +1,159 @@
+type: statefulset
+replicaCount: 1
+
+podDisruptionBudget: 0
+terminationGracePeriodSeconds: 10
+
+containerEnvs:
+  - name: POSTGRES_DB
+    value: "postgres"
+  - name: PGUSER
+    value: "postgres"
+  - name: POSTGRES_USER
+    value: "postgres"
+  - name: PGDATA
+    value: "/var/lib/postgresql/data/pgdata"
+
+containerEnvsSecret:
+  - name: POSTGRES_PASSWORD
+    key: password
+    secret: postgres
+  - name: REPLICATION_PASSWORD
+    key: replicaPassword
+    secret: postgres
+
+containerArgs:
+  - -c', 'config_file=/etc/postgres.conf', '-c', 'hba_file=/etc/pg_hba.conf
+
+securityContext:
+  user: 70
+
+configMaps:
+  - name: postgresql-cluster-config
+    data:
+      postgres.conf: |
+        listen_addresses = '*'
+        max_connections = 100
+        shared_buffers = 128MB
+        dynamic_shared_memory_type = posix
+        log_timezone = 'UTC'
+        datestyle = 'iso, mdy'
+        timezone = 'UTC'
+        lc_messages = 'en_US.utf8'
+        lc_monetary = 'en_US.utf8'
+        lc_numeric = 'en_US.utf8'
+        lc_time = 'en_US.utf8'     
+        default_text_search_config = 'pg_catalog.english'
+        include_if_exists = 'master.conf'
+        include_if_exists = 'replica.conf'
+      master.conf: |        
+        wal_level = hot_standby
+        max_wal_senders = 5
+        wal_keep_segments = 32
+        #archive_mode    = on
+        #archive_command = 'cp %p /path_to/archive/%f'
+      create-replica-user.sh: |
+        #!/bin/bash
+        set -e
+
+        psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
+          CREATE ROLE replication WITH REPLICATION PASSWORD '$REPLICATION_PASSWORD' LOGIN
+        EOSQL        
+      pg_hba.conf: |
+        # TYPE  DATABASE        USER            ADDRESS                 METHOD
+        # "local" is for Unix domain socket connections only
+        local   all             all                                     trust
+        # IPv4 local connections:
+        host    all             all             127.0.0.1/32            trust
+        # IPv6 local connections:
+        host    all             all             ::1/128                 trust
+        # Allow replication connections from localhost, by a user with the
+        # replication privilege.
+        local   replication     all                                     trust
+        host    replication     all             127.0.0.1/32            trust
+        host    replication     all             ::1/128                 trust
+
+        host    replication     replication     all                     md5
+        host all all all md5
+
+probes:
+  readiness:
+    enabled: true
+    type: "exec"
+    execCommands: 
+      - sh
+      - -c
+      - exec pg_isready --host $POD_IP
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    timeoutSeconds: 3
+    successThreshold: 1
+    failureThreshold: 3
+  liveness:
+    enabled: true
+    type: "exec"
+    execCommands: 
+      - sh
+      - -c
+      - exec pg_isready --host $POD_IP
+    initialDelaySeconds: 60
+    periodSeconds: 10
+    timeoutSeconds: 5
+    successThreshold: 1
+    failureThreshold: 6
+
+resources:
+  enabled: true
+  requests:
+    cpu: "100m"
+    memory: "256Mi"
+  limits:
+    cpu: "100m"
+    memory: "256Mi"
+    gpu: "0"
+
+image:
+  registry: "docker.io"
+  repository: "postgres"
+  tag: "16.2-alpine"
+
+service:
+  enabled: true
+  headless: true
+  publishNotReadyAddresses: true
+  clusterip:
+    - name: client
+      protocol: TCP
+      port: 5432
+
+storage:
+  enabled: true
+  volumes:
+    - name: "config"
+      type: "configMap"
+      readOnly: true
+      mountPath: "/etc"
+      configMapName: "postgresql-cluster-config"
+      items:
+        - key: "postgres.conf"
+          path: "postgres.conf"
+        - key: "master.conf"
+          path: "master.conf"
+        - key: "pg_hba.conf"
+          path: "pg_hba.conf"
+    - name: "scripts"
+      type: "configMap"
+      readOnly: true
+      mountPath: "/docker-entrypoint-initdb.d"
+      configMapName: "postgresql-cluster-config"
+      items:
+        - key: "create-replica-user.sh"
+          path: "create-replica-user.sh"  
+    - name: datadir
+      type: "template"
+      accessModes:
+      - ReadWriteOnce
+      storageClass: "local-path"
+      readOnly: false
+
+
