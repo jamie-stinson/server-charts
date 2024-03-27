@@ -31,9 +31,8 @@ initContainers:
       - '-c'
       - |
         chown -R 556:556 /var/lib/postgresql/data
-        
     volumeMounts:
-      - name:  db
+      - name:  datadir
         mountPath: /var/lib/postgresql/data
 
 configMaps:
