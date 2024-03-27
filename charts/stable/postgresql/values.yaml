@@ -30,8 +30,7 @@ initContainers:
       - 'sh'
       - '-c'
       - |
-        chown -R 70:70 /var/lib/postgresql/data
-        chown -R 70:70 /var/run/postgresql
+        chown -R 70:70 /var/lib/postgresql/data && chown -R 70:70 /var/run/postgresql
     volumeMounts:
       - name: datadir
         mountPath: /var/lib/postgresql/data
