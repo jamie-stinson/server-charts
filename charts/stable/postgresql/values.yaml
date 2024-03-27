@@ -126,5 +126,8 @@ storage:
       type: "emptyDir"
       mountPath: "/var/run/postgresql"
       readOnly: false
-
+    - name: "postgres-config"
+      type: "emptyDir"
+      mountPath: "/etc/postgresql"
+      readOnly: false
 
