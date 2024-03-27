@@ -169,7 +169,7 @@ storage:
         - path: "pod_namespace"
           fieldRef:
             fieldPath: "metadata.namespace"
-    - name: datadir
+    - name: "datadir"
       type: "template"
       mountPath: "/var/lib/redis"
       accessModes:
