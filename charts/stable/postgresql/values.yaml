@@ -31,11 +31,12 @@ initContainers:
       - '-c'
       - |
         chown -R 70:70 /var/lib/postgresql/data
+        chown -R 70:70 /var/run/postgresql
     volumeMounts:
       - name: datadir
         mountPath: /var/lib/postgresql/data
-      # - name: postgres
-      #   mountPath: /var/run/postgres     
+      - name: postgres
+        mountPath: /var/run/postgres     
 
 configMaps:
   - name: postgresql-cluster-config
