@@ -122,5 +122,9 @@ storage:
       - ReadWriteOnce
       storageClass: "local-path"
       readOnly: false
+    - name: "postgres"
+      type: "emptyDir"
+      mountPath: "/var/run/postgresql"
+      readOnly: false
 
 
