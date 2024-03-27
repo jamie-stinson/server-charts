@@ -224,11 +224,9 @@ spec:
 
           volumeMounts:
             {{- range .Values.storage.volumes }}
-            {{- if ne .type "template" }}
             - name: {{ .name }}
               mountPath: {{ .mountPath }}
               readOnly: {{ .readOnly | default false }}
-            {{- end }}
             {{- end }}
 
       volumes:

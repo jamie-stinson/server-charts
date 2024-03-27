@@ -118,6 +118,7 @@ storage:
           path: "create-replication-role.sql"
     - name: datadir
       type: "template"
+      mountPath: "/var/lib/postgresql/data"
       accessModes:
       - ReadWriteOnce
       storageClass: "local-path"
