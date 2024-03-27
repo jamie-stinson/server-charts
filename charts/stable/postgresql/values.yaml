@@ -21,7 +21,7 @@ containerEnvsSecret:
     secret: postgres
 
 securityContext:
-  user: 1000
+  user: 999
 
 configMaps:
   - name: postgresql-cluster-config
