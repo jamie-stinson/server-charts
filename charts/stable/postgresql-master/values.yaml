@@ -11,8 +11,6 @@ containerEnvs:
     value: "postgres"
   - name: POSTGRES_USER
     value: "postgres"
-  - name: PGDATA
-    value: "/var/lib/postgresql/data/pgdata"
 
 containerEnvsSecret:
   - name: POSTGRES_PASSWORD
