@@ -171,6 +171,7 @@ storage:
             fieldPath: "metadata.namespace"
     - name: datadir
       type: "template"
+      mountPath: "/var/lib/redis"
       accessModes:
       - ReadWriteOnce
       storageClass: "local-path"
