@@ -1,5 +1,5 @@
 type: statefulset
-replicaCount: 1
+replicaCount: 3
 
 podDisruptionBudget: 0
 terminationGracePeriodSeconds: 10
@@ -31,51 +31,33 @@ securityContext:
 configMaps:
   - name: postgresql-cluster-config
     data:
-      postgres.conf: |
-        listen_addresses = '*'
-        max_connections = 100
-        shared_buffers = 128MB
-        dynamic_shared_memory_type = posix
-        log_timezone = 'UTC'
-        datestyle = 'iso, mdy'
-        timezone = 'UTC'
-        lc_messages = 'en_US.utf8'
-        lc_monetary = 'en_US.utf8'
-        lc_numeric = 'en_US.utf8'
-        lc_time = 'en_US.utf8'     
-        default_text_search_config = 'pg_catalog.english'
-        include_if_exists = 'master.conf'
-        include_if_exists = 'replica.conf'
-      master.conf: |        
-        wal_level = hot_standby
-        max_wal_senders = 5
-        wal_keep_segments = 32
-        #archive_mode    = on
-        #archive_command = 'cp %p /path_to/archive/%f'
-      create-replica-user.sh: |
-        #!/bin/bash
-        set -e
-
-        psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
-          CREATE ROLE replication WITH REPLICATION PASSWORD '$REPLICATION_PASSWORD' LOGIN
-        EOSQL        
-      pg_hba.conf: |
-        # TYPE  DATABASE        USER            ADDRESS                 METHOD
-        # "local" is for Unix domain socket connections only
-        local   all             all                                     trust
-        # IPv4 local connections:
-        host    all             all             127.0.0.1/32            trust
-        # IPv6 local connections:
-        host    all             all             ::1/128                 trust
-        # Allow replication connections from localhost, by a user with the
-        # replication privilege.
-        local   replication     all                                     trust
-        host    replication     all             127.0.0.1/32            trust
-        host    replication     all             ::1/128                 trust
-
-        host    replication     replication     all                     md5
-        host all all all md5
-
+      master-slave-config.sh: |
+        HOST=`hostname -s`
+        ORD=${HOST##*-}
+        HOST_TEMPLATE=${HOST%-*}
+        case $ORD in
+          0)
+          echo "host    replication     all     all     md5" >> /var/lib/postgresql/data/pg_hba.conf
+          echo "archive_mode = on"  >> /etc/postgresql/postgresql.conf
+          echo "archive_mode = on"  >> /etc/postgresql/postgresql.conf
+          echo "archive_command = '/bin/true'"  >> /etc/postgresql/postgresql.conf
+          echo "archive_timeout = 0"  >> /etc/postgresql/postgresql.conf
+          echo "max_wal_senders = 8"  >> /etc/postgresql/postgresql.conf
+          echo "wal_keep_segments = 32"  >> /etc/postgresql/postgresql.conf
+          echo "wal_level = hot_standby"  >> /etc/postgresql/postgresql.conf
+          ;;
+          *)
+          # stop initial server to copy data
+          pg_ctl -D /var/lib/postgresql/data/ -m fast -w stop
+          rm -rf /var/lib/postgresql/data/*
+          # add service name for DNS resolution
+          PGPASSWORD=k8s-postgres-ha pg_basebackup -h ${HOST_TEMPLATE}-0.postgresql-clusterip -w -U replicator -p 5432 -D /var/lib/postgresql/data -Fp -Xs -P -R
+          # start server to keep container's screep happy
+          pg_ctl -D /var/lib/postgresql/data/ -w start
+          ;;
+        esac
+      create-replication-role.sql: |-
+        CREATE USER replicator WITH REPLICATION ENCRYPTED PASSWORD 'k8s-postgres-ha';
 probes:
   readiness:
     enabled: true
@@ -132,23 +114,13 @@ storage:
     - name: "config"
       type: "configMap"
       readOnly: true
-      mountPath: "/etc"
-      configMapName: "postgresql-cluster-config"
-      items:
-        - key: "postgres.conf"
-          path: "postgres.conf"
-        - key: "master.conf"
-          path: "master.conf"
-        - key: "pg_hba.conf"
-          path: "pg_hba.conf"
-    - name: "scripts"
-      type: "configMap"
-      readOnly: true
       mountPath: "/docker-entrypoint-initdb.d"
       configMapName: "postgresql-cluster-config"
       items:
-        - key: "create-replica-user.sh"
-          path: "create-replica-user.sh"  
+        - key: "master-slave-config.sh"
+          path: "master-slave-config.sh"
+        - key: "create-replication-role.sql"
+          path: "create-replication-role.sql"
     - name: datadir
       type: "template"
       accessModes:
