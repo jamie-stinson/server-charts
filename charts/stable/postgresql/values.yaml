@@ -21,7 +21,20 @@ containerEnvsSecret:
     secret: postgres
 
 securityContext:
-  user: 999
+  user: 556
+
+initContainers:
+  - name: db-init    # using root, change permissions to not use root in main container
+    image: postgres
+    command: 
+      - 'sh'
+      - '-c'
+      - |
+        chown -R 556:556 /var/lib/postgresql/data
+        
+    volumeMounts:
+      - name:  db
+        mountPath: /var/lib/postgresql/data
 
 configMaps:
   - name: postgresql-cluster-config
