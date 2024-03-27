@@ -20,9 +20,6 @@ containerEnvsSecret:
     key: replicaPassword
     secret: postgres
 
-containerArgs:
-  - -c', 'config_file=/etc/postgres.conf', '-c', 'hba_file=/etc/pg_hba.conf
-
 securityContext:
   user: 70
 
