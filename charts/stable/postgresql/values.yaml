@@ -19,6 +19,9 @@ containerEnvsSecret:
   - name: REPLICATION_PASSWORD
     key: replicaPassword
     secret: postgres
+  - name: RADARR_DATABASE_PASSWORD
+    key: DATABASE_PASSWORD
+    secret: radarr-database-credentials
 
 securityContext:
   user: 70
@@ -36,8 +39,6 @@ initContainers:
         mountPath: /var/lib/postgresql/data
       - name: postgres
         mountPath: /var/run/postgres     
-
-# Sidecar that checks configmap for new DB
 
 configMaps:
   - name: postgresql-cluster-config
@@ -68,7 +69,11 @@ configMaps:
           ;;
         esac
       create-replication-role.sql: |-
-        CREATE USER replicator WITH REPLICATION ENCRYPTED PASSWORD 'k8s-postgres-ha';
+        CREATE USER replicator WITH REPLICATION ENCRYPTED PASSWORD :'REPLICATION_PASSWORD';
+        CREATE DATABASE radarr
+        CREATE USER radarr WITH ENCRYPTED PASSWORD :'RADARR_DATABASE_PASSWORD'
+        GRANT ALL PRIVILEGES ON DATABASE radarr TO radarr
+
 probes:
   readiness:
     enabled: true
