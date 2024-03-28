@@ -1,0 +1,63 @@
+type: deployment
+replicaCount: 2
+
+podDisruptionBudget: 0
+terminationGracePeriodSeconds: 10
+
+securityContext:
+  user: 556   
+
+containerEnvs:
+  - name: POSTGRES_DB
+    value: "radarr"
+  - name: POSTGRES_USER
+    value: "radarr"
+
+containerEnvsSecret:
+  - name: POSTGRES_PASSWORD
+    key: DATABASE_PASSWORD
+    secret: radarr-database-credentials
+
+image:
+  registry: "docker.io"
+  repository: "linuxserver/radarr"
+  tag: "5.3.6"
+
+service:
+  enabled: true
+  headless: true
+  publishNotReadyAddresses: true
+  loadbalancer:
+    - name: radarr
+      protocol: TCP
+      port: 7878
+
+storage:
+  enabled: true
+  volumes:
+    - name: "config"
+      type: "configMap"
+      readOnly: true
+      mountPath: "/docker-entrypoint-initdb.d"
+      configMapName: "postgresql-cluster-config"
+      items:
+        - key: "master-slave-config.sh"
+          path: "master-slave-config.sh"
+        - key: "create-replication-role.sql"
+          path: "create-replication-role.sql"
+    - name: datadir
+      type: "template"
+      mountPath: "/var/lib/postgresql/data"
+      accessModes:
+      - ReadWriteOnce
+      storageClass: "local-path"
+      readOnly: false
+    - name: "postgres"
+      type: "emptyDir"
+      mountPath: "/var/run/postgresql"
+      readOnly: false
+    - name: "postgres-config"
+      type: "emptyDir"
+      mountPath: "/etc/postgresql"
+      readOnly: false
+
