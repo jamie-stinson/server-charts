@@ -1,5 +1,5 @@
 type: deployment
-replicaCount: 2
+replicaCount: 1
 
 podDisruptionBudget: 0
 terminationGracePeriodSeconds: 10
@@ -36,28 +36,7 @@ storage:
   enabled: true
   volumes:
     - name: "config"
-      type: "configMap"
-      readOnly: true
-      mountPath: "/docker-entrypoint-initdb.d"
-      configMapName: "postgresql-cluster-config"
-      items:
-        - key: "master-slave-config.sh"
-          path: "master-slave-config.sh"
-        - key: "create-replication-role.sql"
-          path: "create-replication-role.sql"
-    - name: datadir
-      type: "template"
-      mountPath: "/var/lib/postgresql/data"
-      accessModes:
-      - ReadWriteOnce
-      storageClass: "local-path"
+      type: "host"
+      hostPath: "/mnt/test-pool/config/radarr"
+      mountPath: "/config"
       readOnly: false
-    - name: "postgres"
-      type: "emptyDir"
-      mountPath: "/var/run/postgresql"
-      readOnly: false
-    - name: "postgres-config"
-      type: "emptyDir"
-      mountPath: "/etc/postgresql"
-      readOnly: false
-
