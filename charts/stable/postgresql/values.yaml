@@ -24,7 +24,7 @@ securityContext:
   user: 70
 
 initContainers:
-  - name: db-init    # using root, change permissions to not use root in main container
+  - name: db-init # using root, change permissions to not use root in main container. Fairly certain this is because can't use fs-group change with local path provisioner so when move from that could remove this?
     image: postgres
     command: 
       - 'sh'
@@ -36,6 +36,8 @@ initContainers:
         mountPath: /var/lib/postgresql/data
       - name: postgres
         mountPath: /var/run/postgres     
+
+# Sidecar that checks configmap for new DB
 
 configMaps:
   - name: postgresql-cluster-config
