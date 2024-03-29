@@ -1,4 +1,4 @@
-type: deploymen
+type: deployment
 replicaCount: 1
 
 podDisruptionBudget: 0
