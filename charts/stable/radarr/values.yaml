@@ -25,7 +25,7 @@ image:
 
 service:
   enabled: true
-  headless: true
+  headless: false
   publishNotReadyAddresses: true
   loadbalancer:
     - name: radarr
