@@ -19,8 +19,8 @@ containerEnvsSecret:
     secret: radarr-database-credentials
 
 image:
-  registry: "docker.io"
-  repository: "linuxserver/radarr"
+  registry: "ghcr.io"
+  repository: "onedr0p/radarr:5.3.6.8612@sha256:431f4d8da415645cd18359d0b704d4191f400eb57137ed3e5749774f3915c0a8"
   tag: "5.3.6"
 
 service:
