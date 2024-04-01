@@ -141,20 +141,40 @@ spec:
               mountPath: {{ .mountPath }}
               readOnly: {{ .readOnly }}
             {{- end }}
+
       volumes:
-      {{- range .Values.storage.volumes }}
+        {{- range .Values.storage.volumes }}
+        {{- if eq .type "configMap" }}
         - name: {{ .name }}
-          {{- if eq .type "host" }}
-          hostPath:
-            path: {{ .hostPath }}
-          {{- else if eq .type "emptyDir" }}
-            {{- if .size }}
+          configMap:
+            name: {{ .configMapName }}
+            items:
+              {{- range .items }}
+              - key: {{ .key }}
+                path: {{ .path }}
+              {{- end }}
+        {{- else if eq .type "emptyDir" }}
+        - name: {{ .name }}
           emptyDir:
-            sizeLimit: {{ .size }}
-            {{- else }}
-          emptyDir: {}        
-            {{- end}}
-          {{- end }}
-      {{- end}}
-          {{- end}}
+            {{- if .ramDisk }}
+            medium: "Memory"
+            {{- end }}
+            {{- if .sizeLimit }}
+            sizeLimit: {{ .sizeLimit }}
+            {{- end }}
+        {{- else if eq .type "downwardAPI" }}
+        - name: {{ .name }}
+          downwardAPI:
+            items:
+              {{- range .items }}
+              - path: {{ .path }}
+                fieldRef:
+                  fieldPath: {{ .fieldRef.fieldPath }}
+              {{- end }}
+        {{- else if eq .type "pvc" }}
+        - name: {{ .name }}
+          persistentVolumeClaim:
+            claimName: {{ $.Release.Name }}-{{ .name }}
+        {{- end }}
+        {{- end }}
 {{- end }}

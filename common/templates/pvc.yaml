@@ -1,0 +1,12 @@
+{{- range .Values.storage.volumes }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $.Release.Name }}-{{ .name }}
+spec:
+  storageClassName: "local-path"
+  accessModes: {{ .accessModes | toYaml | nindent 10 }}
+  resources:
+    requests:
+      storage: {{ .size | default "1Gi" }}
+{{- end }}

@@ -21,8 +21,8 @@ spec:
     - metadata:
         name: {{ .name }}
       spec:
-        accessModes: {{ .accessModes | toYaml | nindent 10 }}
         storageClassName: {{ .storageClass }}
+        accessModes: {{ .accessModes | toYaml | nindent 10 }}
         resources:
           requests:
             storage: {{ .size | default "1Gi" }}
@@ -43,6 +43,7 @@ spec:
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       initContainers:
         {{- toYaml .Values.initContainers | nindent 8 }}
+      {{- end }}
       containers:
           # Name  
         - name: {{ .Release.Name }}
@@ -257,7 +258,10 @@ spec:
                 fieldRef:
                   fieldPath: {{ .fieldRef.fieldPath }}
               {{- end }}
+        {{- else if eq .type "pvc" }}
+        - name: {{ .name }}
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-{{ .name }}
         {{- end }}
         {{- end }}
-{{- end }}
 {{- end }}
