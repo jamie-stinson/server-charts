@@ -41,4 +41,5 @@ storage:
       accessModes:
       - ReadWriteMany
       storageClass: "local-path"
+      size: 1Gi
       readOnly: false
