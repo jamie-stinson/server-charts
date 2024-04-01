@@ -8,15 +8,33 @@ securityContext:
   user: 556   
 
 containerEnvs:
-  - name: POSTGRES_DB
+  - name: RADARR__POSTGRES_USER
     value: "radarr"
+  - name: RADARR__POSTGRES_HOST
+    value: "postgresql-0.postgresql-clusterip.platform-data.svc.cluster.local"
+  - name: RADARR__POSTGRES_PORT
+    value: "5432"
   - name: POSTGRES_USER
     value: "radarr"
+  - name: RADARR__POSTGRES_MAIN_DB
+    value: "radarr-main"
+  - name: RADARR__POSTGRES_LOG_DB
+    value: "radarr-log"
+  - name: "RADARR__LOG_LEVEL"
+    value: "info"
+  - name: RADARR__INSTANCE_NAME
+    value: "Radarr"
+  - name: RADARR__AUTHENTICATION_METHOD
+    value: "None"
+
 
 containerEnvsSecret:
-  - name: POSTGRES_PASSWORD
+  - name: RADARR__POSTGRES_PASSWORD
     key: DATABASE_PASSWORD
     secret: radarr-database-credentials
+  - name: RADARR__API_KEY
+    key: API_KEY
+    secret: radarr-api-credentials
 
 image:
   registry: "ghcr.io"
