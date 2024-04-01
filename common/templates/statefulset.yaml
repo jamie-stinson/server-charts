@@ -261,7 +261,7 @@ spec:
         {{- else if eq .type "pvc" }}
         - name: {{ .name }}
           persistentVolumeClaim:
-            claimName: {{ .Release.Name }}-{{ .name }}
+            claimName: {{ $.Release.Name }}-{{ .name }}
         {{- end }}
         {{- end }}
 {{- end }}
