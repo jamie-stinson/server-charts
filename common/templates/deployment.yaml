@@ -177,4 +177,5 @@ spec:
             claimName: {{ $.Release.Name }}-{{ .name }}
         {{- end }}
         {{- end }}
+        {{- end }}
 {{- end }}
