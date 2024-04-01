@@ -39,7 +39,8 @@ storage:
       type: "pvc"
       mountPath: "/config"
       accessModes:
-      - ReadWriteMany
+      - ReadWriteOnce
+      # - ReadWriteMany # Can't use with local-path
       storageClass: "local-path"
       size: 1Gi
       readOnly: false
