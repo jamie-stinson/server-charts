@@ -9,15 +9,15 @@ containerEnvs:
   - name: RADARR__POSTGRES_USER
     value: "radarr"
   - name: RADARR__POSTGRES_HOST
-    value: "postgresql-0.postgresql-clusterip.platform-data.svc.cluster.local"
+    value: "radarr-rw.platform-data.svc.cluster.local"
   - name: RADARR__POSTGRES_PORT
     value: "5432"
   - name: POSTGRES_USER
     value: "radarr"
   - name: RADARR__POSTGRES_MAIN_DB
-    value: "radarr-main"
+    value: "radarr"
   - name: RADARR__POSTGRES_LOG_DB
-    value: "radarr-log"
+    value: "radarr"
   - name: "RADARR__LOG_LEVEL"
     value: "info"
   - name: RADARR__INSTANCE_NAME
