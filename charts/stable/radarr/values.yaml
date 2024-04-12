@@ -28,6 +28,7 @@ containerEnvs:
 database:
   postgresql:
     enabled: true
+    databases: ["radarr-main", "radarr-log"]
 
 containerEnvsSecret:
   - name: RADARR__POSTGRES_PASSWORD

@@ -1,11 +1,11 @@
-
 {{- if eq .Values.database.postgresql.enabled true }}
+{{- range .Values.database.postgresql.databases }}
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: {{ .Release.Name }}
+  name: {{ printf "%s-%s" $.Release.Name . }}
 spec:
-  description: "{{ .Release.Name }} Cluster"
+  description: "{{ printf "%s-%s" $.Release.Name . }} Cluster"
   imageName: ghcr.io/cloudnative-pg/postgresql:16.1
   instances: 3
   storage:
@@ -34,20 +34,21 @@ spec:
     - host all all 0.0.0.0/0 scram-sha-256
   bootstrap:
     initdb:
-      database: {{ .Release.Name }}
-      owner: {{ .Release.Name }}
+      database: {{ printf "%s-%s" $.Release.Name . }}
+      owner: {{ printf "%s-%s" $.Release.Name . }}
       secret:
-        name: {{ .Release.Name }}-database-credentials
+        name: {{ printf "%s-%s" $.Release.Name . }}-database-credentials
       postInitApplicationSQL:
-        - create schema {{ .Release.Name }}
+        - create schema {{ printf "%s-%s" $.Release.Name . }}
 ---
 apiVersion: v1
 kind: Secret
 type: kubernetes.io/basic-auth
 metadata:
-  name: {{ .Release.Name }}-database-credentials
+  name: {{ printf "%s-%s" $.Release.Name . }}-database-credentials
   annotations:
     secret-generator.v1.mittwald.de/autogenerate: password
 data:
-  username: {{ b64enc .Release.Name }}
-{{- end}}
+  username: {{ b64enc (printf "%s-%s" $.Release.Name .) }}
+{{- end }}
+{{- end }}
