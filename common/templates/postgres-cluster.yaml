@@ -1,0 +1,50 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  description: "{{ .Release.Name }} Cluster"
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.1
+  instances: 3
+  storage:
+    size: 5Gi
+    storageClass: local-path
+  startDelay: 30
+  stopDelay: 100
+  primaryUpdateStrategy: unsupervised
+  enableSuperuserAccess: false
+  postgresql:
+    parameters:
+      max_connections: '200'
+      shared_buffers: '256MB'
+      effective_cache_size: '768MB'
+      maintenance_work_mem: '64MB'
+      checkpoint_completion_target: '0.9'
+      wal_buffers: '7864kB'
+      default_statistics_target: '100'
+      random_page_cost: '1.1'
+      effective_io_concurrency: '200'
+      work_mem: '655kB'
+      huge_pages: 'off'
+      min_wal_size: '1GB'
+      max_wal_size: '4GB'
+    pg_hba:
+    - host all all 0.0.0.0/0 scram-sha-256
+  bootstrap:
+    initdb:
+      database: {{ .Release.Name }}
+      owner: {{ .Release.Name }}
+      secret:
+        name: {{ .Release.Name }}-database-credentials
+      postInitApplicationSQL:
+        - create schema {{ .Release.Name }}
+---
+apiVersion: v1
+kind: Secrets
+type: kubernetes.io/basic-auth
+metadata:
+  name: {{ .Release.Name }}-database-credentials
+  annotations:
+    secret-generator.v1.mittwald.de/autogenerate: password
+data:
+  username: YXBwX3VzZXI= #app_user # base64 encode release name
