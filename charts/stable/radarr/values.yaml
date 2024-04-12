@@ -17,7 +17,7 @@ containerEnvs:
   - name: RADARR__POSTGRES_MAIN_DB
     value: "radarr"
   - name: RADARR__POSTGRES_LOG_DB
-    value: "radarr"
+    value: ""
   - name: "RADARR__LOG_LEVEL"
     value: "info"
   - name: RADARR__INSTANCE_NAME
