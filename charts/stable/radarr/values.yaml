@@ -1,7 +1,7 @@
 type: deployment
 replicaCount: 1
 
-podDisruptionBudget: 0
+podDisruptionBudget: 1
 terminationGracePeriodSeconds: 10
 
 securityContext:
