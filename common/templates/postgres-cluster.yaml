@@ -41,13 +41,13 @@ spec:
       postInitApplicationSQL:
         - create schema {{ .Release.Name }}
 ---
-# apiVersion: v1
-# kind: Secrets
-# type: kubernetes.io/basic-auth
-# metadata:
-#   name: {{ .Release.Name }}-database-credentials
-#   # annotations:
-#   #   secret-generator.v1.mittwald.de/autogenerate: password
-# data:
-#   username: {{ b64enc .Release.Name }}
+apiVersion: v1
+kind: Secret
+type: kubernetes.io/basic-auth
+metadata:
+  name: {{ .Release.Name }}-database-credentials
+  annotations:
+    secret-generator.v1.mittwald.de/autogenerate: password
+data:
+  username: {{ b64enc .Release.Name }}
 {{- end}}
