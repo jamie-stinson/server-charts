@@ -1,3 +1,5 @@
+
+{{- if eq .Values.database.postgresql.enabled true }}
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
@@ -47,4 +49,5 @@ metadata:
   annotations:
     secret-generator.v1.mittwald.de/autogenerate: password
 data:
-  username: YXBwX3VzZXI= #app_user # base64 encode release name
+  username: {{ b64enc .Release.Name }}
+{{- end}}

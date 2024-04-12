@@ -27,14 +27,17 @@ containerEnvs:
   - name: RADARR__AUTHENTICATION_METHOD
     value: "None"
 
+database:
+  postgresql:
+    enabled: true
 
 containerEnvsSecret:
   - name: RADARR__POSTGRES_PASSWORD
-    key: DATABASE_PASSWORD
+    key: password
     secret: radarr-database-credentials
-  - name: RADARR__API_KEY
-    key: API_KEY
-    secret: radarr-api-credentials
+  # - name: RADARR__API_KEY
+  #   key: API_KEY
+  #   secret: radarr-api-credentials
 
 image:
   registry: "ghcr.io"
