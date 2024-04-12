@@ -1,9 +1,10 @@
-apiVersion: policy/v1
-kind: PodDisruptionBudget
-metadata:
-  name: {{ .Release.Name }}
-spec:
-  selector:
-    matchLabels:
-      app: {{ .Release.Name }}
-  maxUnavailable: {{ .Values.podDisruptionBudget }}
+# apiVersion: policy/v1
+# kind: PodDisruptionBudget
+# metadata:
+#   name: {{ .Release.Name }}
+# spec:
+#   selector:
+#     matchLabels:
+#       app: {{ .Release.Name }}
+#   minAvailable: {{ .Values.podDisruptionBudget.minAvailable }}
+#   maxUnavailable: {{ .Values.podDisruptionBudget.maxAvailable }}
