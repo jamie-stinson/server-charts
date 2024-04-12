@@ -40,7 +40,11 @@ spec:
         name: {{ . }}-database-credentials
       postInitApplicationSQL:
         - create schema {{ . }}
----
+{{- end }}
+{{- end }}
+
+{{- if eq .Values.database.postgresql.enabled true }}
+{{- range .Values.database.postgresql.databases }}
 apiVersion: v1
 kind: Secret
 type: kubernetes.io/basic-auth
