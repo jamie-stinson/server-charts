@@ -31,10 +31,10 @@ database:
   postgresql:
     enabled: true
 
-# containerEnvsSecret:
-#   - name: RADARR__POSTGRES_PASSWORD
-#     key: password
-#     secret: radarr-database-credentials
+containerEnvsSecret:
+  - name: RADARR__POSTGRES_PASSWORD
+    key: password
+    secret: radarr-database-credentials
   # - name: RADARR__API_KEY
   #   key: API_KEY
   #   secret: radarr-api-credentials

@@ -46,8 +46,8 @@ kind: Secrets
 type: kubernetes.io/basic-auth
 metadata:
   name: {{ .Release.Name }}-database-credentials
-  annotations:
-    secret-generator.v1.mittwald.de/autogenerate: password
+  # annotations:
+  #   secret-generator.v1.mittwald.de/autogenerate: password
 data:
   username: {{ b64enc .Release.Name }}
 {{- end}}
