@@ -3,9 +3,9 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: {{ . }}
+  name: {{ printf "%s-%s" $.Release.Name . }}
 spec:
-  description: "{{ . }} Cluster"
+  description: "{{ printf "%s-%s" $.Release.Name . }} Cluster"
   imageName: ghcr.io/cloudnative-pg/postgresql:16.1
   instances: 3
   storage:
@@ -34,21 +34,21 @@ spec:
     - host all all 0.0.0.0/0 scram-sha-256
   bootstrap:
     initdb:
-      database: {{ . }}
-      owner: {{ . }}
+      database: {{ printf "%s-%s" $.Release.Name . }}
+      owner: {{ printf "%s-%s" $.Release.Name . }}
       secret:
-        name: {{ . }}-database-credentials
+        name: {{ printf "%s-%s" $.Release.Name . }}-database-credentials
       postInitApplicationSQL:
-        - create schema {{ . }}
+        - create schema {{ printf "%s-%s" $.Release.Name . }}
 ---
 apiVersion: v1
 kind: Secret
 type: kubernetes.io/basic-auth
 metadata:
-  name: {{ . }}-database-credentials
+  name: {{ printf "%s-%s" $.Release.Name . }}-database-credentials
   annotations:
     secret-generator.v1.mittwald.de/autogenerate: password
 data:
-  username: {{ b64enc . }}
+  username: {{ b64enc (printf "%s-%s" $.Release.Name .) }}
 {{- end }}
 {{- end }}
