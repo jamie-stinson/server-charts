@@ -42,3 +42,17 @@ spec:
         - create schema {{ . }}
 {{- end }}
 {{- end }}
+
+{{- if eq .Values.database.postgresql.enabled true }}
+{{- range .Values.database.postgresql.databases }}
+apiVersion: v1
+kind: Secret
+type: kubernetes.io/basic-auth
+metadata:
+  name: {{ . }}-database-credentials
+  annotations:
+    secret-generator.v1.mittwald.de/autogenerate: password
+data:
+  username: {{ b64enc . }}
+{{- end }}
+{{- end }}
