@@ -39,6 +39,15 @@ spec:
                   key: {{ .name }}
             {{- end }}
             {{- end }}
+            {{- if .Values.containerEnvsSecret }}
+            {{- range .Values.containerEnvsSecret }}
+            - name: {{ .name }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .secret }}
+                  key: {{ .key }}
+            {{- end }}
+            {{- end }}
           {{- if .Values.resources.enabled }}
           resources:
             requests:
