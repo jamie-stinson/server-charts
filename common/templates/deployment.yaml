@@ -48,7 +48,7 @@ spec:
                   key: {{ .key }}
             {{- end }}
             {{- end }}
-            {{- if .Values.database.postgres.enabled }}
+            {{- if .Values.database.postgresql.enabled }}
             - name: {{ .Release.Name }}__POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
