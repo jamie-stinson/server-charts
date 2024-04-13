@@ -1,0 +1,43 @@
+type: deployment
+replicaCount: 3
+terminationGracePeriodSeconds: 10
+
+securityContext:
+  user: 556   
+
+database:
+  postgresql:
+    enabled: true
+
+containerEnvs:
+  - name: JELLYFIN_TYPE
+    value: "emby"
+
+apiKey: true
+
+image:
+  registry: "ghcr.io"
+  repository: "onedr0p/radarr"
+  tag: "5.3.6.8612@sha256:e9586ce6fdcb0bc739f96490e876c445114cec98e8c039aab6e48c579590cc70"
+
+service:
+  enabled: true
+  headless: false
+  publishNotReadyAddresses: true
+  loadbalancer:
+    - name: jellyseerr
+      protocol: TCP
+      port: 5055
+
+# storage:
+#   enabled: false
+#   volumes:
+#     - name: "config"
+#       type: "pvc"
+#       mountPath: "/config"
+#       accessModes:
+#       - ReadWriteOnce
+#       # - ReadWriteMany # Can't use with local-path
+#       storageClass: "local-path"
+#       size: 1Gi
+#       readOnly: false

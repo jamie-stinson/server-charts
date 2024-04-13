@@ -24,6 +24,20 @@ spec:
               value: "556"
             - name: TZ
               value: "GB"
+            {{- if .Values.database.postgresql.enabled }}
+            - name: "DB_TYPE"
+              value: "postgres"
+            - name: "DB_PORT"
+              value: "5432"
+            - name: "DB_USER"
+              value: "{{ .Release.Name }}"
+            - name: "DB_NAME"
+              value: "{{ .Release.Name }}"
+            - name: "DB_LOG_QUERIES"
+              value: "false"
+            - name: "DB_USE_SSL"
+              value: "false"
+            {{- end }}
             {{- if .Values.containerEnvs }}
             {{- range .Values.containerEnvs }}
             - name: {{ .name }}
@@ -54,6 +68,11 @@ spec:
                 secretKeyRef:
                   name: {{ .Release.Name }}-database-credentials
                   key: password
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-database-credentials
+                  key: password                  
             {{- end }}
             {{- if .Values.apiKey }}
             - name: {{ .Release.Name }}__API_KEY
