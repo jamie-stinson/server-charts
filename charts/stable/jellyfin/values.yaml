@@ -38,6 +38,10 @@ probes:
     successThreshold: 1
     failureThreshold: 3
 
+database:
+  postgresql:
+    enabled: false
+
 service:
   enabled: true
   loadbalancer:
