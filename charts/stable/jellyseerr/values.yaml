@@ -9,10 +9,6 @@ database:
   postgresql:
     enabled: true
 
-containerEnvs:
-  - name: JELLYFIN_TYPE
-    value: "emby"
-
 apiKey: false
 
 image:

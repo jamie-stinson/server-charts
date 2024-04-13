@@ -40,28 +40,10 @@ probes:
 
 service:
   enabled: true
-  clusterip:
+  loadbalancer:
     - name: jellyfin
       protocol: TCP
       port: 8096
-
-ingress:
-  traefik:
-    enabled: true
-    hosts:
-    - name: https
-      entrypoint: "websecure"
-      host: "jellyfin.projectwhitebox.com"
-      backendPort: 8096
-      securityHeaders: true
-      cors:
-        enabled: false
-        accessControlAllowMethods: []
-        accessControlAllowHeaders: []
-        accessControlAllowOriginList: []
-        accessControlMaxAge: null
-        addVaryHeader: null
-      tls: true
 
 storage:
   enabled: true
