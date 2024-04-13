@@ -13,7 +13,7 @@ containerEnvs:
   - name: JELLYFIN_TYPE
     value: "emby"
 
-apiKey: true
+apiKey: false
 
 image:
   registry: "docker.io"
