@@ -1,4 +1,4 @@
-{{- if eq .Values.apiKey }}
+{{- if eq .Values.apiKey true }}
 apiVersion: v1
 kind: Secret
 type: Opaque
@@ -7,4 +7,4 @@ metadata:
   annotations:
     secret-generator.v1.mittwald.de/autogenerate: key
 data: {}
-{{- end}}
+{{- end }}
