@@ -30,7 +30,7 @@ storage:
   volumes:
     - name: "config"
       type: "pvc"
-      mountPath: "/config"
+      mountPath: "/app/config"
       accessModes:
       - ReadWriteOnce
       # - ReadWriteMany # Can't use with local-path
