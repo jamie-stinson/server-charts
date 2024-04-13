@@ -25,15 +25,15 @@ service:
       protocol: TCP
       port: 5055
 
-# storage:
-#   enabled: false
-#   volumes:
-#     - name: "config"
-#       type: "pvc"
-#       mountPath: "/config"
-#       accessModes:
-#       - ReadWriteOnce
-#       # - ReadWriteMany # Can't use with local-path
-#       storageClass: "local-path"
-#       size: 1Gi
-#       readOnly: false
+storage:
+  enabled: true
+  volumes:
+    - name: "config"
+      type: "pvc"
+      mountPath: "/config"
+      accessModes:
+      - ReadWriteOnce
+      # - ReadWriteMany # Can't use with local-path
+      storageClass: "local-path"
+      size: 1Gi
+      readOnly: false
