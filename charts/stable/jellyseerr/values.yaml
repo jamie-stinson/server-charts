@@ -16,9 +16,9 @@ containerEnvs:
 apiKey: true
 
 image:
-  registry: "ghcr.io"
-  repository: "onedr0p/radarr"
-  tag: "5.3.6.8612@sha256:e9586ce6fdcb0bc739f96490e876c445114cec98e8c039aab6e48c579590cc70"
+  registry: "docker.io"
+  repository: "fallenbagel/jellyseerr"
+  tag: "preview-postgres@sha256:15f9bd26ec3d3e6aa9b0459604a39797e0003dbb5cf7c22b2df835c3aea2c503"
 
 service:
   enabled: true
