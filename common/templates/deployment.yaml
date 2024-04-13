@@ -29,6 +29,8 @@ spec:
               value: "postgres"
             - name: "DB_PORT"
               value: "5432"
+            - name: "DB_HOST"
+              value: "{{ .Release.Name }}-rw.platform-data.svc.cluster.local"
             - name: "DB_USER"
               value: "{{ .Release.Name }}"
             - name: "DB_NAME"
