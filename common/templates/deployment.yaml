@@ -48,6 +48,20 @@ spec:
                   key: {{ .key }}
             {{- end }}
             {{- end }}
+            {{- if .Values.database.postgres.enabled }}
+            - name: {{ .Release.Name }}__POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-database-credentials
+                  key: password
+            {{- end }}
+            {{- if .Values.apiKey }}
+            - name: {{ .Release.Name }}__API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-api-credentials
+                  key: key
+            {{- end }}
           {{- if .Values.resources.enabled }}
           resources:
             requests:

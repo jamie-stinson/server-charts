@@ -17,7 +17,7 @@ containerEnvs:
   - name: RADARR__POSTGRES_MAIN_DB
     value: "radarr"
   - name: RADARR__POSTGRES_LOG_DB
-    value: ""
+    value: "radarr-log"
   - name: "RADARR__LOG_LEVEL"
     value: "info"
   - name: RADARR__INSTANCE_NAME
@@ -28,14 +28,9 @@ containerEnvs:
 database:
   postgresql:
     enabled: true
+    databases: ["radarr-log"]
 
-containerEnvsSecret:
-  - name: RADARR__POSTGRES_PASSWORD
-    key: password
-    secret: radarr-database-credentials
-  # - name: RADARR__API_KEY
-  #   key: API_KEY
-  #   secret: radarr-api-credentials
+apiKey: true
 
 image:
   registry: "ghcr.io"
