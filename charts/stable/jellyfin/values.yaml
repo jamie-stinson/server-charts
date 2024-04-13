@@ -53,11 +53,10 @@ storage:
   enabled: true
   volumes:
     - name: "config"
-      type: "pvc"
+      type: "emptyDir"
       mountPath: "/config"
       accessModes:
       - ReadWriteOnce
       # - ReadWriteMany # Can't use with local-path
-      storageClass: "local-path"
       size: 1Gi
       readOnly: false
