@@ -12,9 +12,9 @@ dependencies:
 deprecated: false
 description: A Helm chart for the Spotahome Redis Operator
 keywords:
-  - golang
-  - operator
-  - cluster
+  - "golang"
+  - "operator"
+  - "cluster"
 kubeVersion: ">=1.24.0-0"
 name: redis-operator
 sources:
