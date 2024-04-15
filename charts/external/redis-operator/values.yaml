@@ -1,2 +1,0 @@
-redis-operator:
-  replicas: 2
