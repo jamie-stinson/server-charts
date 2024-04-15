@@ -1,5 +1,5 @@
 type: deployment
-replicaCount: 3
+replicaCount: 1
 terminationGracePeriodSeconds: 10
 
 securityContext:
