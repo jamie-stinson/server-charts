@@ -33,8 +33,12 @@ spec:
               value: "{{ .Release.Name }}-rw.platform-data.svc.cluster.local"
             - name: "DB_USER"
               value: "{{ .Release.Name }}"
+            - name: "POSTGRES_USER"
+              value: "{{ .Release.Name }}"              
             - name: "DB_NAME"
               value: "{{ .Release.Name }}"
+            - name: "POSTGRES_DB"
+              value: "{{ .Release.Name }}"              
             - name: "DB_LOG_QUERIES"
               value: "false"
             - name: "DB_USE_SSL"
@@ -70,6 +74,11 @@ spec:
                 secretKeyRef:
                   name: {{ .Release.Name }}-database-credentials
                   key: password
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-database-credentials
+                  key: password                  
             - name: DB_PASS
               valueFrom:
                 secretKeyRef:

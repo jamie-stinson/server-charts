@@ -1,0 +1,58 @@
+type: deployment
+replicaCount: 1
+terminationGracePeriodSeconds: 10
+
+securityContext:
+  user: 556   
+
+containerEnvs:
+  - name: USER_UID
+    value: "556"
+  - name: USER_GID
+    value: "556"
+
+
+database:
+  postgresql:
+    enabled: true
+
+apiKey: false
+
+image:
+  registry: "docker.io"
+  repository: "gitea/gitea"
+  tag: "1.21.10-rootless"
+
+service:
+  enabled: true
+  headless: false
+  publishNotReadyAddresses: false
+  loadbalancer:
+    - name: web
+      protocol: TCP
+      port: 3000
+    - name: ssh
+      protocol: TCP
+      port: 2222
+
+storage:
+  enabled: true
+  volumes:
+    - name: "var"
+      type: "pvc"
+      mountPath: "/var/lib/gitea"
+      accessModes:
+      - ReadWriteOnce
+      # - ReadWriteMany # Can't use with local-path
+      storageClass: "local-path"
+      size: 1Gi
+      readOnly: false
+    - name: "config"
+      type: "pvc"
+      mountPath: "/etc/gitea"
+      accessModes:
+      - ReadWriteOnce
+      # - ReadWriteMany # Can't use with local-path
+      storageClass: "local-path"
+      size: 1Gi
+      readOnly: false
