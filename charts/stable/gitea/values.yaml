@@ -21,13 +21,7 @@ apiKey: false
 image:
   registry: "docker.io"
   repository: "gitea/gitea"
-  tag: "1.21.10-rootless"
-
-serviceAccount:
-  enabled: true
-
-rbac:
-  enabled: false
+  tag: "1.21.11-rootless"
 
 service:
   enabled: true
