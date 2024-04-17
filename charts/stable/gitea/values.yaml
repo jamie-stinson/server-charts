@@ -38,15 +38,6 @@ service:
 storage:
   enabled: true
   volumes:
-    - name: "var"
-      type: "pvc"
-      mountPath: "/var/lib/gitea"
-      accessModes:
-      - ReadWriteOnce
-      # - ReadWriteMany # Can't use with local-path
-      storageClass: "local-path"
-      size: 1Gi
-      readOnly: false
     - name: "config"
       type: "pvc"
       mountPath: "/etc/gitea"
