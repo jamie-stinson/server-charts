@@ -26,6 +26,9 @@ image:
 serviceAccount:
   enabled: true
 
+rbac:
+  enabled: false
+
 service:
   enabled: true
   headless: false
