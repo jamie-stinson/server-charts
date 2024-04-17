@@ -23,6 +23,9 @@ image:
   repository: "gitea/gitea"
   tag: "1.21.10-rootless"
 
+serviceAccount:
+  enabled: true
+
 service:
   enabled: true
   headless: false
